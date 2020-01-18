@@ -3,7 +3,7 @@ import debounce from 'lodash.debounce'
 import Store from './Store'
 import E from './E'
 
-export default class GlobalEvents {
+class GlobalEvents {
 
     constructor() {
 
@@ -29,7 +29,6 @@ export default class GlobalEvents {
 
         this.onScroll()
         this.onResize()
-        this.addMouseEvents()
         this.onFirstTouch()
         requestAnimationFrame(this.onRaf)
 
@@ -66,3 +65,5 @@ export default class GlobalEvents {
     }
 
 }
+
+export default new GlobalEvents()

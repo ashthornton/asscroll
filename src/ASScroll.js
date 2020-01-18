@@ -1,3 +1,4 @@
+import './GlobalEvents'
 import Store from './Store'
 import E from './E'
 import Scrollbar from './Scrollbar'
@@ -19,7 +20,14 @@ export default class ASScroll {
             this.ffmultiplier = 40
         }
 
-        this.scrollbar = new Scrollbar(this)
+        Object.assign(this.scrollTarget.style, {
+            position: 'fixed',
+            top: '0px',
+            left: '0px',
+            width: '100%'
+        })
+
+        this.scrollbar = new Scrollbar(this) // TODO: make optional
 
         E.on(Store.events.RAF, this.onRAF)
         E.on(Store.events.RESIZE, this.onResize)

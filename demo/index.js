@@ -1,3 +1,5 @@
 import ASScroll from '../src'
 
-new ASScroll()
+const smoothScroll = new ASScroll()
+
+smoothScroll.enable()
