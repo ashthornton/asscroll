@@ -1,10 +1,11 @@
-import bindAll from './bindAll'
+import Store from './Store'
+import E from './E'
 
 export default class Scrollbar {
 
     constructor( smoothScroll ) {
 
-        bindAll(this, ['onMouseMove', 'onMouseDown', 'onMouseUp'])
+        E.bindAll(this, ['onMouseMove', 'onMouseDown', 'onMouseUp'])
 
         this.smoothScroll = smoothScroll
         this.el = document.getElementById('scrollbar')

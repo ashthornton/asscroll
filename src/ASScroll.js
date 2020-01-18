@@ -1,11 +1,12 @@
-import bindAll from './bindAll'
+import Store from './Store'
+import E from './E'
 import Scrollbar from './Scrollbar'
 
 export default class ASScroll {
 
     constructor() {
 
-        bindAll(this, ['onScroll', 'onRAF', 'onResize'])
+        E.bindAll(this, ['onScroll', 'onRAF', 'onResize'])
 
         this.ease = 0.1
         this.scrollPos = this.smoothScrollPos = this.prevScrollPos = 0

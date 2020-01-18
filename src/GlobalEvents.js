@@ -1,13 +1,12 @@
 import debounce from 'lodash.debounce'
-import throttle from 'lodash.throttle'
 
+import Store from './Store'
 import E from './E'
 
 export default class GlobalEvents {
 
     constructor() {
 
-        this.onMouseMove = throttle( this.onMouseMove, 16 )
         E.bindAll(this, ['onRaf'])
 
         Store.events = {
