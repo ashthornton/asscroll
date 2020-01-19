@@ -19,18 +19,6 @@ mix
 .js('src/index.js', 'dist/asscroll.js')
 .js('demo/index.js', 'demo/build.js')
 
-// Run SASS compilation using node-sass.
-// .sass(src('sass/style.scss'), dist('css'), {
-//     implementation: require('node-sass'),
-//     autoprefixer: {
-//         options: {
-//             browsers: [
-//                 'last 3 versions'
-//             ]
-//         }
-//     }
-// })
-
 if (!mix.inProduction()) {
     // Include separate source maps in development builds.
     mix.webpackConfig({

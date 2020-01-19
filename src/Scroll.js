@@ -3,9 +3,9 @@ import Store from './Store'
 import E from './E'
 import Scrollbar from './Scrollbar'
 
-export default class ASScroll {
+export default class Scroll {
 
-    constructor() {
+    constructor( options = {} ) {
 
         E.bindAll(this, ['onScroll', 'onRAF', 'onResize'])
 

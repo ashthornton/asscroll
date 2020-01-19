@@ -3,9 +3,11 @@ import debounce from 'lodash.debounce'
 import Store from './Store'
 import E from './E'
 
-class GlobalEvents {
+export default class GlobalEvents {
 
-    constructor() {
+    constructor( options = {} ) {
+
+        this.options = options
 
         E.bindAll(this, ['onRaf'])
 
@@ -30,13 +32,27 @@ class GlobalEvents {
         this.onScroll()
         this.onResize()
         this.onFirstTouch()
-        requestAnimationFrame(this.onRaf)
+        
 
     }
 
-    onRaf(time) {
-        E.emit(Store.events.RAF, time)
-        requestAnimationFrame(this.onRaf)
+    addEvents() {
+
+        if( !this.options.disableRaf ) {
+            requestAnimationFrame(this.onRaf)
+        }
+
+        if( !this.options.disableResize ) {
+            window.addEventListener('resize', debounce( () => this.onResize, 150 ))
+        }
+
+        this.onScroll()
+
+    }
+
+    onRaf() {
+        E.emit(Store.events.RAF)
+        if( !this.options.disableRaf ) requestAnimationFrame(this.onRaf)
     }
 
     onScroll() {
@@ -45,11 +61,9 @@ class GlobalEvents {
     }
 
     onResize() {
-        window.addEventListener('resize', debounce( () => {
-            Store.windowSize.w = window.innerWidth
-            Store.windowSize.h = window.innerHeight
-            E.emit(Store.events.RESIZE)
-        }, 150))
+        Store.windowSize.w = window.innerWidth
+        Store.windowSize.h = window.innerHeight
+        E.emit(Store.events.RESIZE)
     }
 
     onFirstTouch() {
@@ -65,5 +79,3 @@ class GlobalEvents {
     }
 
 }
-
-export default new GlobalEvents()
