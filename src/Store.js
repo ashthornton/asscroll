@@ -1,4 +1,5 @@
 const Store = {
+    html: document.documentElement,
     body: document.body,
     windowSize: {
         w: window.innerWidth,

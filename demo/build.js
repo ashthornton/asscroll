@@ -100,7 +100,7 @@ __webpack_require__.r(__webpack_exports__);
 var smoothScroll = new _src__WEBPACK_IMPORTED_MODULE_0__["default"]({
   element: '#scroll-container',
   ease: 0.1,
-  customScrollbar: false,
+  customScrollbar: true,
   scrollbarEl: '#scrollbar',
   scrollbarHandleEl: '#scrollbar__handle',
   disableRaf: false
@@ -853,7 +853,7 @@ function () {
       this.pageHeight = this.scrollTarget.clientHeight;
       this.maxScroll = this.pageHeight > _Store__WEBPACK_IMPORTED_MODULE_0___default.a.windowSize.h ? -(this.pageHeight - _Store__WEBPACK_IMPORTED_MODULE_0___default.a.windowSize.h) : 0;
       _Store__WEBPACK_IMPORTED_MODULE_0___default.a.body.style.height = this.pageHeight + 'px';
-      this.customScrollbar && this.scrollbar.onResize();
+      this.options.customScrollbar && this.scrollbar.onResize();
     }
   }]);
 
@@ -896,6 +896,7 @@ function () {
     this.smoothScroll = smoothScroll;
     this.el = document.querySelector(this.smoothScroll.options.scrollbarEl);
     this.handle = document.querySelector(this.smoothScroll.options.scrollbarHandleEl);
+    this.addStyles();
     this.addEvents();
   }
 
@@ -954,6 +955,17 @@ function () {
       this.el.classList.remove('active');
     }
   }, {
+    key: "addStyles",
+    value: function addStyles() {
+      _Store__WEBPACK_IMPORTED_MODULE_0___default.a.html.style.scrollbarWidth = 'none';
+      _Store__WEBPACK_IMPORTED_MODULE_0___default.a.body.style['-ms-overflow-style'] = 'none';
+      var css = document.createElement('style');
+      css.type = 'text/css';
+      var styles = "\n        html{scrollbar-width:none;}\n        body{-ms-overflow-style:none;}\n        body::-webkit-scrollbar{width:0;height:0;}\n        ".concat(this.smoothScroll.options.scrollbarEl, " {position: fixed;top: 0;right: 0;width: 20px;height: 100%;z-index: 900;}.is-touch ").concat(this.smoothScroll.options.scrollbarEl, " {display: none;}").concat(this.smoothScroll.options.scrollbarEl, " > div {padding: 6px 0;width: 10px;height: 0;margin: 0 auto;visibility: hidden;}").concat(this.smoothScroll.options.scrollbarEl, " > div > div {width: 100%;height: 100%;border-radius: 10px;opacity: 0.3;background-color: #000000;}").concat(this.smoothScroll.options.scrollbarEl, " > div > div:hover {opacity: 0.9;}").concat(this.smoothScroll.options.scrollbarEl, ":hover > div, ").concat(this.smoothScroll.options.scrollbarEl, ".show > div, ").concat(this.smoothScroll.options.scrollbarEl, ".active > div {visibility: visible;}").concat(this.smoothScroll.options.scrollbarEl, ".active > div > div {opacity: 0.9;}\n        ");
+      if (css.styleSheet) css.styleSheet.cssText = styles;else css.appendChild(document.createTextNode(styles));
+      document.getElementsByTagName("head")[0].appendChild(css);
+    }
+  }, {
     key: "destroy",
     value: function destroy() {
       _E__WEBPACK_IMPORTED_MODULE_1__["default"].off('mousedown', this.handle, this.onMouseDown);
@@ -977,6 +989,7 @@ function () {
 /***/ (function(module, exports) {
 
 var Store = {
+  html: document.documentElement,
   body: document.body,
   windowSize: {
     w: window.innerWidth,

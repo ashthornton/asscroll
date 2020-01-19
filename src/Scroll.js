@@ -141,7 +141,7 @@ export default class Scroll {
         this.pageHeight = this.scrollTarget.clientHeight
         this.maxScroll = this.pageHeight > Store.windowSize.h ? -(this.pageHeight - Store.windowSize.h) : 0
         Store.body.style.height = this.pageHeight + 'px'
-        this.customScrollbar && this.scrollbar.onResize()
+        this.options.customScrollbar && this.scrollbar.onResize()
     }
 
 }
