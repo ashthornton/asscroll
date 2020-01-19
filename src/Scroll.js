@@ -1,4 +1,3 @@
-import './GlobalEvents'
 import Store from './Store'
 import E from './E'
 import Scrollbar from './Scrollbar'

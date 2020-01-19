@@ -1,4 +1,4 @@
-import GlobalEvents from './GlobalEvents'
+import Events from './Events'
 import Scroll from './Scroll'
 
 export default class ASScroll {
@@ -8,12 +8,12 @@ export default class ASScroll {
         ease = 0.1,
         customScrollbar = false,
         scrollbarEl = '#scrollbar',
-        scrollbarBarEl = '#scrollbar__bar',
+        scrollbarHandleEl = '#scrollbar__handle',
         disableRaf = false,
         disableResize = false
     } = {} ) {
 
-        this.GlobalEvents = new GlobalEvents({
+        this.Events = new Events({
             disableRaf,
             disableResize
         })
@@ -23,7 +23,7 @@ export default class ASScroll {
             ease,
             customScrollbar,
             scrollbarEl,
-            scrollbarBarEl
+            scrollbarHandleEl
         })
 
     }
@@ -37,11 +37,11 @@ export default class ASScroll {
     }
 
     onRaf() {
-        this.GlobalEvents.onRaf()
+        this.Events.onRaf()
     }
 
     onResize() {
-        this.GlobalEvents.onResize()
+        this.Events.onResize()
     }
 
 }

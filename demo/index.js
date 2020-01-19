@@ -5,14 +5,14 @@ const smoothScroll = new ASScroll({
     ease: 0.1,
     customScrollbar: true,
     scrollbarEl: '#scrollbar',
-    scrollbarBarEl: '#scrollbar__bar',
-    disableRaf: true
+    scrollbarHandleEl: '#scrollbar__handle',
+    disableRaf: false
 })
 
 smoothScroll.enable()
 
-requestAnimationFrame(onRaf)
-function onRaf() {
-    smoothScroll.onRaf()
-    requestAnimationFrame(onRaf)
-}
+// requestAnimationFrame(onRaf)
+// function onRaf() {
+//     smoothScroll.onRaf()
+//     requestAnimationFrame(onRaf)
+// }

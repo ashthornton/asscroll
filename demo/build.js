@@ -102,16 +102,14 @@ var smoothScroll = new _src__WEBPACK_IMPORTED_MODULE_0__["default"]({
   ease: 0.1,
   customScrollbar: true,
   scrollbarEl: '#scrollbar',
-  scrollbarBarEl: '#scrollbar__bar',
-  disableRaf: true
+  scrollbarHandleEl: '#scrollbar__handle',
+  disableRaf: false
 });
-smoothScroll.enable();
-requestAnimationFrame(onRaf);
-
-function onRaf() {
-  smoothScroll.onRaf();
-  requestAnimationFrame(onRaf);
-}
+smoothScroll.enable(); // requestAnimationFrame(onRaf)
+// function onRaf() {
+//     smoothScroll.onRaf()
+//     requestAnimationFrame(onRaf)
+// }
 
 /***/ }),
 
@@ -563,16 +561,16 @@ var E = new _unseenco_e__WEBPACK_IMPORTED_MODULE_0___default.a();
 
 /***/ }),
 
-/***/ "./src/GlobalEvents.js":
-/*!*****************************!*\
-  !*** ./src/GlobalEvents.js ***!
-  \*****************************/
+/***/ "./src/Events.js":
+/*!***********************!*\
+  !*** ./src/Events.js ***!
+  \***********************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return GlobalEvents; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Events; });
 /* harmony import */ var lodash_debounce__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash.debounce */ "./node_modules/lodash.debounce/index.js");
 /* harmony import */ var lodash_debounce__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_debounce__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Store */ "./src/Store.js");
@@ -588,13 +586,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-var GlobalEvents =
+var Events =
 /*#__PURE__*/
 function () {
-  function GlobalEvents() {
+  function Events() {
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    _classCallCheck(this, GlobalEvents);
+    _classCallCheck(this, Events);
 
     this.options = options;
     _E__WEBPACK_IMPORTED_MODULE_2__["default"].bindAll(this, ['onRaf']);
@@ -605,20 +603,10 @@ function () {
       RESIZE: 'GResize',
       TOUCHDETECTED: 'TouchDetected'
     };
-    this.mousePos = {
-      x: 0,
-      y: 0
-    };
-    this.prevMousePos = {
-      x: 0,
-      y: 0
-    };
-    this.onScroll();
-    this.onResize();
-    this.onFirstTouch();
+    this.addEvents();
   }
 
-  _createClass(GlobalEvents, [{
+  _createClass(Events, [{
     key: "addEvents",
     value: function addEvents() {
       var _this2 = this;
@@ -634,6 +622,7 @@ function () {
       }
 
       this.onScroll();
+      this.onFirstTouch();
     }
   }, {
     key: "onRaf",
@@ -677,13 +666,11 @@ function () {
         _E__WEBPACK_IMPORTED_MODULE_2__["default"].emit(_Store__WEBPACK_IMPORTED_MODULE_1___default.a.events.TOUCHDETECTED); // we only need to know once that a human touched the screen, so we can stop listening now
 
         window.removeEventListener('touchstart', onFirstTouch, false);
-
-        _this.addTouchEvents();
       }, false);
     }
   }]);
 
-  return GlobalEvents;
+  return Events;
 }();
 
 
@@ -700,17 +687,15 @@ function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Scroll; });
-/* harmony import */ var _GlobalEvents__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./GlobalEvents */ "./src/GlobalEvents.js");
-/* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Store */ "./src/Store.js");
-/* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_Store__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _E__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./E */ "./src/E.js");
-/* harmony import */ var _Scrollbar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Scrollbar */ "./src/Scrollbar.js");
+/* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Store */ "./src/Store.js");
+/* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_Store__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _E__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./E */ "./src/E.js");
+/* harmony import */ var _Scrollbar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Scrollbar */ "./src/Scrollbar.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 
 
 
@@ -726,7 +711,7 @@ function () {
 
     _classCallCheck(this, Scroll);
 
-    _E__WEBPACK_IMPORTED_MODULE_2__["default"].bindAll(this, ['onScroll', 'onRAF', 'onResize']);
+    _E__WEBPACK_IMPORTED_MODULE_1__["default"].bindAll(this, ['onScroll', 'onRAF', 'onResize']);
     this.ease = 0.1;
     this.scrollPos = this.smoothScrollPos = this.prevScrollPos = 0;
     this.maxScroll = 0;
@@ -745,18 +730,18 @@ function () {
       left: '0px',
       width: '100%'
     });
-    this.scrollbar = new _Scrollbar__WEBPACK_IMPORTED_MODULE_3__["default"](this); // TODO: make optional
+    this.scrollbar = new _Scrollbar__WEBPACK_IMPORTED_MODULE_2__["default"](this); // TODO: make optional
 
-    _E__WEBPACK_IMPORTED_MODULE_2__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_1___default.a.events.RAF, this.onRAF);
-    _E__WEBPACK_IMPORTED_MODULE_2__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_1___default.a.events.RESIZE, this.onResize); // disable smooth scroll if touch is detected
+    _E__WEBPACK_IMPORTED_MODULE_1__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.RAF, this.onRAF);
+    _E__WEBPACK_IMPORTED_MODULE_1__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.RESIZE, this.onResize); // disable smooth scroll if touch is detected
 
-    _E__WEBPACK_IMPORTED_MODULE_2__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_1___default.a.events.TOUCHDETECTED, function () {
+    _E__WEBPACK_IMPORTED_MODULE_1__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.TOUCHDETECTED, function () {
       document.body.style.removeProperty('height');
 
       _this.scrollTarget.style.removeProperty('transform');
 
-      _E__WEBPACK_IMPORTED_MODULE_2__["default"].off(_Store__WEBPACK_IMPORTED_MODULE_1___default.a.events.RESIZE, _this.onResize);
-      _E__WEBPACK_IMPORTED_MODULE_2__["default"].off(_Store__WEBPACK_IMPORTED_MODULE_1___default.a.events.RAF, _this.onRAF);
+      _E__WEBPACK_IMPORTED_MODULE_1__["default"].off(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.RESIZE, _this.onResize);
+      _E__WEBPACK_IMPORTED_MODULE_1__["default"].off(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.RAF, _this.onRAF);
       _this.smoothScrollPos = 0;
     });
   }
@@ -811,13 +796,13 @@ function () {
       if (!this.enabled) return;
       this.enabled = false;
 
-      if (!_Store__WEBPACK_IMPORTED_MODULE_1___default.a.isTouch) {
-        _E__WEBPACK_IMPORTED_MODULE_2__["default"].off(_Store__WEBPACK_IMPORTED_MODULE_1___default.a.events.WHEEL, this.onScroll);
-        _E__WEBPACK_IMPORTED_MODULE_2__["default"].off(_Store__WEBPACK_IMPORTED_MODULE_1___default.a.events.SCROLL, this.onScroll);
+      if (!_Store__WEBPACK_IMPORTED_MODULE_0___default.a.isTouch) {
+        _E__WEBPACK_IMPORTED_MODULE_1__["default"].off(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.WHEEL, this.onScroll);
+        _E__WEBPACK_IMPORTED_MODULE_1__["default"].off(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.SCROLL, this.onScroll);
       }
 
       this.prevScrollPos = this.scrollPos;
-      _Store__WEBPACK_IMPORTED_MODULE_1___default.a.body.style.height = '0px';
+      _Store__WEBPACK_IMPORTED_MODULE_0___default.a.body.style.height = '0px';
     }
   }, {
     key: "enable",
@@ -825,8 +810,8 @@ function () {
       if (this.enabled) return;
       this.enabled = true;
 
-      if (_Store__WEBPACK_IMPORTED_MODULE_1___default.a.isTouch) {
-        _Store__WEBPACK_IMPORTED_MODULE_1___default.a.body.style.height.removeProperty('height');
+      if (_Store__WEBPACK_IMPORTED_MODULE_0___default.a.isTouch) {
+        _Store__WEBPACK_IMPORTED_MODULE_0___default.a.body.style.height.removeProperty('height');
         this.scrollTarget.style.removeProperty('transform');
       } else {
         if (resetScrollPos) {
@@ -842,8 +827,8 @@ function () {
         window.scrollTo(0, -this.prevScrollPos);
       }
 
-      _E__WEBPACK_IMPORTED_MODULE_2__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_1___default.a.events.WHEEL, this.onScroll);
-      _E__WEBPACK_IMPORTED_MODULE_2__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_1___default.a.events.SCROLL, this.onScroll);
+      _E__WEBPACK_IMPORTED_MODULE_1__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.WHEEL, this.onScroll);
+      _E__WEBPACK_IMPORTED_MODULE_1__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.SCROLL, this.onScroll);
     }
   }, {
     key: "clamp",
@@ -854,8 +839,8 @@ function () {
     key: "onResize",
     value: function onResize() {
       this.pageHeight = this.scrollTarget.clientHeight;
-      this.maxScroll = this.pageHeight > _Store__WEBPACK_IMPORTED_MODULE_1___default.a.windowSize.h ? -(this.pageHeight - _Store__WEBPACK_IMPORTED_MODULE_1___default.a.windowSize.h) : 0;
-      _Store__WEBPACK_IMPORTED_MODULE_1___default.a.body.style.height = this.pageHeight + 'px';
+      this.maxScroll = this.pageHeight > _Store__WEBPACK_IMPORTED_MODULE_0___default.a.windowSize.h ? -(this.pageHeight - _Store__WEBPACK_IMPORTED_MODULE_0___default.a.windowSize.h) : 0;
+      _Store__WEBPACK_IMPORTED_MODULE_0___default.a.body.style.height = this.pageHeight + 'px';
       this.scrollbar.onResize();
     }
   }]);
@@ -1001,7 +986,7 @@ module.exports = Store;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ASScroll; });
-/* harmony import */ var _GlobalEvents__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./GlobalEvents */ "./src/GlobalEvents.js");
+/* harmony import */ var _Events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Events */ "./src/Events.js");
 /* harmony import */ var _Scroll__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Scroll */ "./src/Scroll.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1025,8 +1010,8 @@ function () {
         customScrollbar = _ref$customScrollbar === void 0 ? false : _ref$customScrollbar,
         _ref$scrollbarEl = _ref.scrollbarEl,
         scrollbarEl = _ref$scrollbarEl === void 0 ? '#scrollbar' : _ref$scrollbarEl,
-        _ref$scrollbarBarEl = _ref.scrollbarBarEl,
-        scrollbarBarEl = _ref$scrollbarBarEl === void 0 ? '#scrollbar__bar' : _ref$scrollbarBarEl,
+        _ref$scrollbarHandleE = _ref.scrollbarHandleEl,
+        scrollbarHandleEl = _ref$scrollbarHandleE === void 0 ? '#scrollbar__handle' : _ref$scrollbarHandleE,
         _ref$disableRaf = _ref.disableRaf,
         disableRaf = _ref$disableRaf === void 0 ? false : _ref$disableRaf,
         _ref$disableResize = _ref.disableResize,
@@ -1034,7 +1019,7 @@ function () {
 
     _classCallCheck(this, ASScroll);
 
-    this.GlobalEvents = new _GlobalEvents__WEBPACK_IMPORTED_MODULE_0__["default"]({
+    this.Events = new _Events__WEBPACK_IMPORTED_MODULE_0__["default"]({
       disableRaf: disableRaf,
       disableResize: disableResize
     });
@@ -1043,7 +1028,7 @@ function () {
       ease: ease,
       customScrollbar: customScrollbar,
       scrollbarEl: scrollbarEl,
-      scrollbarBarEl: scrollbarBarEl
+      scrollbarHandleEl: scrollbarHandleEl
     });
   }
 
@@ -1060,12 +1045,12 @@ function () {
   }, {
     key: "onRaf",
     value: function onRaf() {
-      this.GlobalEvents.onRaf();
+      this.Events.onRaf();
     }
   }, {
     key: "onResize",
     value: function onResize() {
-      this.GlobalEvents.onResize();
+      this.Events.onResize();
     }
   }]);
 
