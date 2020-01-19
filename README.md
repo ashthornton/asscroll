@@ -41,13 +41,13 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 
 ## Methods
 
-`enable()`
+`enable()` - Enable scroll
 
-`disable()`
+`disable()` - Disable scroll
 
-`onRaf()`
+`onRaf()` - Trigger the internal animation frame loop
 
-`onResize()`
+`onResize()` - Trigger the internal resize event
 
 ## Events
 
@@ -56,4 +56,22 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 `on('raf', ({ scrollPos, smoothScrollPos }) => {})` - Fires on requestAnimationFrame. Continuously provides the target scroll position and the current smoothed scroll position.
 
 ## Custom Scrollbar
+
+
+
+## Usage with external requestAnimationFrame
+
+```
+const smoothScroll = new ASScroll({
+    disableRaf: true
+})
+
+smoothScroll.enable()
+
+requestAnimationFrame(onRaf)
+function onRaf() {
+    smoothScroll.onRaf()
+    requestAnimationFrame(onRaf)
+}
+```
 
