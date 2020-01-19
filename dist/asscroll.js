@@ -570,10 +570,12 @@ function () {
     this.options = options;
     _E__WEBPACK_IMPORTED_MODULE_2__["default"].bindAll(this, ['onRaf']);
     _Store__WEBPACK_IMPORTED_MODULE_1___default.a.events = {
-      RAF: 'GRAF',
-      SCROLL: 'GScroll',
-      WHEEL: 'GWheel',
-      RESIZE: 'GResize',
+      RAF: 'RAF',
+      EXTERNALRAF: 'ExternalRAF',
+      SCROLL: 'Scroll',
+      WHEEL: 'Wheel',
+      COMBOSCROLL: 'ComboScroll',
+      RESIZE: 'Resize',
       TOUCHDETECTED: 'TouchDetected'
     };
     this.addEvents();
@@ -684,11 +686,10 @@ function () {
 
     _classCallCheck(this, Scroll);
 
+    this.options = options;
     _E__WEBPACK_IMPORTED_MODULE_1__["default"].bindAll(this, ['onScroll', 'onRAF', 'onResize']);
-    this.ease = 0.1;
-    this.scrollPos = this.smoothScrollPos = this.prevScrollPos = 0;
-    this.maxScroll = 0;
-    this.scrollTarget = document.getElementById('scroll-container');
+    this.scrollTarget = document.querySelector(this.options.element);
+    this.scrollPos = this.smoothScrollPos = this.prevScrollPos = this.maxScroll = 0;
     this.scrolling = false;
     this.syncScroll = false;
     this.ffmultiplier = 1;
@@ -703,7 +704,10 @@ function () {
       left: '0px',
       width: '100%'
     });
-    this.scrollbar = new _Scrollbar__WEBPACK_IMPORTED_MODULE_2__["default"](this); // TODO: make optional
+
+    if (this.options.customScrollbar) {
+      this.scrollbar = new _Scrollbar__WEBPACK_IMPORTED_MODULE_2__["default"](this);
+    }
 
     _E__WEBPACK_IMPORTED_MODULE_1__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.RAF, this.onRAF);
     _E__WEBPACK_IMPORTED_MODULE_1__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.RESIZE, this.onResize); // disable smooth scroll if touch is detected
@@ -725,7 +729,7 @@ function () {
       var event = _ref.event;
 
       if (!this.scrolling) {
-        this.scrollbar.toggle();
+        this.options.customScrollbar && this.scrollbar.toggle();
         this.scrolling = true;
       }
 
@@ -734,9 +738,11 @@ function () {
         this.scrollPos += event.deltaY * this.ffmultiplier * -1;
         this.clamp();
         this.syncScroll = true;
+        _E__WEBPACK_IMPORTED_MODULE_1__["default"].emit('ComboScroll', this.scrollPos);
         return;
       } else {
         this.scrollPos = -window.scrollY;
+        _E__WEBPACK_IMPORTED_MODULE_1__["default"].emit('ComboScroll', this.scrollPos);
       }
     }
   }, {
@@ -753,15 +759,19 @@ function () {
         }
 
         if (this.scrolling) {
-          this.scrollbar.toggle();
+          this.options.customScrollbar && this.scrollbar.toggle();
           this.scrolling = false;
         }
       } else {
-        this.smoothScrollPos += (this.scrollPos - this.smoothScrollPos) * this.ease;
+        this.smoothScrollPos += (this.scrollPos - this.smoothScrollPos) * this.options.ease;
       }
 
       this.scrollTarget.style.transform = "translate3d(0px, ".concat(this.smoothScrollPos, "px, 0px)");
-      this.scrollbar.transform();
+      this.options.customScrollbar && this.scrollbar.transform();
+      _E__WEBPACK_IMPORTED_MODULE_1__["default"].emit(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.EXTERNALRAF, {
+        scrollPos: this.scrollPos,
+        smoothScrollPos: this.smoothScrollPos
+      });
     }
   }, {
     key: "disable",
@@ -814,7 +824,7 @@ function () {
       this.pageHeight = this.scrollTarget.clientHeight;
       this.maxScroll = this.pageHeight > _Store__WEBPACK_IMPORTED_MODULE_0___default.a.windowSize.h ? -(this.pageHeight - _Store__WEBPACK_IMPORTED_MODULE_0___default.a.windowSize.h) : 0;
       _Store__WEBPACK_IMPORTED_MODULE_0___default.a.body.style.height = this.pageHeight + 'px';
-      this.scrollbar.onResize();
+      this.customScrollbar && this.scrollbar.onResize();
     }
   }]);
 
@@ -855,15 +865,15 @@ function () {
 
     _E__WEBPACK_IMPORTED_MODULE_1__["default"].bindAll(this, ['onMouseMove', 'onMouseDown', 'onMouseUp']);
     this.smoothScroll = smoothScroll;
-    this.el = document.getElementById('scrollbar');
-    this.bar = document.getElementById('scrollbar__bar');
+    this.el = document.querySelector(this.smoothScroll.options.scrollbarEl);
+    this.handle = document.querySelector(this.smoothScroll.options.scrollbarHandleEl);
     this.addEvents();
   }
 
   _createClass(Scrollbar, [{
     key: "addEvents",
     value: function addEvents() {
-      _E__WEBPACK_IMPORTED_MODULE_1__["default"].on('mousedown', this.bar, this.onMouseDown);
+      _E__WEBPACK_IMPORTED_MODULE_1__["default"].on('mousedown', this.handle, this.onMouseDown);
       window.addEventListener('mousemove', this.onMouseMove);
       window.addEventListener('mouseup', this.onMouseUp);
     }
@@ -873,18 +883,18 @@ function () {
       this.scale = (-this.smoothScroll.maxScroll + _Store__WEBPACK_IMPORTED_MODULE_0___default.a.windowSize.h) / _Store__WEBPACK_IMPORTED_MODULE_0___default.a.windowSize.h;
 
       if (this.scale <= 1) {
-        this.bar.style.height = 0;
+        this.handle.style.height = 0;
         return;
       }
 
-      this.barHeight = _Store__WEBPACK_IMPORTED_MODULE_0___default.a.windowSize.h / this.scale;
-      this.barHalfHeight = this.barHeight / 2;
-      this.bar.style.height = "".concat(this.barHeight, "px");
+      this.handleHeight = _Store__WEBPACK_IMPORTED_MODULE_0___default.a.windowSize.h / this.scale;
+      this.handleHalfHeight = this.handleHeight / 2;
+      this.handle.style.height = "".concat(this.handleHeight, "px");
     }
   }, {
     key: "transform",
     value: function transform() {
-      this.bar.style.transform = "translate3d(0, ".concat(-this.smoothScroll.scrollPos / this.scale, "px, 0)");
+      this.handle.style.transform = "translate3d(0, ".concat(-this.smoothScroll.scrollPos / this.scale, "px, 0)");
     }
   }, {
     key: "toggle",
@@ -895,7 +905,7 @@ function () {
     key: "onMouseMove",
     value: function onMouseMove(e) {
       if (!this.mouseDown) return;
-      this.smoothScroll.scrollPos = (-e.clientY + this.barHalfHeight) * this.scale;
+      this.smoothScroll.scrollPos = (-e.clientY + this.handleHalfHeight) * this.scale;
       this.smoothScroll.clamp();
     }
   }, {
@@ -917,7 +927,7 @@ function () {
   }, {
     key: "destroy",
     value: function destroy() {
-      _E__WEBPACK_IMPORTED_MODULE_1__["default"].off('mousedown', this.bar, this.onMouseDown);
+      _E__WEBPACK_IMPORTED_MODULE_1__["default"].off('mousedown', this.handle, this.onMouseDown);
       window.removeEventListener('mousemove', this.onMouseMove);
       window.removeEventListener('mouseup', this.onMouseUp);
     }
@@ -959,13 +969,18 @@ module.exports = Store;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ASScroll; });
-/* harmony import */ var _Events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Events */ "./src/Events.js");
-/* harmony import */ var _Scroll__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Scroll */ "./src/Scroll.js");
+/* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Store */ "./src/Store.js");
+/* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_Store__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Events__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Events */ "./src/Events.js");
+/* harmony import */ var _Scroll__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Scroll */ "./src/Scroll.js");
+/* harmony import */ var _E__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./E */ "./src/E.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
 
 
 
@@ -992,11 +1007,11 @@ function () {
 
     _classCallCheck(this, ASScroll);
 
-    this.Events = new _Events__WEBPACK_IMPORTED_MODULE_0__["default"]({
+    this.Events = new _Events__WEBPACK_IMPORTED_MODULE_1__["default"]({
       disableRaf: disableRaf,
       disableResize: disableResize
     });
-    this.Scroll = new _Scroll__WEBPACK_IMPORTED_MODULE_1__["default"]({
+    this.Scroll = new _Scroll__WEBPACK_IMPORTED_MODULE_2__["default"]({
       element: element,
       ease: ease,
       customScrollbar: customScrollbar,
@@ -1024,6 +1039,17 @@ function () {
     key: "onResize",
     value: function onResize() {
       this.Events.onResize();
+    }
+  }, {
+    key: "on",
+    value: function on(eventName, cb) {
+      if (eventName === 'scroll') {
+        _E__WEBPACK_IMPORTED_MODULE_3__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.COMBOSCROLL, cb);
+      }
+
+      if (eventName === 'raf') {
+        _E__WEBPACK_IMPORTED_MODULE_3__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.EXTERNALRAF, cb);
+      }
     }
   }]);
 

@@ -12,10 +12,12 @@ export default class Events {
         E.bindAll(this, ['onRaf'])
 
         Store.events = {
-            RAF: 'GRAF',
-            SCROLL: 'GScroll',
-            WHEEL: 'GWheel',
-            RESIZE: 'GResize',
+            RAF: 'RAF',
+            EXTERNALRAF: 'ExternalRAF',
+            SCROLL: 'Scroll',
+            WHEEL: 'Wheel',
+            COMBOSCROLL: 'ComboScroll',
+            RESIZE: 'Resize',
             TOUCHDETECTED: 'TouchDetected',
         }
         

@@ -1,5 +1,7 @@
+import Store from './Store'
 import Events from './Events'
 import Scroll from './Scroll'
+import E from './E'
 
 export default class ASScroll {
 
@@ -42,6 +44,18 @@ export default class ASScroll {
 
     onResize() {
         this.Events.onResize()
+    }
+
+    on( eventName, cb ) {
+
+        if( eventName === 'scroll' ) {
+            E.on(Store.events.COMBOSCROLL, cb)
+        }
+
+        if( eventName === 'raf' ) {
+            E.on(Store.events.EXTERNALRAF, cb)
+        }
+
     }
 
 }

@@ -49,6 +49,11 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 
 `onResize()`
 
+## Events
+
+`on('scroll', scrollPos => {})` - Fires on page scroll. Provides current scroll position.
+
+`on('raf', ({ scrollPos, smoothScrollPos }) => {})` - Fires on requestAnimationFrame. Continuously provides the target scroll position and the current smoothed scroll position.
 
 ## Custom Scrollbar
 

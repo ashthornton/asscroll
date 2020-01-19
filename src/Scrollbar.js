@@ -8,13 +8,13 @@ export default class Scrollbar {
         E.bindAll(this, ['onMouseMove', 'onMouseDown', 'onMouseUp'])
 
         this.smoothScroll = smoothScroll
-        this.el = document.getElementById('scrollbar')
-        this.bar = document.getElementById('scrollbar__bar')
+        this.el = document.querySelector( this.smoothScroll.options.scrollbarEl )
+        this.handle = document.querySelector( this.smoothScroll.options.scrollbarHandleEl )
         this.addEvents()
     }
 
     addEvents() {
-        E.on('mousedown', this.bar, this.onMouseDown)
+        E.on('mousedown', this.handle, this.onMouseDown)
         window.addEventListener('mousemove', this.onMouseMove)
         window.addEventListener('mouseup', this.onMouseUp)
     }
@@ -22,16 +22,16 @@ export default class Scrollbar {
     onResize() {
         this.scale = (-this.smoothScroll.maxScroll + Store.windowSize.h) / Store.windowSize.h
         if( this.scale <= 1 ) {
-            this.bar.style.height = 0
+            this.handle.style.height = 0
             return
         }
-        this.barHeight = Store.windowSize.h / this.scale
-        this.barHalfHeight = this.barHeight / 2
-        this.bar.style.height = `${this.barHeight}px`
+        this.handleHeight = Store.windowSize.h / this.scale
+        this.handleHalfHeight = this.handleHeight / 2
+        this.handle.style.height = `${this.handleHeight}px`
     }
 
     transform() {
-        this.bar.style.transform = `translate3d(0, ${ -this.smoothScroll.scrollPos / this.scale }px, 0)`
+        this.handle.style.transform = `translate3d(0, ${ -this.smoothScroll.scrollPos / this.scale }px, 0)`
     }
 
     toggle() {
@@ -40,7 +40,7 @@ export default class Scrollbar {
 
     onMouseMove(e) {
         if( !this.mouseDown ) return
-        this.smoothScroll.scrollPos = ( -e.clientY + this.barHalfHeight ) * this.scale
+        this.smoothScroll.scrollPos = ( -e.clientY + this.handleHalfHeight ) * this.scale
         this.smoothScroll.clamp()
     }
 
@@ -59,7 +59,7 @@ export default class Scrollbar {
     }
 
     destroy() {
-        E.off('mousedown', this.bar, this.onMouseDown)
+        E.off('mousedown', this.handle, this.onMouseDown)
         window.removeEventListener('mousemove', this.onMouseMove)
         window.removeEventListener('mouseup', this.onMouseUp)
     }

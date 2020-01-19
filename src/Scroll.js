@@ -6,12 +6,12 @@ export default class Scroll {
 
     constructor( options = {} ) {
 
+        this.options = options
+
         E.bindAll(this, ['onScroll', 'onRAF', 'onResize'])
 
-        this.ease = 0.1
-        this.scrollPos = this.smoothScrollPos = this.prevScrollPos = 0
-        this.maxScroll = 0
-        this.scrollTarget = document.getElementById('scroll-container')
+        this.scrollTarget = document.querySelector( this.options.element )
+        this.scrollPos = this.smoothScrollPos = this.prevScrollPos = this.maxScroll = 0
         this.scrolling = false
         this.syncScroll = false
         this.ffmultiplier = 1
@@ -26,7 +26,9 @@ export default class Scroll {
             width: '100%'
         })
 
-        this.scrollbar = new Scrollbar(this) // TODO: make optional
+        if( this.options.customScrollbar ) {
+            this.scrollbar = new Scrollbar(this)
+        }
 
         E.on(Store.events.RAF, this.onRAF)
         E.on(Store.events.RESIZE, this.onResize)
@@ -44,7 +46,7 @@ export default class Scroll {
     onScroll({ event }) {
 
         if( !this.scrolling ) {
-            this.scrollbar.toggle()
+            this.options.customScrollbar && this.scrollbar.toggle()
             this.scrolling = true
         }
 
@@ -55,12 +57,14 @@ export default class Scroll {
             this.scrollPos += event.deltaY * this.ffmultiplier * -1
             this.clamp()
             this.syncScroll = true
+            E.emit('ComboScroll', this.scrollPos)
 
             return
 
         } else {
             this.scrollPos = -window.scrollY
-        }
+            E.emit('ComboScroll', this.scrollPos)
+        }  
 
     }
 
@@ -75,16 +79,18 @@ export default class Scroll {
                 this.syncScroll = false
             }
             if( this.scrolling ) {
-                this.scrollbar.toggle()
+                this.options.customScrollbar && this.scrollbar.toggle()
                 this.scrolling = false
             }
         } else {
-            this.smoothScrollPos += ( this.scrollPos - this.smoothScrollPos ) * this.ease
+            this.smoothScrollPos += ( this.scrollPos - this.smoothScrollPos ) * this.options.ease
         }
 
         this.scrollTarget.style.transform = `translate3d(0px, ${ this.smoothScrollPos }px, 0px)`
 
-        this.scrollbar.transform()
+        this.options.customScrollbar && this.scrollbar.transform()
+
+        E.emit(Store.events.EXTERNALRAF, { scrollPos: this.scrollPos, smoothScrollPos: this.smoothScrollPos })
 
     }
 
@@ -135,7 +141,7 @@ export default class Scroll {
         this.pageHeight = this.scrollTarget.clientHeight
         this.maxScroll = this.pageHeight > Store.windowSize.h ? -(this.pageHeight - Store.windowSize.h) : 0
         Store.body.style.height = this.pageHeight + 'px'
-        this.scrollbar.onResize()
+        this.customScrollbar && this.scrollbar.onResize()
     }
 
 }
