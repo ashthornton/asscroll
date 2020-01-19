@@ -23,35 +23,21 @@ smoothScroll.enable()
 ```
 
 ## Options
-Passed as an object through to the ASScroll constructor
+Passed as an object through to the ASScroll constructor. Defaults shown next to option names.
 
-`element` - The parent element of the content to be smooth scrolled
+`element: #scroll-container` - The parent element of the content to be smooth scrolled
 
-_Default: `#scroll-container`_
+`ease: 0.1` - Smooth scroll easing
 
-`ease` - Smooth scroll easing
+`customScrollbar: false` - Enable the use of a custom scrollbar
 
-_Default: `0.1`_
+`scrollbarEl: #scrollbar` - The parent element of the custom scrollbar
 
-`customScrollbar` - Enable the use of a custom scrollbar
+`scrollbarHandleEl: #scrollbar__handle` - The grabbable bar element in the custom scrollbar
 
-_Default: `false`_
+`disableRaf: false` - Disable internal requestAnimationFrame loop in order to use an external one
 
-`scrollbarEl` - The parent element of the custom scrollbar
-
-_Default: `#scrollbar`_
-
-`scrollbarHandleEl` - The grabbable bar element in the custom scrollbar
-
-_Default: `#scrollbar__handle`_
-
-`disableRaf` - Disable internal requestAnimationFrame loop in order to use an external one
-
-_Default: `false`_
-
-`disableResize` - Disable internal resize event on the window in order to use an external one
-
-_Default: `false`_
+`disableResize: false` - Disable internal resize event on the window in order to use an external one
 
 ## Methods
 
