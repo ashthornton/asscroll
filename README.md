@@ -1,4 +1,4 @@
-<p align="center"><img src="https://github.com/ashthornton-gc/asscroll/blob/master/asscroll.png"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/ashthornton-gc/asscroll/master/asscroll.png"></p>
 
 <p align="center">ASScroll is a hybrid smooth scroll setup that combines the performance gains of virtual scroll with the reliability of native scroll.</p>
 

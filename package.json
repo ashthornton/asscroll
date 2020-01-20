@@ -1,5 +1,5 @@
 {
-  "name": "asscroll",
+  "name": "@ashthornton/asscroll",
   "version": "1.0.0",
   "description": "Ash's Smooth Scroll",
   "main": "src/index.js",
