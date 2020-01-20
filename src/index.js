@@ -16,6 +16,8 @@ export default class ASScroll {
         disableResize = false
     } = {} ) {
 
+        E.bindAll(this)
+
         this.Events = new Events({
             disableRaf,
             disableResize

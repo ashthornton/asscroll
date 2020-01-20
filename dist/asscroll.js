@@ -1028,6 +1028,7 @@ function () {
 
     _classCallCheck(this, ASScroll);
 
+    _E__WEBPACK_IMPORTED_MODULE_3__["default"].bindAll(this);
     this.Events = new _Events__WEBPACK_IMPORTED_MODULE_1__["default"]({
       disableRaf: disableRaf,
       disableResize: disableResize
