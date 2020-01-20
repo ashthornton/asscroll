@@ -98,12 +98,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../src */ "./src/index.js");
 
 var smoothScroll = new _src__WEBPACK_IMPORTED_MODULE_0__["default"]({
-  element: '#scroll-container',
+  element: '.asscroll-container',
   ease: 0.1,
-  customScrollbar: true,
-  scrollbarEl: '#scrollbar',
-  scrollbarHandleEl: '#scrollbar__handle',
-  disableRaf: false
+  customScrollbar: true // scrollbarEl: '.asscrollbar',
+  // scrollbarHandleEl: '.asscrollbar__handle',
+  // scrollbarStyles: false,
+  // disableRaf: false
+
 });
 smoothScroll.enable(); // smoothScroll.on('scroll', scrollPos => { console.log(scrollPos) })
 // smoothScroll.on('raf', ({ scrollPos, smoothScrollPos }) => { console.log(scrollPos, smoothScrollPos) })
@@ -818,7 +819,9 @@ function () {
     }
   }, {
     key: "enable",
-    value: function enable(restoreScrollPos, resetScrollPos) {
+    value: function enable() {
+      var restore = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      var reset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       if (this.enabled) return;
       this.enabled = true;
 
@@ -826,7 +829,7 @@ function () {
         _Store__WEBPACK_IMPORTED_MODULE_0___default.a.body.style.height.removeProperty('height');
         this.scrollTarget.style.removeProperty('transform');
       } else {
-        if (resetScrollPos) {
+        if (reset) {
           this.scrollPos = this.smoothScrollPos = 0;
           this.scrollTarget.style.transform = "translate3d(0px, 0px, 0px)";
         }
@@ -834,7 +837,7 @@ function () {
         this.onResize();
       }
 
-      if (restoreScrollPos) {
+      if (restore) {
         this.scrollPos = this.prevScrollPos;
         window.scrollTo(0, -this.prevScrollPos);
       }
@@ -961,7 +964,12 @@ function () {
       _Store__WEBPACK_IMPORTED_MODULE_0___default.a.body.style['-ms-overflow-style'] = 'none';
       var css = document.createElement('style');
       css.type = 'text/css';
-      var styles = "\n        html{scrollbar-width:none;}\n        body{-ms-overflow-style:none;}\n        body::-webkit-scrollbar{width:0;height:0;}\n        ".concat(this.smoothScroll.options.scrollbarEl, " {position: fixed;top: 0;right: 0;width: 20px;height: 100%;z-index: 900;}.is-touch ").concat(this.smoothScroll.options.scrollbarEl, " {display: none;}").concat(this.smoothScroll.options.scrollbarEl, " > div {padding: 6px 0;width: 10px;height: 0;margin: 0 auto;visibility: hidden;}").concat(this.smoothScroll.options.scrollbarEl, " > div > div {width: 100%;height: 100%;border-radius: 10px;opacity: 0.3;background-color: #000000;}").concat(this.smoothScroll.options.scrollbarEl, " > div > div:hover {opacity: 0.9;}").concat(this.smoothScroll.options.scrollbarEl, ":hover > div, ").concat(this.smoothScroll.options.scrollbarEl, ".show > div, ").concat(this.smoothScroll.options.scrollbarEl, ".active > div {visibility: visible;}").concat(this.smoothScroll.options.scrollbarEl, ".active > div > div {opacity: 0.9;}\n        ");
+      var styles = "html{scrollbar-width:none;}body{-ms-overflow-style:none;}body::-webkit-scrollbar{width:0;height:0;}";
+
+      if (this.smoothScroll.options.scrollbarStyles) {
+        styles += "".concat(this.smoothScroll.options.scrollbarEl, " {position: fixed;top: 0;right: 0;width: 20px;height: 100%;z-index: 900;}.is-touch ").concat(this.smoothScroll.options.scrollbarEl, " {display: none;}").concat(this.smoothScroll.options.scrollbarEl, " > div {padding: 6px 0;width: 10px;height: 0;margin: 0 auto;visibility: hidden;}").concat(this.smoothScroll.options.scrollbarEl, " > div > div {width: 100%;height: 100%;border-radius: 10px;opacity: 0.3;background-color: #000000;}").concat(this.smoothScroll.options.scrollbarEl, " > div > div:hover {opacity: 0.9;}").concat(this.smoothScroll.options.scrollbarEl, ":hover > div, ").concat(this.smoothScroll.options.scrollbarEl, ".show > div, ").concat(this.smoothScroll.options.scrollbarEl, ".active > div {visibility: visible;}").concat(this.smoothScroll.options.scrollbarEl, ".active > div > div {opacity: 0.9;}");
+      }
+
       if (css.styleSheet) css.styleSheet.cssText = styles;else css.appendChild(document.createTextNode(styles));
       document.getElementsByTagName("head")[0].appendChild(css);
     }
@@ -993,8 +1001,7 @@ var Store = {
   body: document.body,
   windowSize: {
     w: window.innerWidth,
-    h: window.innerHeight,
-    dpr: window.devicePixelRatio
+    h: window.innerHeight
   }
 };
 module.exports = Store;
@@ -1033,15 +1040,17 @@ function () {
   function ASScroll() {
     var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
         _ref$element = _ref.element,
-        element = _ref$element === void 0 ? '#scroll-container' : _ref$element,
+        element = _ref$element === void 0 ? '.asscroll-container' : _ref$element,
         _ref$ease = _ref.ease,
         ease = _ref$ease === void 0 ? 0.1 : _ref$ease,
         _ref$customScrollbar = _ref.customScrollbar,
         customScrollbar = _ref$customScrollbar === void 0 ? false : _ref$customScrollbar,
         _ref$scrollbarEl = _ref.scrollbarEl,
-        scrollbarEl = _ref$scrollbarEl === void 0 ? '#scrollbar' : _ref$scrollbarEl,
+        scrollbarEl = _ref$scrollbarEl === void 0 ? '.asscrollbar' : _ref$scrollbarEl,
         _ref$scrollbarHandleE = _ref.scrollbarHandleEl,
-        scrollbarHandleEl = _ref$scrollbarHandleE === void 0 ? '#scrollbar__handle' : _ref$scrollbarHandleE,
+        scrollbarHandleEl = _ref$scrollbarHandleE === void 0 ? '.asscrollbar__handle' : _ref$scrollbarHandleE,
+        _ref$scrollbarStyles = _ref.scrollbarStyles,
+        scrollbarStyles = _ref$scrollbarStyles === void 0 ? true : _ref$scrollbarStyles,
         _ref$disableRaf = _ref.disableRaf,
         disableRaf = _ref$disableRaf === void 0 ? false : _ref$disableRaf,
         _ref$disableResize = _ref.disableResize,
@@ -1058,7 +1067,8 @@ function () {
       ease: ease,
       customScrollbar: customScrollbar,
       scrollbarEl: scrollbarEl,
-      scrollbarHandleEl: scrollbarHandleEl
+      scrollbarHandleEl: scrollbarHandleEl,
+      scrollbarStyles: scrollbarStyles
     });
   }
 

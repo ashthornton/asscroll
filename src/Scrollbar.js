@@ -65,12 +65,11 @@ export default class Scrollbar {
         const css = document.createElement('style')
         css.type = 'text/css';
 
-        const styles = `
-        html{scrollbar-width:none;}
-        body{-ms-overflow-style:none;}
-        body::-webkit-scrollbar{width:0;height:0;}
-        ${this.smoothScroll.options.scrollbarEl} {position: fixed;top: 0;right: 0;width: 20px;height: 100%;z-index: 900;}.is-touch ${this.smoothScroll.options.scrollbarEl} {display: none;}${this.smoothScroll.options.scrollbarEl} > div {padding: 6px 0;width: 10px;height: 0;margin: 0 auto;visibility: hidden;}${this.smoothScroll.options.scrollbarEl} > div > div {width: 100%;height: 100%;border-radius: 10px;opacity: 0.3;background-color: #000000;}${this.smoothScroll.options.scrollbarEl} > div > div:hover {opacity: 0.9;}${this.smoothScroll.options.scrollbarEl}:hover > div, ${this.smoothScroll.options.scrollbarEl}.show > div, ${this.smoothScroll.options.scrollbarEl}.active > div {visibility: visible;}${this.smoothScroll.options.scrollbarEl}.active > div > div {opacity: 0.9;}
-        `
+        let styles = `html{scrollbar-width:none;}body{-ms-overflow-style:none;}body::-webkit-scrollbar{width:0;height:0;}`
+
+        if( this.smoothScroll.options.scrollbarStyles ) {
+            styles += `${this.smoothScroll.options.scrollbarEl} {position: fixed;top: 0;right: 0;width: 20px;height: 100%;z-index: 900;}.is-touch ${this.smoothScroll.options.scrollbarEl} {display: none;}${this.smoothScroll.options.scrollbarEl} > div {padding: 6px 0;width: 10px;height: 0;margin: 0 auto;visibility: hidden;}${this.smoothScroll.options.scrollbarEl} > div > div {width: 100%;height: 100%;border-radius: 10px;opacity: 0.3;background-color: #000000;}${this.smoothScroll.options.scrollbarEl} > div > div:hover {opacity: 0.9;}${this.smoothScroll.options.scrollbarEl}:hover > div, ${this.smoothScroll.options.scrollbarEl}.show > div, ${this.smoothScroll.options.scrollbarEl}.active > div {visibility: visible;}${this.smoothScroll.options.scrollbarEl}.active > div > div {opacity: 0.9;}`
+        }
 
         if (css.styleSheet) css.styleSheet.cssText = styles
         else css.appendChild(document.createTextNode(styles))

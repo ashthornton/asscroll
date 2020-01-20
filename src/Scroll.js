@@ -108,7 +108,7 @@ export default class Scroll {
         Store.body.style.height = '0px'
     }
 
-    enable( restoreScrollPos, resetScrollPos ) {
+    enable( restore = false, reset = false ) {
 
         if( this.enabled ) return
         this.enabled = true
@@ -117,14 +117,14 @@ export default class Scroll {
             Store.body.style.height.removeProperty('height')
             this.scrollTarget.style.removeProperty('transform')
         } else {
-            if( resetScrollPos ) {
+            if( reset ) {
                 this.scrollPos = this.smoothScrollPos = 0
                 this.scrollTarget.style.transform = `translate3d(0px, 0px, 0px)`
             }
             this.onResize()
         }
 
-        if( restoreScrollPos ) {
+        if( restore ) {
             this.scrollPos = this.prevScrollPos
             window.scrollTo( 0, -this.prevScrollPos )
         }

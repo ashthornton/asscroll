@@ -1,12 +1,13 @@
 import ASScroll from '../src'
 
 const smoothScroll = new ASScroll({
-    element: '#scroll-container',
+    element: '.asscroll-container',
     ease: 0.1,
     customScrollbar: true,
-    scrollbarEl: '#scrollbar',
-    scrollbarHandleEl: '#scrollbar__handle',
-    disableRaf: false
+    // scrollbarEl: '.asscrollbar',
+    // scrollbarHandleEl: '.asscrollbar__handle',
+    // scrollbarStyles: false,
+    // disableRaf: false
 })
 
 smoothScroll.enable()

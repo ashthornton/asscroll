@@ -6,11 +6,12 @@ import E from './E'
 export default class ASScroll {
 
     constructor( {
-        element = '#scroll-container',
+        element = '.asscroll-container',
         ease = 0.1,
         customScrollbar = false,
-        scrollbarEl = '#scrollbar',
-        scrollbarHandleEl = '#scrollbar__handle',
+        scrollbarEl = '.asscrollbar',
+        scrollbarHandleEl = '.asscrollbar__handle',
+        scrollbarStyles = true,
         disableRaf = false,
         disableResize = false
     } = {} ) {
@@ -25,7 +26,8 @@ export default class ASScroll {
             ease,
             customScrollbar,
             scrollbarEl,
-            scrollbarHandleEl
+            scrollbarHandleEl,
+            scrollbarStyles
         })
 
     }
