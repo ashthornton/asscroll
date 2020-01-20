@@ -36,7 +36,7 @@ export default class Scroll {
         // disable smooth scroll if touch is detected
         E.on(Store.events.TOUCHDETECTED, () => {
             document.body.style.removeProperty('height')
-            this.scrollTarget.style.removeProperty('transform')
+            this.scrollTarget.removeAttribute('style')
             E.off(Store.events.RESIZE, this.onResize)
             E.off(Store.events.RAF, this.onRAF)
             this.smoothScrollPos = 0
