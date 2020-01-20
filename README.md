@@ -122,3 +122,7 @@ window.addEventListener('resize', () => {
 smoothScroll.enable()
 ```
 
+## TODO
+
+- Handle tabbing focus
+- Handle anchor link scroll

@@ -721,6 +721,9 @@ function () {
       _E__WEBPACK_IMPORTED_MODULE_1__["default"].off(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.RAF, _this.onRAF);
       _this.smoothScrollPos = 0;
     });
+    window.addEventListener('hashchange', function () {
+      console.log('test');
+    });
   }
 
   _createClass(Scroll, [{
