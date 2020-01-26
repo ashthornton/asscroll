@@ -78,7 +78,7 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 When `customScrollbar` is enabled in the options, a default set of styles will get added to the page that match the following HTML:
 
 ```HTML
-<div class="asscrollbar"><div class="asscrollbar__handle"><div></div></div>
+<div class="asscrollbar"><div class="asscrollbar__handle"><div></div></div></div>
 ```
 
 Add this HTML anywhere outside of the main `.asscroll-container` element - just before the closing `</body>` tag works fine.
