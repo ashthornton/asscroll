@@ -137,6 +137,13 @@ export default class Scroll {
         this.scrollPos = Math.max(Math.min(this.scrollPos, 0), this.maxScroll)
     }
 
+    scrollTo( y ) {
+        this.scrollPos = y
+        this.clamp()
+        this.syncScroll = true
+        E.emit('ComboScroll', this.scrollPos)
+    }
+
     onResize() {
         this.pageHeight = this.scrollTarget.clientHeight
         this.maxScroll = this.pageHeight > Store.windowSize.h ? -(this.pageHeight - Store.windowSize.h) : 0

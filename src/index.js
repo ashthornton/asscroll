@@ -62,4 +62,8 @@ export default class ASScroll {
 
     }
 
+    scrollTo( y ) {
+        this.Scroll.scrollTo(-y)
+    }
+
 }

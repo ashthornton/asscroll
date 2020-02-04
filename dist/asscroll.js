@@ -715,7 +715,7 @@ function () {
     _E__WEBPACK_IMPORTED_MODULE_1__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.TOUCHDETECTED, function () {
       document.body.style.removeProperty('height');
 
-      _this.scrollTarget.style.removeProperty('transform');
+      _this.scrollTarget.removeAttribute('style');
 
       _E__WEBPACK_IMPORTED_MODULE_1__["default"].off(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.RESIZE, _this.onResize);
       _E__WEBPACK_IMPORTED_MODULE_1__["default"].off(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.RAF, _this.onRAF);
@@ -819,6 +819,14 @@ function () {
     key: "clamp",
     value: function clamp() {
       this.scrollPos = Math.max(Math.min(this.scrollPos, 0), this.maxScroll);
+    }
+  }, {
+    key: "scrollTo",
+    value: function scrollTo(y) {
+      this.scrollPos = y;
+      this.clamp();
+      this.syncScroll = true;
+      _E__WEBPACK_IMPORTED_MODULE_1__["default"].emit('ComboScroll', this.scrollPos);
     }
   }, {
     key: "onResize",
@@ -1073,6 +1081,11 @@ function () {
       if (eventName === 'raf') {
         _E__WEBPACK_IMPORTED_MODULE_3__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.EXTERNALRAF, cb);
       }
+    }
+  }, {
+    key: "scrollTo",
+    value: function scrollTo(y) {
+      this.Scroll.scrollTo(-y);
     }
   }]);
 
