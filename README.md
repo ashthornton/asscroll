@@ -67,6 +67,8 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 
 `onResize()` - Trigger the internal resize event
 
+`scrollTo( y )` - Scroll to a y coordinate on the page
+
 ## Events
 
 `on('scroll', scrollPos => {})` - Fires on page scroll. Provides current scroll position.
