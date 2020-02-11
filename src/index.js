@@ -16,7 +16,7 @@ export default class ASScroll {
         disableResize = false
     } = {} ) {
 
-        E.bindAll(this)
+        // E.bindAll(this)
 
         this.Events = new Events({
             disableRaf,
@@ -31,6 +31,8 @@ export default class ASScroll {
             scrollbarHandleEl,
             scrollbarStyles
         })
+
+        // this.scrollPosVal = this.Scroll.scrollPos
 
     }
 
@@ -68,6 +70,10 @@ export default class ASScroll {
 
     get scrollPos() {
         return this.Scroll.scrollPos
+    }
+
+    get smoothScrollPos() {
+        return this.Scroll.smoothScrollPos
     }
 
 }

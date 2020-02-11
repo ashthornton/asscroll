@@ -694,7 +694,7 @@ function () {
     this.syncScroll = false;
     this.ffmultiplier = 1;
 
-    if (navigator.userAgent.indexOf('Firefox') > -1) {
+    if (navigator.platform === 'Win32' && navigator.userAgent.indexOf('Firefox') > -1) {
       this.ffmultiplier = 40;
     }
 
@@ -796,8 +796,12 @@ function () {
       this.enabled = true;
 
       if (_Store__WEBPACK_IMPORTED_MODULE_0___default.a.isTouch) {
-        _Store__WEBPACK_IMPORTED_MODULE_0___default.a.body.style.height.removeProperty('height');
+        _Store__WEBPACK_IMPORTED_MODULE_0___default.a.body.style.removeProperty('height');
         this.scrollTarget.style.removeProperty('transform');
+
+        if (reset) {
+          window.scrollTo(0, 0);
+        }
       } else {
         if (reset) {
           this.scrollPos = this.smoothScrollPos = 0;
@@ -1020,7 +1024,7 @@ function () {
         _ref$element = _ref.element,
         element = _ref$element === void 0 ? '.asscroll-container' : _ref$element,
         _ref$ease = _ref.ease,
-        ease = _ref$ease === void 0 ? 0.1 : _ref$ease,
+        ease = _ref$ease === void 0 ? 0.075 : _ref$ease,
         _ref$customScrollbar = _ref.customScrollbar,
         customScrollbar = _ref$customScrollbar === void 0 ? false : _ref$customScrollbar,
         _ref$scrollbarEl = _ref.scrollbarEl,
@@ -1036,7 +1040,7 @@ function () {
 
     _classCallCheck(this, ASScroll);
 
-    _E__WEBPACK_IMPORTED_MODULE_3__["default"].bindAll(this);
+    // E.bindAll(this)
     this.Events = new _Events__WEBPACK_IMPORTED_MODULE_1__["default"]({
       disableRaf: disableRaf,
       disableResize: disableResize
@@ -1048,7 +1052,7 @@ function () {
       scrollbarEl: scrollbarEl,
       scrollbarHandleEl: scrollbarHandleEl,
       scrollbarStyles: scrollbarStyles
-    });
+    }); // this.scrollPosVal = this.Scroll.scrollPos
   }
 
   _createClass(ASScroll, [{
@@ -1086,6 +1090,16 @@ function () {
     key: "scrollTo",
     value: function scrollTo(y) {
       this.Scroll.scrollTo(-y);
+    }
+  }, {
+    key: "scrollPos",
+    get: function get() {
+      return this.Scroll.scrollPos;
+    }
+  }, {
+    key: "smoothScrollPos",
+    get: function get() {
+      return this.Scroll.smoothScrollPos;
     }
   }]);
 
