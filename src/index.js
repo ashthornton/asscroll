@@ -12,6 +12,7 @@ export default class ASScroll {
         scrollbarEl = '.asscrollbar',
         scrollbarHandleEl = '.asscrollbar__handle',
         scrollbarStyles = true,
+        disableNativeScrollbar = true,
         disableRaf = false,
         disableResize = false
     } = {} ) {
@@ -29,7 +30,8 @@ export default class ASScroll {
             customScrollbar,
             scrollbarEl,
             scrollbarHandleEl,
-            scrollbarStyles
+            scrollbarStyles,
+            disableNativeScrollbar
         })
 
     }

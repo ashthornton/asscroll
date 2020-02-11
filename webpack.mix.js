@@ -18,6 +18,7 @@ mix
 // Set up the JS entry point
 .js('src/index.js', 'dist/asscroll.js')
 .js('demo/index.js', 'demo/build.js')
+.sass('demo/index.scss', 'demo/build.css')
 
 if (!mix.inProduction()) {
     // Include separate source maps in development builds.

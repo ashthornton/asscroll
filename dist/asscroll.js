@@ -86,6 +86,17 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./demo/index.scss":
+/*!*************************!*\
+  !*** ./demo/index.scss ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
 /***/ "./node_modules/@unseenco/e/dist/e.min.js":
 /*!************************************************!*\
   !*** ./node_modules/@unseenco/e/dist/e.min.js ***!
@@ -942,16 +953,19 @@ function () {
   }, {
     key: "addStyles",
     value: function addStyles() {
-      _Store__WEBPACK_IMPORTED_MODULE_0___default.a.html.style.scrollbarWidth = 'none';
-      _Store__WEBPACK_IMPORTED_MODULE_0___default.a.body.style['-ms-overflow-style'] = 'none';
-      var css = document.createElement('style');
-      css.type = 'text/css';
-      var styles = "html{scrollbar-width:none;}body{-ms-overflow-style:none;}body::-webkit-scrollbar{width:0;height:0;}";
+      if (!this.smoothScroll.options.disableNativeScrollbar && !this.smoothScroll.options.scrollbarStyles) return;
+      var styles = '';
+
+      if (this.smoothScroll.options.disableNativeScrollbar) {
+        styles += "html{scrollbar-width:none;}body{-ms-overflow-style:none;}body::-webkit-scrollbar{width:0;height:0;}";
+      }
 
       if (this.smoothScroll.options.scrollbarStyles) {
         styles += "".concat(this.smoothScroll.options.scrollbarEl, " {position: fixed;top: 0;right: 0;width: 20px;height: 100%;z-index: 900;}.is-touch ").concat(this.smoothScroll.options.scrollbarEl, " {display: none;}").concat(this.smoothScroll.options.scrollbarEl, " > div {padding: 6px 0;width: 10px;height: 0;margin: 0 auto;visibility: hidden;}").concat(this.smoothScroll.options.scrollbarEl, " > div > div {width: 100%;height: 100%;border-radius: 10px;opacity: 0.3;background-color: #000000;}").concat(this.smoothScroll.options.scrollbarEl, " > div > div:hover {opacity: 0.9;}").concat(this.smoothScroll.options.scrollbarEl, ":hover > div, ").concat(this.smoothScroll.options.scrollbarEl, ".show > div, ").concat(this.smoothScroll.options.scrollbarEl, ".active > div {visibility: visible;}").concat(this.smoothScroll.options.scrollbarEl, ".active > div > div {opacity: 0.9;}");
       }
 
+      var css = document.createElement('style');
+      css.type = 'text/css';
       if (css.styleSheet) css.styleSheet.cssText = styles;else css.appendChild(document.createTextNode(styles));
       document.getElementsByTagName("head")[0].appendChild(css);
     }
@@ -1033,6 +1047,8 @@ function () {
         scrollbarHandleEl = _ref$scrollbarHandleE === void 0 ? '.asscrollbar__handle' : _ref$scrollbarHandleE,
         _ref$scrollbarStyles = _ref.scrollbarStyles,
         scrollbarStyles = _ref$scrollbarStyles === void 0 ? true : _ref$scrollbarStyles,
+        _ref$disableNativeScr = _ref.disableNativeScrollbar,
+        disableNativeScrollbar = _ref$disableNativeScr === void 0 ? true : _ref$disableNativeScr,
         _ref$disableRaf = _ref.disableRaf,
         disableRaf = _ref$disableRaf === void 0 ? false : _ref$disableRaf,
         _ref$disableResize = _ref.disableResize,
@@ -1051,7 +1067,8 @@ function () {
       customScrollbar: customScrollbar,
       scrollbarEl: scrollbarEl,
       scrollbarHandleEl: scrollbarHandleEl,
-      scrollbarStyles: scrollbarStyles
+      scrollbarStyles: scrollbarStyles,
+      disableNativeScrollbar: disableNativeScrollbar
     });
   }
 
@@ -1113,13 +1130,14 @@ function () {
 /***/ }),
 
 /***/ 0:
-/*!****************************!*\
-  !*** multi ./src/index.js ***!
-  \****************************/
+/*!**********************************************!*\
+  !*** multi ./src/index.js ./demo/index.scss ***!
+  \**********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\laragon\www\asscroll\src\index.js */"./src/index.js");
+__webpack_require__(/*! C:\laragon\www\asscroll\src\index.js */"./src/index.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\asscroll\demo\index.scss */"./demo/index.scss");
 
 
 /***/ })
