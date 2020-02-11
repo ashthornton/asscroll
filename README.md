@@ -10,6 +10,24 @@ Advantages over pure virtual scroll:
 - doesn't stop working when hovering over an iframe
 - handles hardware that doesn't fire the 'wheel' event i.e. Windows trackpads in Edge + IE
 
+Table of contents
+=================
+<!--ts-->
+   * [Install](#install)
+   * [Basic Setup](#basic-setup)
+   * [Options](#options)
+   * [Methods](#methods)
+   * [Properties](#properties)
+   * [Events](#events)
+   * [Custom Scrollbar](#custom-scrollbar)
+   * [External RAF Usage](#usage-with-external-requestanimationframe)
+   * [External Resize Usage](#usage-with-external-window-resize)
+<!--te-->
+
+
+---
+
+
 ## Install
 `npm i -D @ashthornton/asscroll` or `yarn add @ashthornton/asscroll`
 
@@ -50,6 +68,8 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 
 `scrollbarStyles: true` - Include the default scrollbar CSS
 
+`disableNativeScrollbar: true` - Disables the browser's scrollbar
+
 `disableRaf: false` - Disable internal requestAnimationFrame loop in order to use an external one
 
 `disableResize: false` - Disable internal resize event on the window in order to use an external one
@@ -68,6 +88,12 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 `onResize()` - Trigger the internal resize event
 
 `scrollTo( y )` - Scroll to a y coordinate on the page
+
+## Properties
+
+`scrollPos` - returns the current target scroll position
+
+`smoothScrollPos` - returns the current smoothed scroll position 
 
 ## Events
 
@@ -88,6 +114,16 @@ Add this HTML anywhere outside of the main `.asscroll-container` element - just 
 You can change the classes that are used by changing the `scrollbarEl` and `scrollbarHandleEl` options.
 
 You can use your own styles by setting the `scrollbarStyles` option to false.
+
+---
+
+⚠ **Note**: These styles are added via JS so will only be applied after JS has loaded. This may cause the native scrollbar to show for a moment before the styles are added resulting in a jump of the page.
+
+You can include the styles necessary to hide the native scrollbar in your CSS by copy and pasting the contents of `/css/index.css` or simply by importing them into your CSS setup. For example:
+
+`@import '~@ashthornton/asscroll/css'`
+
+_This won't be an issue with the custom scrollbar styles as you can't smooth scroll until JS is ready anyway._
 
 ## Usage with external requestAnimationFrame
 
@@ -126,5 +162,5 @@ smoothScroll.enable()
 
 ## TODO
 
-- Handle tabbing focus
+- Handle tabbing focus scroll
 - Handle anchor link scroll
