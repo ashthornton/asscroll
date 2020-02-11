@@ -15,7 +15,7 @@ export default class Scroll {
         this.scrolling = false
         this.syncScroll = false
         this.ffmultiplier = 1
-        if( navigator.userAgent.indexOf('Firefox') > -1 ) {
+        if( navigator.platform === 'Win32' && navigator.userAgent.indexOf('Firefox') > -1 ) {
             this.ffmultiplier = 40
         }
 
