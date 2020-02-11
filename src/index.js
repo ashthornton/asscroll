@@ -16,7 +16,7 @@ export default class ASScroll {
         disableResize = false
     } = {} ) {
 
-        // E.bindAll(this)
+        E.bindAll(this, ['enable', 'disable', 'on', 'scrollTo', 'onRaf', 'onResize'])
 
         this.Events = new Events({
             disableRaf,
@@ -32,12 +32,10 @@ export default class ASScroll {
             scrollbarStyles
         })
 
-        // this.scrollPosVal = this.Scroll.scrollPos
-
     }
 
-    enable() {
-        this.Scroll.enable()
+    enable(...args) {
+        this.Scroll.enable(...args)
     }
 
     disable() {

@@ -57,13 +57,13 @@ export default class Scroll {
             this.scrollPos += event.deltaY * this.ffmultiplier * -1
             this.clamp()
             this.syncScroll = true
-            E.emit('ComboScroll', this.scrollPos)
+            E.emit(Store.events.COMBOSCROLL, this.scrollPos)
 
             return
 
         } else {
             this.scrollPos = -window.scrollY
-            E.emit('ComboScroll', this.scrollPos)
+            E.emit(Store.events.COMBOSCROLL, this.scrollPos)
         }  
 
     }
@@ -144,7 +144,7 @@ export default class Scroll {
         this.scrollPos = y
         this.clamp()
         this.syncScroll = true
-        E.emit('ComboScroll', this.scrollPos)
+        E.emit(Store.events.COMBOSCROLL, this.scrollPos)
     }
 
     onResize() {
