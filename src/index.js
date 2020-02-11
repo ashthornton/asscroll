@@ -7,7 +7,7 @@ export default class ASScroll {
 
     constructor( {
         element = '.asscroll-container',
-        ease = 0.1,
+        ease = 0.075,
         customScrollbar = false,
         scrollbarEl = '.asscrollbar',
         scrollbarHandleEl = '.asscrollbar__handle',
@@ -64,6 +64,10 @@ export default class ASScroll {
 
     scrollTo( y ) {
         this.Scroll.scrollTo(-y)
+    }
+
+    get scrollPos() {
+        return this.Scroll.scrollPos
     }
 
 }

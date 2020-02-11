@@ -116,6 +116,9 @@ export default class Scroll {
         if( Store.isTouch ) {
             Store.body.style.removeProperty('height')
             this.scrollTarget.style.removeProperty('transform')
+            if( reset ) {
+                window.scrollTo(0, 0)
+            }
         } else {
             if( reset ) {
                 this.scrollPos = this.smoothScrollPos = 0
