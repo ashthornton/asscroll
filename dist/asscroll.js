@@ -933,6 +933,7 @@ function () {
       if (!this.mouseDown) return;
       this.smoothScroll.scrollPos = (-e.clientY + this.handleHalfHeight) * this.scale;
       this.smoothScroll.clamp();
+      _E__WEBPACK_IMPORTED_MODULE_1__["default"].emit(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.COMBOSCROLL, this.smoothScroll.scrollPos);
     }
   }, {
     key: "onMouseDown",
