@@ -595,7 +595,7 @@ function () {
   _createClass(Events, [{
     key: "addEvents",
     value: function addEvents() {
-      var _this2 = this;
+      var _this = this;
 
       if (!this.options.disableRaf) {
         requestAnimationFrame(this.onRaf);
@@ -603,7 +603,7 @@ function () {
 
       if (!this.options.disableResize) {
         window.addEventListener('resize', lodash_debounce__WEBPACK_IMPORTED_MODULE_0___default()(function () {
-          return _this2.onResize;
+          return _this.onResize;
         }, 150));
       }
 
@@ -614,7 +614,8 @@ function () {
     key: "onRaf",
     value: function onRaf() {
       _E__WEBPACK_IMPORTED_MODULE_2__["default"].emit(_Store__WEBPACK_IMPORTED_MODULE_1___default.a.events.RAF);
-      if (!this.options.disableRaf) requestAnimationFrame(this.onRaf);
+      if (this.options.disableRaf) return;
+      requestAnimationFrame(this.onRaf);
     }
   }, {
     key: "onScroll",
@@ -636,18 +637,15 @@ function () {
     }
   }, {
     key: "onResize",
-    value: function onResize() {
-      _Store__WEBPACK_IMPORTED_MODULE_1___default.a.windowSize.w = window.innerWidth;
-      _Store__WEBPACK_IMPORTED_MODULE_1___default.a.windowSize.h = window.innerHeight;
+    value: function onResize(windowWidth, windowHeight) {
+      _Store__WEBPACK_IMPORTED_MODULE_1___default.a.windowSize.w = windowWidth || window.innerWidth;
+      _Store__WEBPACK_IMPORTED_MODULE_1___default.a.windowSize.h = windowHeight || window.innerHeight;
       _E__WEBPACK_IMPORTED_MODULE_2__["default"].emit(_Store__WEBPACK_IMPORTED_MODULE_1___default.a.events.RESIZE);
     }
   }, {
     key: "onFirstTouch",
     value: function onFirstTouch() {
-      var _this = this;
-
       window.addEventListener('touchstart', function onFirstTouch() {
-        document.body.classList.add('is-touch');
         _Store__WEBPACK_IMPORTED_MODULE_1___default.a.isTouch = true;
         _E__WEBPACK_IMPORTED_MODULE_2__["default"].emit(_Store__WEBPACK_IMPORTED_MODULE_1___default.a.events.TOUCHDETECTED); // we only need to know once that a human touched the screen, so we can stop listening now
 
@@ -1093,7 +1091,9 @@ function () {
   }, {
     key: "onResize",
     value: function onResize() {
-      this.Events.onResize();
+      var _this$Events;
+
+      (_this$Events = this.Events).onResize.apply(_this$Events, arguments);
     }
   }, {
     key: "on",
@@ -1104,6 +1104,17 @@ function () {
 
       if (eventName === 'raf') {
         _E__WEBPACK_IMPORTED_MODULE_3__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.EXTERNALRAF, cb);
+      }
+    }
+  }, {
+    key: "off",
+    value: function off(eventName, cb) {
+      if (eventName === 'scroll') {
+        _E__WEBPACK_IMPORTED_MODULE_3__["default"].off(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.COMBOSCROLL, cb);
+      }
+
+      if (eventName === 'raf') {
+        _E__WEBPACK_IMPORTED_MODULE_3__["default"].off(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.EXTERNALRAF, cb);
       }
     }
   }, {

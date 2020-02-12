@@ -42,7 +42,8 @@ export default class Events {
 
     onRaf() {
         E.emit(Store.events.RAF)
-        if( !this.options.disableRaf ) requestAnimationFrame(this.onRaf)
+        if( this.options.disableRaf ) return
+        requestAnimationFrame(this.onRaf)
     }
 
     onScroll() {
@@ -50,16 +51,14 @@ export default class Events {
         window.addEventListener('scroll', e => { E.emit(Store.events.SCROLL, { event: e }) }, { passive: true })
     }
 
-    onResize() {
-        Store.windowSize.w = window.innerWidth
-        Store.windowSize.h = window.innerHeight
+    onResize( windowWidth, windowHeight ) {
+        Store.windowSize.w = windowWidth || window.innerWidth
+        Store.windowSize.h = windowHeight || window.innerHeight
         E.emit(Store.events.RESIZE)
     }
 
     onFirstTouch() {
-        const _this = this
         window.addEventListener('touchstart', function onFirstTouch() {
-            document.body.classList.add('is-touch')
             Store.isTouch = true
             E.emit(Store.events.TOUCHDETECTED)
             // we only need to know once that a human touched the screen, so we can stop listening now

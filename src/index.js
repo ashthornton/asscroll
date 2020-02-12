@@ -48,8 +48,8 @@ export default class ASScroll {
         this.Events.onRaf()
     }
 
-    onResize() {
-        this.Events.onResize()
+    onResize(...args) {
+        this.Events.onResize(...args)
     }
 
     on( eventName, cb ) {
@@ -60,6 +60,18 @@ export default class ASScroll {
 
         if( eventName === 'raf' ) {
             E.on(Store.events.EXTERNALRAF, cb)
+        }
+
+    }
+
+    off( eventName, cb ) {
+
+        if( eventName === 'scroll' ) {
+            E.off(Store.events.COMBOSCROLL, cb)
+        }
+
+        if( eventName === 'raf' ) {
+            E.off(Store.events.EXTERNALRAF, cb)
         }
 
     }
