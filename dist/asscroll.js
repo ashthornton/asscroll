@@ -587,7 +587,7 @@ function () {
       WHEEL: 'Wheel',
       COMBOSCROLL: 'ComboScroll',
       RESIZE: 'Resize',
-      TOUCHDETECTED: 'TouchDetected'
+      TOUCHMOUSE: 'TouchMouse'
     };
     this.addEvents();
   }
@@ -608,7 +608,12 @@ function () {
       }
 
       this.onScroll();
-      this.onFirstTouch();
+
+      if ('ontouchstart' in document.documentElement) {
+        _Store__WEBPACK_IMPORTED_MODULE_1___default.a.isTouch = true; // touch has been detected in the browser, but let's check for a mouse input
+
+        this.detectMouse();
+      }
     }
   }, {
     key: "onRaf",
@@ -643,14 +648,17 @@ function () {
       _E__WEBPACK_IMPORTED_MODULE_2__["default"].emit(_Store__WEBPACK_IMPORTED_MODULE_1___default.a.events.RESIZE);
     }
   }, {
-    key: "onFirstTouch",
-    value: function onFirstTouch() {
-      window.addEventListener('touchstart', function onFirstTouch() {
-        _Store__WEBPACK_IMPORTED_MODULE_1___default.a.isTouch = true;
-        _E__WEBPACK_IMPORTED_MODULE_2__["default"].emit(_Store__WEBPACK_IMPORTED_MODULE_1___default.a.events.TOUCHDETECTED); // we only need to know once that a human touched the screen, so we can stop listening now
-
-        window.removeEventListener('touchstart', onFirstTouch, false);
-      }, false);
+    key: "detectMouse",
+    value: function detectMouse() {
+      window.addEventListener('mousemove', function detectMouse(e) {
+        if (Math.abs(e.movementX) > 0 || Math.abs(e.movementY) > 0) {
+          // mouse has moved on touch screen, not just a tap firing mousemove
+          _Store__WEBPACK_IMPORTED_MODULE_1___default.a.isTouch = false;
+          console.log('test');
+          _E__WEBPACK_IMPORTED_MODULE_2__["default"].emit(_Store__WEBPACK_IMPORTED_MODULE_1___default.a.events.TOUCHMOUSE);
+          window.removeEventListener('mousemove', detectMouse);
+        }
+      });
     }
   }]);
 
@@ -696,53 +704,58 @@ function () {
     _classCallCheck(this, Scroll);
 
     this.options = options;
+    this.scrollbarCheck = this.options.customScrollbar;
     _E__WEBPACK_IMPORTED_MODULE_1__["default"].bindAll(this, ['onScroll', 'onRAF', 'onResize']);
     this.scrollTarget = document.querySelector(this.options.element);
     this.scrollPos = this.smoothScrollPos = this.prevScrollPos = this.maxScroll = 0;
     this.scrolling = false;
     this.syncScroll = false;
-    this.ffmultiplier = 1;
+    this.ffmultiplier = navigator.platform === 'Win32' && navigator.userAgent.indexOf('Firefox') > -1 ? 40 : 1;
 
-    if (navigator.platform === 'Win32' && navigator.userAgent.indexOf('Firefox') > -1) {
-      this.ffmultiplier = 40;
-    }
+    if (!_Store__WEBPACK_IMPORTED_MODULE_0___default.a.isTouch) {
+      this.smoothSetup();
+    } else {
+      this.options.customScrollbar = false;
+    } // enable smooth scroll if mouse is detected
 
-    Object.assign(this.scrollTarget.style, {
-      position: 'fixed',
-      top: '0px',
-      left: '0px',
-      width: '100%'
-    });
 
-    if (this.options.customScrollbar) {
-      this.scrollbar = new _Scrollbar__WEBPACK_IMPORTED_MODULE_2__["default"](this);
-    }
+    _E__WEBPACK_IMPORTED_MODULE_1__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.TOUCHMOUSE, function () {
+      _this.options.customScrollbar = _this.scrollbarCheck;
 
-    _E__WEBPACK_IMPORTED_MODULE_1__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.RAF, this.onRAF);
-    _E__WEBPACK_IMPORTED_MODULE_1__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.RESIZE, this.onResize); // disable smooth scroll if touch is detected
+      _this.smoothSetup();
 
-    _E__WEBPACK_IMPORTED_MODULE_1__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.TOUCHDETECTED, function () {
-      document.body.style.removeProperty('height');
-
-      _this.scrollTarget.removeAttribute('style');
-
-      _E__WEBPACK_IMPORTED_MODULE_1__["default"].off(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.RESIZE, _this.onResize);
-      _E__WEBPACK_IMPORTED_MODULE_1__["default"].off(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.RAF, _this.onRAF);
-      _this.smoothScrollPos = 0;
+      _this.onResize();
     });
   }
 
   _createClass(Scroll, [{
+    key: "smoothSetup",
+    value: function smoothSetup() {
+      Object.assign(this.scrollTarget.style, {
+        position: 'fixed',
+        top: '0px',
+        left: '0px',
+        width: '100%'
+      });
+
+      if (this.options.customScrollbar) {
+        this.scrollbar = new _Scrollbar__WEBPACK_IMPORTED_MODULE_2__["default"](this);
+      }
+
+      _E__WEBPACK_IMPORTED_MODULE_1__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.RAF, this.onRAF);
+      _E__WEBPACK_IMPORTED_MODULE_1__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.RESIZE, this.onResize);
+    }
+  }, {
     key: "onScroll",
     value: function onScroll(_ref) {
       var event = _ref.event;
 
       if (!this.scrolling) {
-        this.options.customScrollbar && this.scrollbar.toggle();
+        this.options.customScrollbar && this.scrollbar.show();
         this.scrolling = true;
       }
 
-      if (event.type === 'wheel') {
+      if (!_Store__WEBPACK_IMPORTED_MODULE_0___default.a.isTouch && event.type === 'wheel') {
         event.preventDefault();
         this.scrollPos += event.deltaY * this.ffmultiplier * -1;
         this.clamp();
@@ -751,6 +764,11 @@ function () {
         return;
       } else {
         this.scrollPos = -window.scrollY;
+
+        if (_Store__WEBPACK_IMPORTED_MODULE_0___default.a.isTouch) {
+          this.smoothScrollPos = this.scrollPos;
+        }
+
         _E__WEBPACK_IMPORTED_MODULE_1__["default"].emit(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.COMBOSCROLL, this.scrollPos);
       }
     }
@@ -768,7 +786,7 @@ function () {
         }
 
         if (this.scrolling) {
-          this.options.customScrollbar && this.scrollbar.toggle();
+          this.options.customScrollbar && this.scrollbar.hide();
           this.scrolling = false;
         }
       } else {
@@ -783,20 +801,6 @@ function () {
       });
     }
   }, {
-    key: "disable",
-    value: function disable() {
-      if (!this.enabled) return;
-      this.enabled = false;
-
-      if (!_Store__WEBPACK_IMPORTED_MODULE_0___default.a.isTouch) {
-        _E__WEBPACK_IMPORTED_MODULE_1__["default"].off(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.WHEEL, this.onScroll);
-        _E__WEBPACK_IMPORTED_MODULE_1__["default"].off(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.SCROLL, this.onScroll);
-      }
-
-      this.prevScrollPos = this.scrollPos;
-      _Store__WEBPACK_IMPORTED_MODULE_0___default.a.body.style.height = '0px';
-    }
-  }, {
     key: "enable",
     value: function enable() {
       var restore = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
@@ -806,7 +810,6 @@ function () {
 
       if (_Store__WEBPACK_IMPORTED_MODULE_0___default.a.isTouch) {
         _Store__WEBPACK_IMPORTED_MODULE_0___default.a.body.style.removeProperty('height');
-        this.scrollTarget.style.removeProperty('transform');
 
         if (reset) {
           window.scrollTo(0, 0);
@@ -827,6 +830,16 @@ function () {
 
       _E__WEBPACK_IMPORTED_MODULE_1__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.WHEEL, this.onScroll);
       _E__WEBPACK_IMPORTED_MODULE_1__["default"].on(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.SCROLL, this.onScroll);
+    }
+  }, {
+    key: "disable",
+    value: function disable() {
+      if (!this.enabled) return;
+      this.enabled = false;
+      _E__WEBPACK_IMPORTED_MODULE_1__["default"].off(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.WHEEL, this.onScroll);
+      _E__WEBPACK_IMPORTED_MODULE_1__["default"].off(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.SCROLL, this.onScroll);
+      this.prevScrollPos = this.scrollPos;
+      _Store__WEBPACK_IMPORTED_MODULE_0___default.a.body.style.height = '0px';
     }
   }, {
     key: "clamp",
@@ -921,9 +934,14 @@ function () {
       this.handle.style.transform = "translate3d(0, ".concat(-this.smoothScroll.scrollPos / this.scale, "px, 0)");
     }
   }, {
-    key: "toggle",
-    value: function toggle() {
-      this.el.classList.toggle('show');
+    key: "show",
+    value: function show() {
+      this.el.classList.add('show');
+    }
+  }, {
+    key: "hide",
+    value: function hide() {
+      this.el.classList.remove('show');
     }
   }, {
     key: "onMouseMove",

@@ -12,6 +12,7 @@ export default class Scrollbar {
         this.handle = document.querySelector( this.smoothScroll.options.scrollbarHandleEl )
         this.addStyles()
         this.addEvents()
+
     }
 
     addEvents() {
@@ -35,8 +36,12 @@ export default class Scrollbar {
         this.handle.style.transform = `translate3d(0, ${ -this.smoothScroll.scrollPos / this.scale }px, 0)`
     }
 
-    toggle() {
-        this.el.classList.toggle('show')
+    show() {
+        this.el.classList.add('show')
+    }
+
+    hide() {
+        this.el.classList.remove('show')
     }
 
     onMouseMove(e) {

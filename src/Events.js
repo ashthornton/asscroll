@@ -18,7 +18,7 @@ export default class Events {
             WHEEL: 'Wheel',
             COMBOSCROLL: 'ComboScroll',
             RESIZE: 'Resize',
-            TOUCHDETECTED: 'TouchDetected',
+            TOUCHMOUSE: 'TouchMouse',
         }
         
         this.addEvents()
@@ -36,7 +36,12 @@ export default class Events {
         }
 
         this.onScroll()
-        this.onFirstTouch()
+
+        if( 'ontouchstart' in document.documentElement ) {
+            Store.isTouch = true
+            // touch has been detected in the browser, but let's check for a mouse input
+            this.detectMouse()
+        }
 
     }
 
@@ -57,13 +62,16 @@ export default class Events {
         E.emit(Store.events.RESIZE)
     }
 
-    onFirstTouch() {
-        window.addEventListener('touchstart', function onFirstTouch() {
-            Store.isTouch = true
-            E.emit(Store.events.TOUCHDETECTED)
-            // we only need to know once that a human touched the screen, so we can stop listening now
-            window.removeEventListener('touchstart', onFirstTouch, false)
-        }, false)
+    detectMouse() {
+        window.addEventListener('mousemove', function detectMouse(e) {
+            if( Math.abs(e.movementX) > 0 || Math.abs(e.movementY) > 0 ) {
+                // mouse has moved on touch screen, not just a tap firing mousemove
+                Store.isTouch = false
+                console.log('test');
+                E.emit(Store.events.TOUCHMOUSE)
+                window.removeEventListener('mousemove', detectMouse)
+            }
+        })
     }
 
 }
