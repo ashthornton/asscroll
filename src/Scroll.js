@@ -11,11 +11,14 @@ export default class Scroll {
 
         E.bindAll(this, ['onScroll', 'onRAF', 'onResize'])
 
-        this.scrollTarget = document.querySelector( this.options.element )
+        this.scrollContainer = document.querySelector( this.options.element )
+        this.scrollTarget = this.scrollContainer.querySelector('[data-scroll]') || this.scrollContainer.firstElementChild
         this.scrollPos = this.smoothScrollPos = this.prevScrollPos = this.maxScroll = 0
         this.scrolling = false
         this.syncScroll = false
         this.ffmultiplier = navigator.platform === 'Win32' && navigator.userAgent.indexOf('Firefox') > -1 ? 40 : 1
+        this.deltaY = 0
+        this.wheeling = false
 
         if( !Store.isTouch ) {
             this.smoothSetup()
@@ -34,12 +37,16 @@ export default class Scroll {
 
     smoothSetup() {
 
-        Object.assign(this.scrollTarget.style, {
+        Object.assign(this.scrollContainer.style, {
             position: 'fixed',
             top: '0px',
             left: '0px',
-            width: '100%'
+            width: '100%',
+            height: '100%',
+            contain: 'content'
         })
+
+        this.scrollTarget.style.willChange = 'transform'
 
         if( this.options.customScrollbar ) {
             this.scrollbar = new Scrollbar(this)
@@ -61,11 +68,10 @@ export default class Scroll {
 
             event.preventDefault()
 
-            this.scrollPos += event.deltaY * this.ffmultiplier * -1
-            this.clamp()
+            this.deltaY = event.deltaY
+            this.wheeling = true
             this.syncScroll = true
-            E.emit(Store.events.COMBOSCROLL, this.scrollPos)
-
+            
             return
 
         } else {
@@ -81,6 +87,13 @@ export default class Scroll {
     onRAF() {
 
         if( !this.enabled ) return
+
+        if( this.wheeling ) {
+            this.scrollPos += this.deltaY * this.ffmultiplier * -1
+            this.clamp()
+            this.wheeling = false
+            E.emit(Store.events.COMBOSCROLL, this.scrollPos)
+        }
 
         if( Math.abs( this.scrollPos - this.smoothScrollPos ) < 0.5 ) {
             this.smoothScrollPos = this.scrollPos

@@ -706,11 +706,14 @@ function () {
     this.options = options;
     this.scrollbarCheck = this.options.customScrollbar;
     _E__WEBPACK_IMPORTED_MODULE_1__["default"].bindAll(this, ['onScroll', 'onRAF', 'onResize']);
-    this.scrollTarget = document.querySelector(this.options.element);
+    this.scrollContainer = document.querySelector(this.options.element);
+    this.scrollTarget = this.scrollContainer.querySelector('[data-scroll]') || this.scrollContainer.firstElementChild;
     this.scrollPos = this.smoothScrollPos = this.prevScrollPos = this.maxScroll = 0;
     this.scrolling = false;
     this.syncScroll = false;
     this.ffmultiplier = navigator.platform === 'Win32' && navigator.userAgent.indexOf('Firefox') > -1 ? 40 : 1;
+    this.deltaY = 0;
+    this.wheeling = false;
 
     if (!_Store__WEBPACK_IMPORTED_MODULE_0___default.a.isTouch) {
       this.smoothSetup();
@@ -731,12 +734,15 @@ function () {
   _createClass(Scroll, [{
     key: "smoothSetup",
     value: function smoothSetup() {
-      Object.assign(this.scrollTarget.style, {
+      Object.assign(this.scrollContainer.style, {
         position: 'fixed',
         top: '0px',
         left: '0px',
-        width: '100%'
+        width: '100%',
+        height: '100%',
+        contain: 'content'
       });
+      this.scrollTarget.style.willChange = 'transform';
 
       if (this.options.customScrollbar) {
         this.scrollbar = new _Scrollbar__WEBPACK_IMPORTED_MODULE_2__["default"](this);
@@ -757,10 +763,9 @@ function () {
 
       if (!_Store__WEBPACK_IMPORTED_MODULE_0___default.a.isTouch && event.type === 'wheel') {
         event.preventDefault();
-        this.scrollPos += event.deltaY * this.ffmultiplier * -1;
-        this.clamp();
+        this.deltaY = event.deltaY;
+        this.wheeling = true;
         this.syncScroll = true;
-        _E__WEBPACK_IMPORTED_MODULE_1__["default"].emit(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.COMBOSCROLL, this.scrollPos);
         return;
       } else {
         this.scrollPos = -window.scrollY;
@@ -776,6 +781,13 @@ function () {
     key: "onRAF",
     value: function onRAF() {
       if (!this.enabled) return;
+
+      if (this.wheeling) {
+        this.scrollPos += this.deltaY * this.ffmultiplier * -1;
+        this.clamp();
+        this.wheeling = false;
+        _E__WEBPACK_IMPORTED_MODULE_1__["default"].emit(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.COMBOSCROLL, this.scrollPos);
+      }
 
       if (Math.abs(this.scrollPos - this.smoothScrollPos) < 0.5) {
         this.smoothScrollPos = this.scrollPos;
@@ -949,6 +961,7 @@ function () {
       if (!this.mouseDown) return;
       this.smoothScroll.scrollPos = (-e.clientY + this.handleHalfHeight) * this.scale;
       this.smoothScroll.clamp();
+      this.smoothScroll.syncScroll = true;
       _E__WEBPACK_IMPORTED_MODULE_1__["default"].emit(_Store__WEBPACK_IMPORTED_MODULE_0___default.a.events.COMBOSCROLL, this.smoothScroll.scrollPos);
     }
   }, {
