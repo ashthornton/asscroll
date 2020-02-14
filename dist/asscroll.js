@@ -817,8 +817,13 @@ function () {
     value: function enable() {
       var restore = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
       var reset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var newTarget = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
       if (this.enabled) return;
       this.enabled = true;
+
+      if (newTarget) {
+        this.scrollTarget = newTarget;
+      }
 
       if (_Store__WEBPACK_IMPORTED_MODULE_0___default.a.isTouch) {
         _Store__WEBPACK_IMPORTED_MODULE_0___default.a.body.style.removeProperty('height');

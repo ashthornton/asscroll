@@ -117,10 +117,14 @@ export default class Scroll {
 
     }
 
-    enable( restore = false, reset = false ) {
+    enable( restore = false, reset = false, newTarget = false ) {
 
         if( this.enabled ) return
         this.enabled = true
+
+        if( newTarget ) {
+            this.scrollTarget = newTarget
+        }
 
         if( Store.isTouch ) {
             Store.body.style.removeProperty('height')
