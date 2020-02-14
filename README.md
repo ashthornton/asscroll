@@ -76,10 +76,11 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 
 ## Methods
 
-`enable( restore = false, reset = false )` - Enable scroll
+`enable( restore = false, reset = false, newTarget = false )` - Enable scroll
 
 - `restore` - restores the previous scroll position when `disable()` was last called
 - `reset` - force resetting scroll position to 0
+- `newTarget` - set a new scroll target i.e. when loading in a new page via Highway
 
 `disable()` - Disable scroll
 
