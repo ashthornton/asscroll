@@ -67,7 +67,6 @@ export default class Events {
             if( Math.abs(e.movementX) > 0 || Math.abs(e.movementY) > 0 ) {
                 // mouse has moved on touch screen, not just a tap firing mousemove
                 Store.isTouch = false
-                console.log('test');
                 E.emit(Store.events.TOUCHMOUSE)
                 window.removeEventListener('mousemove', detectMouse)
             }
