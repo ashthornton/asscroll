@@ -1,1 +1,1 @@
-html{scrollbar-width:none;}body{-ms-overflow-style:none;}body::-webkit-scrollbar{width:0;height:0;}
+html{scrollbar-width:none!important;}body{-ms-overflow-style:none;}body::-webkit-scrollbar{width:0!important;height:0!important;}
