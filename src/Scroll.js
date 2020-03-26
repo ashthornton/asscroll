@@ -1,6 +1,7 @@
 import Store from './Store'
 import E from './E'
 import Scrollbar from './Scrollbar'
+import normalizeWheel from './normalizeWheel'
 
 export default class Scroll {
 
@@ -68,7 +69,7 @@ export default class Scroll {
 
             event.preventDefault()
 
-            this.deltaY = event.deltaY
+            this.deltaY = normalizeWheel(event).pixelY
             this.wheeling = true
             this.syncScroll = true
             
@@ -89,7 +90,7 @@ export default class Scroll {
         if( !this.enabled ) return
 
         if( this.wheeling ) {
-            this.scrollPos += this.deltaY * this.ffmultiplier * -1
+            this.scrollPos += this.deltaY * -1
             this.clamp()
             this.wheeling = false
             E.emit(Store.events.COMBOSCROLL, this.scrollPos)
