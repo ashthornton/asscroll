@@ -15,8 +15,8 @@ Demo
 **Coming Soon!**
 
 ### Sites using ASScroll
-- [Shape Studio](https://shapestudio.co.uk/)
-- [Wray and Nephew](https://straightfromyard.co.uk/)
+- <a href="https://shapestudio.co.uk/" target="_blank">Shape Studio</a>
+- <a href="https://straightfromyard.co.uk/" target="_blank">Wray and Nephew</a>
 
 Table of contents
 =================
