@@ -1,6 +1,6 @@
 {
   "name": "@ashthornton/asscroll",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "Ash's Smooth Scroll",
   "main": "src/index.js",
   "files": [
