@@ -10,6 +10,14 @@ Advantages over pure virtual scroll:
 - doesn't stop working when hovering over an iframe
 - handles hardware that doesn't fire the 'wheel' event i.e. Windows trackpads in Edge + IE
 
+Demo
+================
+**Coming Soon!**
+
+### Sites using ASScroll
+- <a href="https://shapestudio.co.uk/" target="_blank">Shape Studio</a>
+- <a href="https://straightfromyard.co.uk/" target="_blank">Wray and Nephew</a>
+
 Table of contents
 =================
 <!--ts-->
