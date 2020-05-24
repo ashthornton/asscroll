@@ -1,11 +1,24 @@
 {
-    "parser": "babel-eslint",
+  "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true,
+        "globalReturn": true,
+        "impliedStrict": true
+      }
+    },
     "env": {
-        "browser": true,
-        "commonjs": true,
-        "es6": true,
-        "jest": true,
-        "node": true
+      "es6": true,
+      "amd": true,
+      "node": true,
+      "mocha": true,
+      "worker": true,
+      "jquery": true,
+      "browser": true,
+      "commonjs": true,
+      "serviceworker": true,
+      "shared-node-browser": true
     },
     "globals": {
       "Store": true
