@@ -37,7 +37,7 @@ Table of contents
 
 
 ## Install
-`npm i -D @ashthornton/asscroll` or `yarn add @ashthornton/asscroll`
+`npm i @ashthornton/asscroll` or `yarn add @ashthornton/asscroll`
 
 ## Zero Config Setup
 
