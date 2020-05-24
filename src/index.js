@@ -7,6 +7,7 @@ export default class ASScroll {
 
     constructor( {
         element = '.asscroll-container',
+        innerElement = '[data-scroll]',
         ease = 0.075,
         customScrollbar = false,
         scrollbarEl = '.asscrollbar',
@@ -26,6 +27,7 @@ export default class ASScroll {
 
         this.Scroll = new Scroll({
             element,
+            innerElement,
             ease,
             customScrollbar,
             scrollbarEl,

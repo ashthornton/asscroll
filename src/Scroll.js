@@ -13,7 +13,7 @@ export default class Scroll {
         E.bindAll(this, ['onScroll', 'onRAF', 'onResize'])
 
         this.scrollContainer = document.querySelector( this.options.element )
-        this.scrollTarget = this.scrollContainer.querySelector('[data-scroll]') || this.scrollContainer.firstElementChild
+        this.scrollTarget = this.scrollContainer.querySelector( this.options.innerElement ) || this.scrollContainer.firstElementChild
         this.scrollPos = this.smoothScrollPos = this.prevScrollPos = this.maxScroll = 0
         this.scrolling = false
         this.syncScroll = false

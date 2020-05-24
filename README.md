@@ -39,14 +39,14 @@ Table of contents
 ## Install
 `npm i -D @ashthornton/asscroll` or `yarn add @ashthornton/asscroll`
 
-## Basic Setup
+## No-config Setup
 
-1. Add a class of `.asscroll-container` to the parent element of the content to be smooth scrolled
+1. Add a class of `.asscroll-container` to the parent element of the content to be smooth scrolled. By default, the first child found within will be scrolled. These can both be changed in the options.
 
 ```HTML
 <body>
     <div class="asscroll-container">
-        Content
+        <div><!-- The Y translation will be applied to this element --></div>
     </div>
 </body>
 ```
@@ -65,6 +65,8 @@ smoothScroll.enable()
 Passed as an object through to the ASScroll constructor. Defaults shown next to option names.
 
 `element: .asscroll-container` - The parent element of the content to be smooth scrolled
+
+`innerElement: [data-scroll]` - The element that the `transform` translation will be applied to inside the parent element
 
 `ease: 0.1` - Smooth scroll easing
 
