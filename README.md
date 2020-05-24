@@ -22,7 +22,7 @@ Table of contents
 =================
 <!--ts-->
    * [Install](#install)
-   * [Basic Setup](#basic-setup)
+   * [Zero Config Setup](#zero-config-setup)
    * [Options](#options)
    * [Methods](#methods)
    * [Properties](#properties)
@@ -39,7 +39,7 @@ Table of contents
 ## Install
 `npm i -D @ashthornton/asscroll` or `yarn add @ashthornton/asscroll`
 
-## No-config Setup
+## Zero Config Setup
 
 1. Add a class of `.asscroll-container` to the parent element of the content to be smooth scrolled. By default, the first child found within will be scrolled. These can both be changed in the options.
 
