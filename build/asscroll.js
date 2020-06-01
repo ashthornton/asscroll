@@ -3740,10 +3740,11 @@ class Scroll_Scroll {
   }
 
   scrollTo(y) {
+    let emitEvent = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
     this.scrollPos = y;
     this.clamp();
     this.syncScroll = true;
-    src_E.emit(Store_default.a.events.COMBOSCROLL, this.scrollPos);
+    if (emitEvent) src_E.emit(Store_default.a.events.COMBOSCROLL, this.scrollPos);
   }
 
   onResize() {
@@ -3840,7 +3841,8 @@ class src_ASScroll {
   }
 
   scrollTo(y) {
-    this.Scroll.scrollTo(-y);
+    let emitEvent = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+    this.Scroll.scrollTo(-y, emitEvent);
   }
 
   get scrollPos() {
