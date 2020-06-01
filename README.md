@@ -100,7 +100,7 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 
 - Pass window size manually to this function if you're already getting it in your own resize handler.
 
-`scrollTo( y )` - Scroll to a y coordinate on the page
+`scrollTo( y, emitEvent = true )` - Scroll to a y coordinate on the page. Choose whether to emit the `'scroll'` event.
 
 `on( event, callback )` - Add a callback to an event
 

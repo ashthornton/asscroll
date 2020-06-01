@@ -78,8 +78,8 @@ export default class ASScroll {
 
     }
 
-    scrollTo( y ) {
-        this.Scroll.scrollTo(-y)
+    scrollTo( y, emitEvent = true ) {
+        this.Scroll.scrollTo(-y, emitEvent)
     }
 
     get scrollPos() {

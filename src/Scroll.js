@@ -167,11 +167,11 @@ export default class Scroll {
         this.scrollPos = Math.max(Math.min(this.scrollPos, 0), this.maxScroll)
     }
 
-    scrollTo( y ) {
+    scrollTo( y, emitEvent = true ) {
         this.scrollPos = y
         this.clamp()
         this.syncScroll = true
-        E.emit(Store.events.COMBOSCROLL, this.scrollPos)
+        if (emitEvent) E.emit(Store.events.COMBOSCROLL, this.scrollPos)
     }
 
     onResize() {
