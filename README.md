@@ -68,7 +68,9 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 
 `innerElement: [data-scroll]` - The element that the `transform` translation will be applied to inside the parent element
 
-`ease: 0.1` - Smooth scroll easing
+`ease: 0.075` - Smooth scroll easing
+
+`touchEase: 1` - Smooth scroll easing on touch devices. A value of `1` will match the native scroll intertia
 
 `customScrollbar: false` - Enable the use of a custom scrollbar
 
@@ -79,6 +81,8 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 `scrollbarStyles: true` - Include the default scrollbar CSS
 
 `disableNativeScrollbar: true` - Disables the browser's scrollbar
+
+`disableOnTouch: false` - Set this to `true` to disable on touch devices and use native scroll
 
 `disableRaf: false` - Disable internal requestAnimationFrame loop in order to use an external one
 

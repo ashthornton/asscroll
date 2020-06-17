@@ -9,11 +9,13 @@ export default class ASScroll {
         element = '.asscroll-container',
         innerElement = '[data-scroll]',
         ease = 0.075,
+        touchEase = 1,
         customScrollbar = false,
         scrollbarEl = '.asscrollbar',
         scrollbarHandleEl = '.asscrollbar__handle',
         scrollbarStyles = true,
         disableNativeScrollbar = true,
+        disableOnTouch = false,
         disableRaf = false,
         disableResize = false
     } = {} ) {
@@ -29,11 +31,13 @@ export default class ASScroll {
             element,
             innerElement,
             ease,
+            touchEase,
             customScrollbar,
             scrollbarEl,
             scrollbarHandleEl,
             scrollbarStyles,
-            disableNativeScrollbar
+            disableNativeScrollbar,
+            disableOnTouch
         })
 
     }

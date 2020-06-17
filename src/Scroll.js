@@ -17,11 +17,12 @@ export default class Scroll {
         this.scrollPos = this.smoothScrollPos = this.prevScrollPos = this.maxScroll = 0
         this.scrolling = false
         this.syncScroll = false
-        this.ffmultiplier = navigator.platform === 'Win32' && navigator.userAgent.indexOf('Firefox') > -1 ? 40 : 1
         this.deltaY = 0
         this.wheeling = false
+        this.ease = Store.isTouch ? this.options.touchEase : this.options.ease
 
-        if( !Store.isTouch ) {
+        if( !Store.isTouch || !this.options.disableOnTouch ) {
+            if( !this.options.disableOnTouch ) this.options.customScrollbar = false
             this.smoothSetup()
         } else {
             this.options.customScrollbar = false
@@ -29,6 +30,7 @@ export default class Scroll {
 
         // enable smooth scroll if mouse is detected
         E.on(Store.events.TOUCHMOUSE, () => {
+            if (!this.options.disableOnTouch) return
             this.options.customScrollbar = this.scrollbarCheck
             this.smoothSetup()
             this.onResize()
@@ -77,7 +79,7 @@ export default class Scroll {
 
         } else {
             this.scrollPos = -window.scrollY
-            if( Store.isTouch ) {
+            if( Store.isTouch && this.options.disableOnTouch ) {
                 this.smoothScrollPos = this.scrollPos
             }
             E.emit(Store.events.COMBOSCROLL, this.scrollPos)
@@ -107,7 +109,7 @@ export default class Scroll {
                 this.scrolling = false
             }
         } else {
-            this.smoothScrollPos += ( this.scrollPos - this.smoothScrollPos ) * this.options.ease
+            this.smoothScrollPos += ( this.scrollPos - this.smoothScrollPos ) * this.ease
         }
 
         this.scrollTarget.style.transform = `translate3d(0px, ${ this.smoothScrollPos }px, 0px)`
@@ -127,7 +129,7 @@ export default class Scroll {
             this.scrollTarget = newTarget
         }
 
-        if( Store.isTouch ) {
+        if( Store.isTouch && this.options.disableOnTouch ) {
             Store.body.style.removeProperty('height')
             if( reset ) {
                 window.scrollTo(0, 0)
