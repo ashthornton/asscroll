@@ -3517,7 +3517,7 @@ class Scroll_Scroll {
     this.ease = Store_default.a.isTouch ? this.options.touchEase : this.options.ease;
 
     if (!Store_default.a.isTouch || !this.options.disableOnTouch) {
-      if (!this.options.disableOnTouch) this.options.customScrollbar = false;
+      if (Store_default.a.isTouch) this.options.customScrollbar = false;
       this.smoothSetup();
     } else {
       this.options.customScrollbar = false;

@@ -22,7 +22,7 @@ export default class Scroll {
         this.ease = Store.isTouch ? this.options.touchEase : this.options.ease
 
         if( !Store.isTouch || !this.options.disableOnTouch ) {
-            if( !this.options.disableOnTouch ) this.options.customScrollbar = false
+            if( Store.isTouch ) this.options.customScrollbar = false
             this.smoothSetup()
         } else {
             this.options.customScrollbar = false
