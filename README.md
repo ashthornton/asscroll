@@ -9,6 +9,7 @@ Advantages over pure virtual scroll:
 - no special cases to cater for when detecting key detection (i.e. pressing space in a form input)
 - doesn't stop working when hovering over an iframe
 - handles hardware that doesn't fire the 'wheel' event i.e. Windows trackpads in Edge + IE
+- no lag between DOM and WebGL elements on mobile, whilst retaining native intertia scroll
 
 Demo
 ================
@@ -90,11 +91,12 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 
 ## Methods
 
-`enable( restore = false, reset = false, newTarget = false )` - Enable scroll
+`enable( restore = false, reset = false, newTarget = false, horizontalScroll = false )` - Enable scroll
 
 - `restore` - restores the previous scroll position when `disable()` was last called
 - `reset` - force resetting scroll position to 0
-- `newTarget` - pass in a selected DOM node to set a new scroll target i.e. when loading in a new page via Highway. 
+- `newTarget` - pass in a selected DOM node to set a new scroll target i.e. when loading in a new page via Highway.
+- `horizontalScroll` - set to true if you want the content to scroll horizontally
 
 `disable()` - Disable scroll
 
@@ -175,7 +177,7 @@ const smoothScroll = new ASScroll({
 
 window.addEventListener('resize', () => {
     // trigger other resize logic
-    smoothScroll.onResize()
+    smoothScroll.onResize(window.innerWidth, window.innerHeight)
 })
 
 smoothScroll.enable()

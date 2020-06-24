@@ -112,7 +112,9 @@ export default class Scroll {
             this.smoothScrollPos += ( this.scrollPos - this.smoothScrollPos ) * this.ease
         }
 
-        this.scrollTarget.style.transform = `translate3d(0px, ${ this.smoothScrollPos }px, 0px)`
+        const x = this.horizontalScroll ? this.smoothScrollPos : 0
+        const y = this.horizontalScroll ? 0 : this.smoothScrollPos
+        this.scrollTarget.style.transform = `translate3d(${ x }px, ${ y }px, 0px)`
 
         this.options.customScrollbar && this.scrollbar.transform()
 
@@ -120,10 +122,12 @@ export default class Scroll {
 
     }
 
-    enable( restore = false, reset = false, newTarget = false ) {
+    enable( restore = false, reset = false, newTarget = false, horizontalScroll = false ) {
 
         if( this.enabled ) return
         this.enabled = true
+
+        this.horizontalScroll = horizontalScroll
 
         if( newTarget ) {
             this.scrollTarget = newTarget
@@ -177,9 +181,10 @@ export default class Scroll {
     }
 
     onResize() {
-        this.pageHeight = this.scrollTarget.clientHeight
-        this.maxScroll = this.pageHeight > Store.windowSize.h ? -(this.pageHeight - Store.windowSize.h) : 0
-        Store.body.style.height = this.pageHeight + 'px'
+        this.scrollLength = this.horizontalScroll ? this.scrollTarget.clientWidth : this.scrollTarget.clientHeight
+        const windowSize = this.horizontalScroll ? Store.windowSize.w : Store.windowSize.h
+        this.maxScroll = this.scrollLength > windowSize ? -(this.scrollLength - windowSize) : 0
+        Store.body.style.height = this.scrollLength + 'px'
         this.options.customScrollbar && this.scrollbar.onResize()
     }
 
