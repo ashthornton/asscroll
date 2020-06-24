@@ -1,6 +1,8 @@
 <p align="center"><img src="https://raw.githubusercontent.com/ashthornton-gc/asscroll/master/asscroll.png"></p>
 
-<p align="center">ASScroll is a hybrid smooth scroll setup that combines the performance gains of virtual scroll with the reliability of native scroll.</p>
+<h3 align="center"><strong>ASScroll is a hybrid smooth scroll setup that combines the<br>performance gains of virtual scroll with the reliability of native scroll.</strong></h3>
+
+<p align="center">This setup aims to be a lightweight solution that provides a consistent smooth scrolling experience across all platforms, devices and hardware. It doesn't include any form of scroll-based animation functionality such as parallaxing, and never will. That functionality becomes very opinionated and is better left up to you to decide how to implement.</p>
 
 ---
 
@@ -9,7 +11,7 @@ Advantages over pure virtual scroll:
 - no special cases to cater for when detecting key detection (i.e. pressing space in a form input)
 - doesn't stop working when hovering over an iframe
 - handles hardware that doesn't fire the 'wheel' event i.e. Windows trackpads in Edge + IE
-- no lag between DOM and WebGL elements on mobile, whilst retaining native intertia scroll
+- no lag between DOM and WebGL elements on mobile, whilst retaining native interia scroll
 
 Demo
 ================
@@ -71,7 +73,7 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 
 `ease: 0.075` - Smooth scroll easing
 
-`touchEase: 1` - Smooth scroll easing on touch devices. A value of `1` will match the native scroll intertia
+`touchEase: 1` - Smooth scroll easing on touch devices. A value of `1` will match the native scroll inertia
 
 `customScrollbar: false` - Enable the use of a custom scrollbar
 
