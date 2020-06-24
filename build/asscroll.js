@@ -3683,7 +3683,7 @@ class Scroll_Scroll {
       const marginOffset = parseFloat(this.horizontalScroll ? compStyle.marginRight : compStyle.marginBottom);
       const bcr = lastTarget.getBoundingClientRect();
       const endPosition = this.horizontalScroll ? bcr.right : bcr.bottom;
-      this.scrollLength = endPosition + marginOffset + this.smoothScrollPos;
+      this.scrollLength = endPosition + marginOffset - this.smoothScrollPos;
     } else {
       const bcr = this.scrollTargets[0].getBoundingClientRect();
       this.scrollLength = this.horizontalScroll ? bcr.width : bcr.height;
