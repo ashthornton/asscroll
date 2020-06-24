@@ -3509,7 +3509,8 @@ class Scroll_Scroll {
     this.scrollbarCheck = this.options.customScrollbar;
     src_E.bindAll(this, ['onScroll', 'onRAF', 'onResize']);
     this.scrollContainer = document.querySelector(this.options.element);
-    this.scrollTarget = this.scrollContainer.querySelector(this.options.innerElement) || this.scrollContainer.firstElementChild;
+    this.scrollTargets = this.scrollContainer.querySelectorAll(this.options.innerElement) || [this.scrollContainer.firstElementChild];
+    this.scrollTargetsLength = this.scrollTargets.length;
     this.scrollPos = this.smoothScrollPos = this.prevScrollPos = this.maxScroll = 0;
     this.scrolling = false;
     this.syncScroll = false;
@@ -3542,7 +3543,6 @@ class Scroll_Scroll {
       height: '100%',
       contain: 'content'
     });
-    this.scrollTarget.style.willChange = 'transform';
 
     if (this.options.customScrollbar) {
       this.scrollbar = new Scrollbar_Scrollbar(this);
@@ -3582,10 +3582,11 @@ class Scroll_Scroll {
 
     if (this.wheeling) {
       this.scrollPos += this.deltaY * -1;
-      this.clamp();
       this.wheeling = false;
       src_E.emit(Store_default.a.events.COMBOSCROLL, this.scrollPos);
     }
+
+    this.clamp();
 
     if (Math.abs(this.scrollPos - this.smoothScrollPos) < 0.5) {
       this.smoothScrollPos = this.scrollPos;
@@ -3605,7 +3606,7 @@ class Scroll_Scroll {
 
     const x = this.horizontalScroll ? this.smoothScrollPos : 0;
     const y = this.horizontalScroll ? 0 : this.smoothScrollPos;
-    this.scrollTarget.style.transform = "translate3d(".concat(x, "px, ").concat(y, "px, 0px)");
+    this.applyTransform(x, y);
     this.options.customScrollbar && this.scrollbar.transform();
     src_E.emit(Store_default.a.events.EXTERNALRAF, {
       scrollPos: this.scrollPos,
@@ -3613,18 +3614,22 @@ class Scroll_Scroll {
     });
   }
 
+  applyTransform(x, y) {
+    for (let i = 0; i < this.scrollTargetsLength; i++) {
+      this.scrollTargets[i].style.transform = "translate3d(".concat(x, "px, ").concat(y, "px, 0px)");
+    }
+  }
+
   enable() {
     let restore = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
     let reset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-    let newTarget = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+    let newTargets = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
     let horizontalScroll = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
     if (this.enabled) return;
     this.enabled = true;
     this.horizontalScroll = horizontalScroll;
-
-    if (newTarget) {
-      this.scrollTarget = newTarget;
-    }
+    this.scrollTargets = newTargets.length ? newTargets : [newTargets];
+    this.scrollTargetsLength = this.scrollTargets.length;
 
     if (Store_default.a.isTouch && this.options.disableOnTouch) {
       Store_default.a.body.style.removeProperty('height');
@@ -3635,7 +3640,7 @@ class Scroll_Scroll {
     } else {
       if (reset) {
         this.scrollPos = this.smoothScrollPos = 0;
-        this.scrollTarget.style.transform = "translate3d(0px, 0px, 0px)";
+        this.applyTransform(0, 0);
       }
 
       this.onResize();
@@ -3672,7 +3677,18 @@ class Scroll_Scroll {
   }
 
   onResize() {
-    this.scrollLength = this.horizontalScroll ? this.scrollTarget.clientWidth : this.scrollTarget.clientHeight;
+    if (this.scrollTargetsLength > 1) {
+      const lastTarget = this.scrollTargets[this.scrollTargetsLength - 1];
+      const compStyle = window.getComputedStyle(lastTarget);
+      const marginOffset = parseFloat(this.horizontalScroll ? compStyle.marginRight : compStyle.marginBottom);
+      const bcr = lastTarget.getBoundingClientRect();
+      const endPosition = this.horizontalScroll ? bcr.right : bcr.bottom;
+      this.scrollLength = endPosition + marginOffset + this.smoothScrollPos;
+    } else {
+      const bcr = this.scrollTargets[0].getBoundingClientRect();
+      this.scrollLength = this.horizontalScroll ? bcr.width : bcr.height;
+    }
+
     const windowSize = this.horizontalScroll ? Store_default.a.windowSize.w : Store_default.a.windowSize.h;
     this.maxScroll = this.scrollLength > windowSize ? -(this.scrollLength - windowSize) : 0;
     Store_default.a.body.style.height = this.scrollLength + 'px';

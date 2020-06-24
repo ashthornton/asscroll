@@ -13,7 +13,8 @@ export default class Scroll {
         E.bindAll(this, ['onScroll', 'onRAF', 'onResize'])
 
         this.scrollContainer = document.querySelector( this.options.element )
-        this.scrollTarget = this.scrollContainer.querySelector( this.options.innerElement ) || this.scrollContainer.firstElementChild
+        this.scrollTargets = this.scrollContainer.querySelectorAll( this.options.innerElement ) || [this.scrollContainer.firstElementChild]
+        this.scrollTargetsLength = this.scrollTargets.length
         this.scrollPos = this.smoothScrollPos = this.prevScrollPos = this.maxScroll = 0
         this.scrolling = false
         this.syncScroll = false
@@ -48,8 +49,6 @@ export default class Scroll {
             height: '100%',
             contain: 'content'
         })
-
-        this.scrollTarget.style.willChange = 'transform'
 
         if( this.options.customScrollbar ) {
             this.scrollbar = new Scrollbar(this)
@@ -93,10 +92,11 @@ export default class Scroll {
 
         if( this.wheeling ) {
             this.scrollPos += this.deltaY * -1
-            this.clamp()
             this.wheeling = false
             E.emit(Store.events.COMBOSCROLL, this.scrollPos)
         }
+        
+        this.clamp()
 
         if( Math.abs( this.scrollPos - this.smoothScrollPos ) < 0.5 ) {
             this.smoothScrollPos = this.scrollPos
@@ -114,7 +114,7 @@ export default class Scroll {
 
         const x = this.horizontalScroll ? this.smoothScrollPos : 0
         const y = this.horizontalScroll ? 0 : this.smoothScrollPos
-        this.scrollTarget.style.transform = `translate3d(${ x }px, ${ y }px, 0px)`
+        this.applyTransform(x, y)
 
         this.options.customScrollbar && this.scrollbar.transform()
 
@@ -122,16 +122,21 @@ export default class Scroll {
 
     }
 
-    enable( restore = false, reset = false, newTarget = false, horizontalScroll = false ) {
+    applyTransform(x, y) {
+        for (let i = 0; i < this.scrollTargetsLength; i++) {
+            this.scrollTargets[i].style.transform = `translate3d(${ x }px, ${ y }px, 0px)`
+        }
+    }
+
+    enable( restore = false, reset = false, newTargets = false, horizontalScroll = false ) {
 
         if( this.enabled ) return
         this.enabled = true
 
         this.horizontalScroll = horizontalScroll
 
-        if( newTarget ) {
-            this.scrollTarget = newTarget
-        }
+        this.scrollTargets = newTargets.length ? newTargets : [newTargets]
+        this.scrollTargetsLength = this.scrollTargets.length
 
         if( Store.isTouch && this.options.disableOnTouch ) {
             Store.body.style.removeProperty('height')
@@ -141,7 +146,7 @@ export default class Scroll {
         } else {
             if( reset ) {
                 this.scrollPos = this.smoothScrollPos = 0
-                this.scrollTarget.style.transform = `translate3d(0px, 0px, 0px)`
+                this.applyTransform(0, 0)
             }
             this.onResize()
         }
@@ -181,7 +186,18 @@ export default class Scroll {
     }
 
     onResize() {
-        this.scrollLength = this.horizontalScroll ? this.scrollTarget.clientWidth : this.scrollTarget.clientHeight
+        if (this.scrollTargetsLength > 1) {
+            const lastTarget = this.scrollTargets[this.scrollTargetsLength - 1]
+            const compStyle = window.getComputedStyle(lastTarget)
+            const marginOffset = parseFloat(this.horizontalScroll ? compStyle.marginRight : compStyle.marginBottom)
+            const bcr = lastTarget.getBoundingClientRect()
+            const endPosition = this.horizontalScroll ? bcr.right : bcr.bottom
+            this.scrollLength = endPosition + marginOffset + this.smoothScrollPos
+        } else {
+            const bcr = this.scrollTargets[0].getBoundingClientRect()
+            this.scrollLength = this.horizontalScroll ? bcr.width : bcr.height
+        }
+        
         const windowSize = this.horizontalScroll ? Store.windowSize.w : Store.windowSize.h
         this.maxScroll = this.scrollLength > windowSize ? -(this.scrollLength - windowSize) : 0
         Store.body.style.height = this.scrollLength + 'px'
