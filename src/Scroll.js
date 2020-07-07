@@ -21,6 +21,7 @@ export default class Scroll {
         this.syncScroll = false
         this.deltaY = 0
         this.wheeling = false
+        this.wheel = true
         this.ease = Store.isTouch ? this.options.touchEase : this.options.ease
 
         if( !Store.isTouch || !this.options.disableOnTouch ) {
@@ -64,6 +65,7 @@ export default class Scroll {
 
         if( !this.scrolling ) {
             this.options.customScrollbar && this.scrollbar.show()
+            this.toggleIframes()
             this.scrolling = true
         }
 
@@ -74,11 +76,15 @@ export default class Scroll {
             this.deltaY = normalizeWheel(event).pixelY
             this.wheeling = true
             this.syncScroll = true
+            this.wheel = true
             
             return
 
         } else {
+
             this.scrollPos = -window.scrollY
+            
+            this.wheel = false
             if( Store.isTouch && this.options.disableOnTouch ) {
                 this.smoothScrollPos = this.scrollPos
             }
@@ -107,6 +113,7 @@ export default class Scroll {
             }
             if( this.scrolling ) {
                 this.options.customScrollbar && this.scrollbar.hide()
+                this.toggleIframes(true)
                 this.scrolling = false
             }
         } else {
@@ -140,6 +147,8 @@ export default class Scroll {
             this.scrollTargets = newTargets.length ? newTargets : [newTargets]
             this.scrollTargetsLength = this.scrollTargets.length
         }
+        
+        this.iframes = this.scrollContainer.querySelectorAll('iframe')
 
         if( Store.isTouch && this.options.disableOnTouch ) {
             Store.body.style.removeProperty('height')
@@ -205,6 +214,12 @@ export default class Scroll {
         this.maxScroll = this.scrollLength > windowSize ? -(this.scrollLength - windowSize) : 0
         Store.body.style.height = this.scrollLength + 'px'
         this.options.customScrollbar && this.scrollbar.onResize()
+    }
+
+    toggleIframes(enable) {
+        for (let i = 0; i < this.iframes.length; i++) {
+            this.iframes[i].style.pointerEvents = enable ? 'auto' : 'none'
+        }
     }
 
 }
