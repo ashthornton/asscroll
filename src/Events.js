@@ -32,7 +32,7 @@ export default class Events {
         }
 
         if( !this.options.disableResize ) {
-            window.addEventListener('resize', debounce( () => this.onResize, 150 ))
+            window.addEventListener('resize', debounce( () => { this.onResize() }, 150 ))
         }
 
         this.onScroll()
