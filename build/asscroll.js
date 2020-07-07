@@ -2777,7 +2777,9 @@ class Events_Events {
     }
 
     if (!this.options.disableResize) {
-      window.addEventListener('resize', lodash_debounce_default()(() => this.onResize, 150));
+      window.addEventListener('resize', lodash_debounce_default()(() => {
+        this.onResize();
+      }, 150));
     }
 
     this.onScroll();
