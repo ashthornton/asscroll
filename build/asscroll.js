@@ -3509,7 +3509,8 @@ class Scroll_Scroll {
     this.scrollbarCheck = this.options.customScrollbar;
     src_E.bindAll(this, ['onScroll', 'onRAF', 'onResize']);
     this.scrollContainer = document.querySelector(this.options.element);
-    this.scrollTargets = this.scrollContainer.querySelectorAll(this.options.innerElement) || [this.scrollContainer.firstElementChild];
+    const possibleScrollTargets = this.scrollContainer.querySelectorAll(this.options.innerElement);
+    this.scrollTargets = possibleScrollTargets.length ? possibleScrollTargets : [this.scrollContainer.firstElementChild];
     this.scrollTargetsLength = this.scrollTargets.length;
     this.scrollPos = this.smoothScrollPos = this.prevScrollPos = this.maxScroll = 0;
     this.scrolling = false;
@@ -3628,8 +3629,11 @@ class Scroll_Scroll {
     if (this.enabled) return;
     this.enabled = true;
     this.horizontalScroll = horizontalScroll;
-    this.scrollTargets = newTargets.length ? newTargets : [newTargets];
-    this.scrollTargetsLength = this.scrollTargets.length;
+
+    if (newTargets) {
+      this.scrollTargets = newTargets.length ? newTargets : [newTargets];
+      this.scrollTargetsLength = this.scrollTargets.length;
+    }
 
     if (Store_default.a.isTouch && this.options.disableOnTouch) {
       Store_default.a.body.style.removeProperty('height');
