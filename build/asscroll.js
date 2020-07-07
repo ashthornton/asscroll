@@ -3519,6 +3519,7 @@ class Scroll_Scroll {
     this.syncScroll = false;
     this.deltaY = 0;
     this.wheeling = false;
+    this.wheel = true;
     this.ease = Store_default.a.isTouch ? this.options.touchEase : this.options.ease;
 
     if (!Store_default.a.isTouch || !this.options.disableOnTouch) {
@@ -3560,6 +3561,7 @@ class Scroll_Scroll {
 
     if (!this.scrolling) {
       this.options.customScrollbar && this.scrollbar.show();
+      this.toggleIframes();
       this.scrolling = true;
     }
 
@@ -3568,9 +3570,11 @@ class Scroll_Scroll {
       this.deltaY = src_normalizeWheel(event).pixelY;
       this.wheeling = true;
       this.syncScroll = true;
+      this.wheel = true;
       return;
     } else {
       this.scrollPos = -window.scrollY;
+      this.wheel = false;
 
       if (Store_default.a.isTouch && this.options.disableOnTouch) {
         this.smoothScrollPos = this.scrollPos;
@@ -3601,6 +3605,7 @@ class Scroll_Scroll {
 
       if (this.scrolling) {
         this.options.customScrollbar && this.scrollbar.hide();
+        this.toggleIframes(true);
         this.scrolling = false;
       }
     } else {
@@ -3636,6 +3641,8 @@ class Scroll_Scroll {
       this.scrollTargets = newTargets.length ? newTargets : [newTargets];
       this.scrollTargetsLength = this.scrollTargets.length;
     }
+
+    this.iframes = this.scrollContainer.querySelectorAll('iframe');
 
     if (Store_default.a.isTouch && this.options.disableOnTouch) {
       Store_default.a.body.style.removeProperty('height');
@@ -3699,6 +3706,12 @@ class Scroll_Scroll {
     this.maxScroll = this.scrollLength > windowSize ? -(this.scrollLength - windowSize) : 0;
     Store_default.a.body.style.height = this.scrollLength + 'px';
     this.options.customScrollbar && this.scrollbar.onResize();
+  }
+
+  toggleIframes(enable) {
+    for (let i = 0; i < this.iframes.length; i++) {
+      this.iframes[i].style.pointerEvents = enable ? 'auto' : 'none';
+    }
   }
 
 }
