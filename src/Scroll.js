@@ -13,7 +13,8 @@ export default class Scroll {
         E.bindAll(this, ['onScroll', 'onRAF', 'onResize'])
 
         this.scrollContainer = document.querySelector( this.options.element )
-        this.scrollTargets = this.scrollContainer.querySelectorAll( this.options.innerElement ) || [this.scrollContainer.firstElementChild]
+        const possibleScrollTargets = this.scrollContainer.querySelectorAll( this.options.innerElement )
+        this.scrollTargets = possibleScrollTargets.length ? possibleScrollTargets : [this.scrollContainer.firstElementChild]
         this.scrollTargetsLength = this.scrollTargets.length
         this.scrollPos = this.smoothScrollPos = this.prevScrollPos = this.maxScroll = 0
         this.scrolling = false
@@ -135,8 +136,10 @@ export default class Scroll {
 
         this.horizontalScroll = horizontalScroll
 
-        this.scrollTargets = newTargets.length ? newTargets : [newTargets]
-        this.scrollTargetsLength = this.scrollTargets.length
+        if (newTargets) {
+            this.scrollTargets = newTargets.length ? newTargets : [newTargets]
+            this.scrollTargetsLength = this.scrollTargets.length
+        }
 
         if( Store.isTouch && this.options.disableOnTouch ) {
             Store.body.style.removeProperty('height')
