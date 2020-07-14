@@ -17,6 +17,8 @@ Demo
 ================
 **Coming Soon!**
 
+Using GSAP's <a href="https://greensock.com/docs/v3/Plugins/ScrollTrigger" target="_blank">ScrollTrigger</a> with ASScroll: <a href="https://codepen.io/ashthornton/pen/PoZRwPW" target="_blank">Demo</a>
+
 ### Sites using ASScroll
 - <a href="https://shapestudio.co.uk/" target="_blank">Shape Studio</a>
 - <a href="https://straightfromyard.co.uk/" target="_blank">Wray and Nephew</a>
