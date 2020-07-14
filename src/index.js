@@ -7,7 +7,7 @@ export default class ASScroll {
 
     constructor( {
         element = '.asscroll-container',
-        innerElement = '[data-scroll]',
+        innerElement = '[data-asscroll]',
         ease = 0.075,
         touchEase = 1,
         customScrollbar = true,
