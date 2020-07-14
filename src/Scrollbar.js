@@ -8,6 +8,7 @@ export default class Scrollbar {
         E.bindAll(this, ['onMouseMove', 'onMouseDown', 'onMouseUp'])
 
         this.smoothScroll = smoothScroll
+        this.addHTML()
         this.el = document.querySelector( this.smoothScroll.options.scrollbarEl )
         this.handle = document.querySelector( this.smoothScroll.options.scrollbarHandleEl )
         this.addStyles()
@@ -64,6 +65,14 @@ export default class Scrollbar {
         Store.body.style.removeProperty('user-select')
         Store.body.style.removeProperty('-ms-user-select')
         this.el.classList.remove('active')
+    }
+
+    addHTML() {
+        if( !!document.querySelector(this.smoothScroll.options.scrollbarEl) ) return
+        const div = document.createElement('div')
+        div.classList.add(this.smoothScroll.options.scrollbarEl.substring(1))
+        div.innerHTML = `<div class="${this.smoothScroll.options.scrollbarHandleEl.substring(1)}"><div></div></div>`
+        document.body.appendChild(div)
     }
 
     addStyles() {

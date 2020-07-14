@@ -77,7 +77,7 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 
 `touchEase: 1` - Smooth scroll easing on touch devices. A value of `1` will match the native scroll inertia
 
-`customScrollbar: false` - Enable the use of a custom scrollbar
+`customScrollbar: true` - Enable the use of a custom scrollbar
 
 `scrollbarEl: .asscrollbar` - The parent element of the custom scrollbar
 
