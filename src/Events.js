@@ -12,13 +12,13 @@ export default class Events {
         E.bindAll(this, ['onRaf'])
 
         Store.events = {
-            RAF: 'RAF',
-            EXTERNALRAF: 'ExternalRAF',
-            SCROLL: 'Scroll',
-            WHEEL: 'Wheel',
-            COMBOSCROLL: 'ComboScroll',
-            RESIZE: 'Resize',
-            TOUCHMOUSE: 'TouchMouse',
+            RAF: 1,
+            EXTERNALRAF: 2,
+            SCROLL: 3,
+            WHEEL: 4,
+            COMBOSCROLL: 5,
+            RESIZE: 6,
+            TOUCHMOUSE: 7,
         }
         
         this.addEvents()

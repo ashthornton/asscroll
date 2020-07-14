@@ -10,7 +10,7 @@ export default class ASScroll {
         innerElement = '[data-scroll]',
         ease = 0.075,
         touchEase = 1,
-        customScrollbar = false,
+        customScrollbar = true,
         scrollbarEl = '.asscrollbar',
         scrollbarHandleEl = '.asscrollbar__handle',
         scrollbarStyles = true,
