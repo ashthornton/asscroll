@@ -69,38 +69,29 @@ smoothScroll.enable()
 ## Options
 Passed as an object through to the ASScroll constructor. Defaults shown next to option names.
 
-`element: .asscroll-container` - The parent element of the content to be smooth scrolled
-
-`innerElement: [data-scroll]` - The element that the `transform` translation will be applied to inside the parent element
-
-`ease: 0.075` - Smooth scroll easing
-
-`touchEase: 1` - Smooth scroll easing on touch devices. A value of `1` will match the native scroll inertia
-
-`customScrollbar: true` - Enable the use of a custom scrollbar
-
-`scrollbarEl: .asscrollbar` - The parent element of the custom scrollbar
-
-`scrollbarHandleEl: .asscrollbar__handle` - The grabbable bar element in the custom scrollbar
-
-`scrollbarStyles: true` - Include the default scrollbar CSS
-
-`disableNativeScrollbar: true` - Disables the browser's scrollbar
-
-`disableOnTouch: false` - Set this to `true` to disable on touch devices and use native scroll
-
-`disableRaf: false` - Disable internal requestAnimationFrame loop in order to use an external one
-
-`disableResize: false` - Disable internal resize event on the window in order to use an external one
+| option | type | default | description |
+|-|-|-|-|
+| `element`                | `String`  | `'.asscroll-container'` | The parent element of the content to be smooth scrolled                                    |
+| `innerElement`           | `String`  | `'[data-scroll]'`       | The element that the `transform` translation will be applied to inside the parent element  |
+| `ease`                   | `Float`   | `0.075`                 | Smooth scroll easing                                                                       |
+| `touchEase`              | `Float`   | `1`                     | Smooth scroll easing on touch devices. A value of `1` will match the native scroll inertia |
+| `customScrollbar`        | `Boolean` | `true`                  | Enable the use of a custom scrollbar                                                       |
+| `scrollbarEl`            | `String`  | `.asscrollbar`          | The parent element of the custom scrollbar                                                 |
+| `scrollbarHandleEl`      | `String`  | `.asscrollbar__handle`  | The grabbable bar element in the custom scrollbar                                          |
+| `scrollbarStyles`        | `Boolean` | `true`                  | Include the default scrollbar CSS                                                          |
+| `disableNativeScrollbar` | `Boolean` | `true`                  | Disables the browser's scrollbar                                                           |
+| `disableOnTouch`         | `Boolean` | `false`                 | Set this to `true` to disable on touch devices and use native scroll                       |
+| `disableRaf`             | `Boolean` | `false`                 | Disable internal requestAnimationFrame loop in order to use an external one                |
+| `disableResize`          | `Boolean` | `false`                 | Disable internal resize event on the window in order to use an external one                |
 
 ## Methods
 
 `enable( restore = false, reset = false, newTarget = false, horizontalScroll = false )` - Enable scroll
 
-- `restore` - restores the previous scroll position when `disable()` was last called
-- `reset` - force resetting scroll position to 0
-- `newTarget` - pass in a selected DOM node to set a new scroll target i.e. when loading in a new page via Highway.
-- `horizontalScroll` - set to true if you want the content to scroll horizontally
+`restore` - restores the previous scroll position when `disable()` was last called
+`reset` - force resetting scroll position to 0
+`newTarget` - pass in a selected DOM node to set a new scroll target i.e. when loading in a new page via PJAX.
+`horizontalScroll` - set to true if you want the content to scroll horizontally
 
 `disable()` - Disable scroll
 
@@ -136,7 +127,7 @@ When `customScrollbar` is enabled in the options, a default set of styles will g
 <div class="asscrollbar"><div class="asscrollbar__handle"><div></div></div></div>
 ```
 
-Add this HTML anywhere outside of the main `.asscroll-container` element - just before the closing `</body>` tag works fine.
+This HTML will get added to your page automatically if you don't add it yourself.
 
 You can change the classes that are used by changing the `scrollbarEl` and `scrollbarHandleEl` options.
 
@@ -149,8 +140,6 @@ You can use your own styles by setting the `scrollbarStyles` option to false.
 You can include the styles necessary to hide the native scrollbar in your CSS by copy and pasting the contents of `/css/index.css` or simply by importing them into your CSS setup. For example:
 
 `@import '~@ashthornton/asscroll/css'`
-
-_This won't be an issue with the custom scrollbar styles as you can't smooth scroll until JS is ready anyway._
 
 ## Usage with external requestAnimationFrame
 
@@ -189,5 +178,7 @@ smoothScroll.enable()
 
 ## TODO
 
+All related:
 - Handle tabbing focus scroll
 - Handle anchor link scroll
+- Handle Ctrl/Cmd+F
