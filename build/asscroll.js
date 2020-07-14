@@ -2335,6 +2335,7 @@ class Scrollbar_Scrollbar {
   constructor(smoothScroll) {
     src_E.bindAll(this, ['onMouseMove', 'onMouseDown', 'onMouseUp']);
     this.smoothScroll = smoothScroll;
+    this.addHTML();
     this.el = document.querySelector(this.smoothScroll.options.scrollbarEl);
     this.handle = document.querySelector(this.smoothScroll.options.scrollbarHandleEl);
     this.addStyles();
@@ -2392,6 +2393,14 @@ class Scrollbar_Scrollbar {
     Store_default.a.body.style.removeProperty('user-select');
     Store_default.a.body.style.removeProperty('-ms-user-select');
     this.el.classList.remove('active');
+  }
+
+  addHTML() {
+    if (!!document.querySelector(this.smoothScroll.options.scrollbarEl)) return;
+    const div = document.createElement('div');
+    div.classList.add(this.smoothScroll.options.scrollbarEl.substring(1));
+    div.innerHTML = "<div class=\"".concat(this.smoothScroll.options.scrollbarHandleEl.substring(1), "\"><div></div></div>");
+    document.body.appendChild(div);
   }
 
   addStyles() {
@@ -2746,13 +2755,13 @@ class src_ASScroll {
         _ref$element = _ref.element,
         element = _ref$element === void 0 ? '.asscroll-container' : _ref$element,
         _ref$innerElement = _ref.innerElement,
-        innerElement = _ref$innerElement === void 0 ? '[data-scroll]' : _ref$innerElement,
+        innerElement = _ref$innerElement === void 0 ? '[data-asscroll]' : _ref$innerElement,
         _ref$ease = _ref.ease,
         ease = _ref$ease === void 0 ? 0.075 : _ref$ease,
         _ref$touchEase = _ref.touchEase,
         touchEase = _ref$touchEase === void 0 ? 1 : _ref$touchEase,
         _ref$customScrollbar = _ref.customScrollbar,
-        customScrollbar = _ref$customScrollbar === void 0 ? false : _ref$customScrollbar,
+        customScrollbar = _ref$customScrollbar === void 0 ? true : _ref$customScrollbar,
         _ref$scrollbarEl = _ref.scrollbarEl,
         scrollbarEl = _ref$scrollbarEl === void 0 ? '.asscrollbar' : _ref$scrollbarEl,
         _ref$scrollbarHandleE = _ref.scrollbarHandleEl,
