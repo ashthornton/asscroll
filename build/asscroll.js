@@ -2356,15 +2356,14 @@ class Scrollbar_Scrollbar {
       return;
     }
 
-    this.handleHeight = Math.max(40, Store_default.a.windowSize.h / this.scale);
-    this.handleHalfHeight = this.handleHeight / 2;
+    this.trueSize = Math.min(Store_default.a.windowSize.h / -this.smoothScroll.maxScroll, 1) * Store_default.a.windowSize.h;
+    this.handleHeight = Math.max(this.trueSize, 40);
     this.handle.style.height = "".concat(this.handleHeight, "px");
-    const handleStyle = getComputedStyle(this.handle);
-    this.maxY = Store_default.a.windowSize.h - (parseFloat(handleStyle.paddingTop) + parseFloat(handleStyle.paddingBottom) + this.handleHeight);
   }
 
   transform() {
-    this.handle.style.transform = "translate3d(0, ".concat(Math.min(Math.max(-this.smoothScroll.scrollPos / this.scale, 0), this.maxY), "px, 0)");
+    const y = -this.smoothScroll.scrollPos / -this.smoothScroll.maxScroll * (Store_default.a.windowSize.h - this.handleHeight);
+    this.handle.style.transform = "translate3d(0, ".concat(y, "px, 0)");
   }
 
   show() {
@@ -2377,7 +2376,8 @@ class Scrollbar_Scrollbar {
 
   onMouseMove(e) {
     if (!this.mouseDown) return;
-    this.smoothScroll.scrollPos = (-e.clientY + this.handleHalfHeight) * this.scale;
+    const totalHeight = Store_default.a.windowSize.h + (this.trueSize - this.handleHeight);
+    this.smoothScroll.scrollPos = e.clientY / totalHeight * this.smoothScroll.maxScroll;
     this.smoothScroll.syncScroll = true;
     src_E.emit(Store_default.a.events.COMBOSCROLL, this.smoothScroll.scrollPos);
   }
