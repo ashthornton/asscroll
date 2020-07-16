@@ -2356,13 +2356,15 @@ class Scrollbar_Scrollbar {
       return;
     }
 
-    this.handleHeight = Store_default.a.windowSize.h / this.scale;
+    this.handleHeight = Math.max(40, Store_default.a.windowSize.h / this.scale);
     this.handleHalfHeight = this.handleHeight / 2;
     this.handle.style.height = "".concat(this.handleHeight, "px");
+    const handleStyle = getComputedStyle(this.handle);
+    this.maxY = Store_default.a.windowSize.h - (parseFloat(handleStyle.paddingTop) + parseFloat(handleStyle.paddingBottom) + this.handleHeight);
   }
 
   transform() {
-    this.handle.style.transform = "translate3d(0, ".concat(-this.smoothScroll.scrollPos / this.scale, "px, 0)");
+    this.handle.style.transform = "translate3d(0, ".concat(Math.min(Math.max(-this.smoothScroll.scrollPos / this.scale, 0), this.maxY), "px, 0)");
   }
 
   show() {
@@ -2376,7 +2378,6 @@ class Scrollbar_Scrollbar {
   onMouseMove(e) {
     if (!this.mouseDown) return;
     this.smoothScroll.scrollPos = (-e.clientY + this.handleHalfHeight) * this.scale;
-    this.smoothScroll.clamp();
     this.smoothScroll.syncScroll = true;
     src_E.emit(Store_default.a.events.COMBOSCROLL, this.smoothScroll.scrollPos);
   }

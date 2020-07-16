@@ -23,18 +23,20 @@ export default class Scrollbar {
     }
 
     onResize() {
-        this.scale = (-this.smoothScroll.maxScroll + Store.windowSize.h) / Store.windowSize.h        
+        this.scale = (-this.smoothScroll.maxScroll + Store.windowSize.h) / Store.windowSize.h
         if( this.scale <= 1 ) {
             this.handle.style.height = 0
             return
         }
-        this.handleHeight = Store.windowSize.h / this.scale
+        this.handleHeight = Math.max(40, Store.windowSize.h / this.scale)
         this.handleHalfHeight = this.handleHeight / 2
         this.handle.style.height = `${this.handleHeight}px`
+        const handleStyle = getComputedStyle(this.handle)
+        this.maxY = Store.windowSize.h - (parseFloat(handleStyle.paddingTop) + parseFloat(handleStyle.paddingBottom) + this.handleHeight)
     }
 
     transform() {
-        this.handle.style.transform = `translate3d(0, ${ -this.smoothScroll.scrollPos / this.scale }px, 0)`
+        this.handle.style.transform = `translate3d(0, ${ Math.min(Math.max(-this.smoothScroll.scrollPos / this.scale, 0), this.maxY) }px, 0)`
     }
 
     show() {
@@ -48,7 +50,6 @@ export default class Scrollbar {
     onMouseMove(e) {
         if( !this.mouseDown ) return
         this.smoothScroll.scrollPos = ( -e.clientY + this.handleHalfHeight ) * this.scale
-        this.smoothScroll.clamp()
         this.smoothScroll.syncScroll = true
         E.emit(Store.events.COMBOSCROLL, this.smoothScroll.scrollPos)
     }
