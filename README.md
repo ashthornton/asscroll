@@ -88,10 +88,10 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 
 `enable( restore = false, reset = false, newTarget = false, horizontalScroll = false )` - Enable scroll
 
-`restore` - restores the previous scroll position when `disable()` was last called
-`reset` - force resetting scroll position to 0
-`newTarget` - pass in a selected DOM node to set a new scroll target i.e. when loading in a new page via PJAX.
-`horizontalScroll` - set to true if you want the content to scroll horizontally
+- `restore` - restores the previous scroll position when `disable()` was last called
+- `reset` - force resetting scroll position to 0
+- `newTarget` - pass in a selected DOM node to set a new scroll target i.e. when loading in a new page via PJAX.
+- `horizontalScroll` - set to true if you want the content to scroll horizontally
 
 `disable()` - Disable scroll
 
