@@ -17,7 +17,7 @@
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules",
     "postpublish": "git push origin master && git push origin --tags",
     "postversion": "npm publish --access public",
-    "preversion": "npm run production"
+    "preversion": "npm run production && git add -A && git commit -m 'build'"
   },
   "repository": {
     "type": "git",
