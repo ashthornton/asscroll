@@ -4,7 +4,9 @@
   "description": "Ash's Smooth Scroll",
   "main": "build/asscroll.js",
   "unpkg": "build/asscroll.min.js",
-  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "files": [
     "src",
     "css",
@@ -13,6 +15,11 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules",
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm production"
+    }
   },
   "repository": {
     "type": "git",
@@ -37,6 +44,7 @@
     "cross-env": "^7.0.2",
     "eslint": "^6.0.1",
     "eslint-loader": "^2.2.1",
+    "husky": "^4.2.5",
     "regenerator-runtime": "^0.13.2",
     "terser-webpack-plugin": "^3.0.1",
     "webpack": "^4.35.3",

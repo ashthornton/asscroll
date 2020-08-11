@@ -39,6 +39,10 @@ export default class Scroll {
             this.onResize()
         })
 
+        document.addEventListener('mouseleave', () => {
+            window.scrollY = -this.scrollPos
+        })
+
     }
 
     smoothSetup() {
