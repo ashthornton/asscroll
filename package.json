@@ -15,7 +15,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules",
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules",
-    "postpublish": "git push origin master:master; git push origin --tags",
+    "postpublish": "git push origin master; git push origin --tags",
     "postversion": "npm publish --access public",
     "preversion": "npm run production"
   },
