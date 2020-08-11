@@ -2563,6 +2563,9 @@ class Scroll_Scroll {
       this.smoothSetup();
       this.onResize();
     });
+    document.addEventListener('mouseleave', () => {
+      window.scrollY = -this.scrollPos;
+    });
   }
 
   smoothSetup() {
