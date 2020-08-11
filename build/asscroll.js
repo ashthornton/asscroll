@@ -2564,7 +2564,7 @@ class Scroll_Scroll {
       this.onResize();
     });
     document.addEventListener('mouseleave', () => {
-      window.scrollY = -this.scrollPos;
+      window.scrollTo(0, -this.scrollPos);
     });
   }
 
