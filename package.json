@@ -1,6 +1,6 @@
 {
   "name": "@ashthornton/asscroll",
-  "version": "1.5.15",
+  "version": "1.5.13",
   "description": "Ash's Smooth Scroll",
   "main": "build/asscroll.js",
   "unpkg": "build/asscroll.min.js",
@@ -14,7 +14,10 @@
   ],
   "scripts": {
     "start": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules",
-    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules"
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules",
+    "postpublish": "git push origin master git push origin --tags",
+    "postversion": "npm publish --access public",
+    "preversion": "npm run production"
   },
   "repository": {
     "type": "git",
