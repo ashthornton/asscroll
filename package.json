@@ -4,9 +4,6 @@
   "description": "Ash's Smooth Scroll",
   "main": "build/asscroll.js",
   "unpkg": "build/asscroll.min.js",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "files": [
     "src",
     "css",
