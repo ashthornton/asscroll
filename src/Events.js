@@ -32,7 +32,7 @@ export default class Events {
         }
 
         if( !this.options.disableResize ) {
-            window.addEventListener('resize', debounce( () => { this.onResize() }, 150 ))
+            E.on('resize', window, debounce( () => { this.onResize() }, 150 ))
         }
 
         this.onScroll()
@@ -52,8 +52,8 @@ export default class Events {
     }
 
     onScroll() {
-        window.addEventListener('wheel', e => { E.emit(Store.events.WHEEL, { event: e }) }, { passive: false })
-        window.addEventListener('scroll', e => { E.emit(Store.events.SCROLL, { event: e }) }, { passive: true })
+        E.on('wheel', window, e => { E.emit(Store.events.WHEEL, { event: e }) }, { passive: false })
+        E.on('scroll', window, e => { E.emit(Store.events.SCROLL, { event: e }) }, { passive: true })
     }
 
     onResize( windowWidth, windowHeight ) {

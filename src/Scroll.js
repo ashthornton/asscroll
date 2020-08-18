@@ -39,8 +39,18 @@ export default class Scroll {
             this.onResize()
         })
 
-        document.addEventListener('mouseleave', () => {
+        E.on('mouseleave', document, () => {
             window.scrollTo(0, -this.scrollPos)
+        })
+
+        E.on('keydown', window, e => {
+            if( e.key === 'Tab' ) {
+                this.scrollContainer.style.position = 'relative'
+                clearTimeout(this.tabTimeout)
+                this.tabTimeout = setTimeout(() => {
+                    this.scrollContainer.style.position = 'fixed'
+                }, 1)
+            }
         })
 
     }

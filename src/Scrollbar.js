@@ -18,8 +18,8 @@ export default class Scrollbar {
 
     addEvents() {
         E.on('mousedown', this.handle, this.onMouseDown)
-        window.addEventListener('mousemove', this.onMouseMove)
-        window.addEventListener('mouseup', this.onMouseUp)
+        E.on('mousemove', window, this.onMouseMove)
+        E.on('mouseup', window, this.onMouseUp)
     }
 
     onResize() {
