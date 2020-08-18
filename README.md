@@ -7,8 +7,8 @@
 ---
 
 Advantages over pure virtual scroll:
-- accessibility / keyboard friendly (without manual key detection)
-- no special cases to cater for when detecting key detection (i.e. pressing space in a form input)
+- accessibility / keyboard friendly (without overriding the browser's native scroll)
+- no special cases to cater for when handling manual key detection (i.e. pressing space in a form input)
 - doesn't stop working when hovering over an iframe
 - handles hardware that doesn't fire the 'wheel' event i.e. Windows trackpads in Edge + IE
 - no lag between DOM and WebGL elements on mobile, whilst retaining native interia scroll
@@ -179,6 +179,6 @@ smoothScroll.enable()
 ## TODO
 
 All related:
-- Handle tabbing focus scroll
+- ~~Handle tabbing focus scroll~~
 - Handle anchor link scroll
 - Handle Ctrl/Cmd+F
