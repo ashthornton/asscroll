@@ -10,7 +10,7 @@ export default class Scroll {
         this.options = options
         this.scrollbarCheck = this.options.customScrollbar
 
-        E.bindAll(this, ['onScroll', 'onRAF', 'onResize'])
+        E.bindAll(this, ['onScroll', 'onRAF', 'onResize', 'toggleFixedContainer'])
 
         this.scrollContainer = document.querySelector( this.options.element )
         const possibleScrollTargets = this.scrollContainer.querySelectorAll( this.options.innerElement )
@@ -45,13 +45,11 @@ export default class Scroll {
 
         E.on('keydown', window, e => {
             if( e.key === 'Tab' ) {
-                this.scrollContainer.style.position = 'relative'
-                clearTimeout(this.tabTimeout)
-                this.tabTimeout = setTimeout(() => {
-                    this.scrollContainer.style.position = 'fixed'
-                }, 1)
+                this.toggleFixedContainer()
             }
         })
+
+        E.on('click', 'a[href^="#"]', this.toggleFixedContainer)
 
     }
 
@@ -234,6 +232,13 @@ export default class Scroll {
         for (let i = 0; i < this.iframes.length; i++) {
             this.iframes[i].style.pointerEvents = enable ? 'auto' : 'none'
         }
+    }
+
+    toggleFixedContainer() {
+        this.scrollContainer.style.position = 'relative'
+        requestAnimationFrame(() => {
+            this.scrollContainer.style.position = 'fixed'
+        })
     }
 
 }

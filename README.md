@@ -180,5 +180,5 @@ smoothScroll.enable()
 
 All related:
 - ~~Handle tabbing focus scroll~~
-- Handle anchor link scroll
+- ~~Handle anchor link scroll~~
 - Handle Ctrl/Cmd+F
