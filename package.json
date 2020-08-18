@@ -45,7 +45,6 @@
     "webpack-cli": "^3.3.6"
   },
   "dependencies": {
-    "@unseenco/e": "^1.7.0",
-    "lodash.debounce": "^4.0.8"
+    "@unseenco/e": "^1.7.0"
   }
 }

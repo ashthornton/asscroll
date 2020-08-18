@@ -1,7 +1,7 @@
 import Store from './Store'
 import E from './E'
 import Scrollbar from './Scrollbar'
-import normalizeWheel from './normalizeWheel'
+import normalizeWheel from './utils/normalizeWheel'
 
 export default class Scroll {
 

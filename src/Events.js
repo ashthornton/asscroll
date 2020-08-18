@@ -1,4 +1,4 @@
-import debounce from 'lodash.debounce'
+import debounce from './utils/debounce'
 
 import Store from './Store'
 import E from './E'
