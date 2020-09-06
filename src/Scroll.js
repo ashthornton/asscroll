@@ -22,6 +22,7 @@ export default class Scroll {
         this.deltaY = 0
         this.wheeling = false
         this.wheel = true
+        this.horizontalScroll = false
         this.ease = Store.isTouch ? this.options.touchEase : this.options.ease
 
         if( !Store.isTouch || !this.options.disableOnTouch ) {
@@ -49,7 +50,7 @@ export default class Scroll {
             }
         })
 
-        E.on('click', 'a[href^="#"]', this.toggleFixedContainer)
+        E.delegate('click', 'a[href^="#"]', this.toggleFixedContainer)
 
     }
 
@@ -235,9 +236,14 @@ export default class Scroll {
     }
 
     toggleFixedContainer() {
-        this.scrollContainer.style.position = 'relative'
+        this.scrollContainer.style.position = 'static'
+        const scrollPos = this.smoothScrollPos
+        this.applyTransform(0, 0)
         requestAnimationFrame(() => {
             this.scrollContainer.style.position = 'fixed'
+            const x = this.horizontalScroll ? scrollPos : 0
+            const y = this.horizontalScroll ? 0 : scrollPos
+            this.applyTransform(x, y)
         })
     }
 
