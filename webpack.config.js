@@ -29,7 +29,7 @@ module.exports = {
                 ['@babel/preset-env', {
                   targets: {
                     browsers: [
-                      '> 0.25%',
+                      '> 0.2%',
                       'edge >= 14',
                       'not dead',
                       'not ie 11',
