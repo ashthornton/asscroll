@@ -2904,6 +2904,7 @@ class Scroll_Scroll {
     this.deltaY = 0;
     this.wheeling = false;
     this.wheel = true;
+    this.horizontalScroll = false;
     this.ease = Store_default.a.isTouch ? this.options.touchEase : this.options.ease;
 
     if (!Store_default.a.isTouch || !this.options.disableOnTouch) {
@@ -2928,7 +2929,7 @@ class Scroll_Scroll {
         this.toggleFixedContainer();
       }
     });
-    src_E.on('click', 'a[href^="#"]', this.toggleFixedContainer);
+    src_E.delegate('click', 'a[href^="#"]', this.toggleFixedContainer);
   }
 
   smoothSetup() {
@@ -3108,9 +3109,14 @@ class Scroll_Scroll {
   }
 
   toggleFixedContainer() {
-    this.scrollContainer.style.position = 'relative';
+    this.scrollContainer.style.position = 'static';
+    const scrollPos = this.smoothScrollPos;
+    this.applyTransform(0, 0);
     requestAnimationFrame(() => {
       this.scrollContainer.style.position = 'fixed';
+      const x = this.horizontalScroll ? scrollPos : 0;
+      const y = this.horizontalScroll ? 0 : scrollPos;
+      this.applyTransform(x, y);
     });
   }
 
