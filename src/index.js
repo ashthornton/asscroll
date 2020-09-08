@@ -46,8 +46,8 @@ export default class ASScroll {
         this.Scroll.enable(...args)
     }
 
-    disable() {
-        this.Scroll.disable()
+    disable(...args) {
+        this.Scroll.disable(...args)
     }
 
     onRaf() {

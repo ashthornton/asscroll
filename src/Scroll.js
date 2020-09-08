@@ -17,6 +17,8 @@ export default class Scroll {
         this.scrollTargets = possibleScrollTargets.length ? possibleScrollTargets : [this.scrollContainer.firstElementChild]
         this.scrollTargetsLength = this.scrollTargets.length
         this.scrollPos = this.smoothScrollPos = this.prevScrollPos = this.maxScroll = 0
+        this.enabled = false
+        this.render = false
         this.scrolling = false
         this.syncScroll = false
         this.deltaY = 0
@@ -108,7 +110,7 @@ export default class Scroll {
 
     onRAF() {
 
-        if( !this.enabled ) return
+        if( !this.render ) return
 
         if( this.wheeling ) {
             this.scrollPos += this.deltaY * -1
@@ -154,6 +156,8 @@ export default class Scroll {
         if( this.enabled ) return
         this.enabled = true
 
+        this.render = true
+
         this.horizontalScroll = horizontalScroll
 
         if (newTargets) {
@@ -186,10 +190,14 @@ export default class Scroll {
 
     }
 
-    disable() {
+    disable( inputOnly = false ) {
 
         if( !this.enabled ) return
         this.enabled = false
+
+        if( !inputOnly ) {
+            this.render = false
+        }
 
         E.off(Store.events.WHEEL, this.onScroll)
         E.off(Store.events.SCROLL, this.onScroll)
