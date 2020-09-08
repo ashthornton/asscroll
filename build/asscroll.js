@@ -2406,6 +2406,8 @@ var Scroll_Scroll = /*#__PURE__*/function () {
     this.scrollTargets = possibleScrollTargets.length ? possibleScrollTargets : [this.scrollContainer.firstElementChild];
     this.scrollTargetsLength = this.scrollTargets.length;
     this.scrollPos = this.smoothScrollPos = this.prevScrollPos = this.maxScroll = 0;
+    this.enabled = false;
+    this.render = false;
     this.scrolling = false;
     this.syncScroll = false;
     this.deltaY = 0;
@@ -2492,7 +2494,7 @@ var Scroll_Scroll = /*#__PURE__*/function () {
   }, {
     key: "onRAF",
     value: function onRAF() {
-      if (!this.enabled) return;
+      if (!this.render) return;
 
       if (this.wheeling) {
         this.scrollPos += this.deltaY * -1;
@@ -2544,6 +2546,7 @@ var Scroll_Scroll = /*#__PURE__*/function () {
       var horizontalScroll = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
       if (this.enabled) return;
       this.enabled = true;
+      this.render = true;
       this.horizontalScroll = horizontalScroll;
 
       if (newTargets) {
@@ -2579,8 +2582,14 @@ var Scroll_Scroll = /*#__PURE__*/function () {
   }, {
     key: "disable",
     value: function disable() {
+      var inputOnly = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
       if (!this.enabled) return;
       this.enabled = false;
+
+      if (!inputOnly) {
+        this.render = false;
+      }
+
       src_E.off(Store_default.a.events.WHEEL, this.onScroll);
       src_E.off(Store_default.a.events.SCROLL, this.onScroll);
       this.prevScrollPos = this.scrollPos;
@@ -2722,7 +2731,9 @@ var src_ASScroll = /*#__PURE__*/function () {
   }, {
     key: "disable",
     value: function disable() {
-      this.Scroll.disable();
+      var _this$Scroll2;
+
+      (_this$Scroll2 = this.Scroll).disable.apply(_this$Scroll2, arguments);
     }
   }, {
     key: "onRaf",
