@@ -227,8 +227,7 @@ export default class Scroll {
             const endPosition = this.horizontalScroll ? bcr.right : bcr.bottom
             this.scrollLength = endPosition + marginOffset - this.smoothScrollPos
         } else {
-            const bcr = this.scrollTargets[0].getBoundingClientRect()
-            this.scrollLength = this.horizontalScroll ? bcr.width : bcr.height
+            this.scrollLength = this.horizontalScroll ? this.scrollTargets[0].scrollWidth : this.scrollTargets[0].scrollHeight
         }
         
         const windowSize = this.horizontalScroll ? Store.windowSize.w : Store.windowSize.h
