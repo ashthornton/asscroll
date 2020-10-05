@@ -2620,9 +2620,7 @@ var Scroll_Scroll = /*#__PURE__*/function () {
         var endPosition = this.horizontalScroll ? bcr.right : bcr.bottom;
         this.scrollLength = endPosition + marginOffset - this.smoothScrollPos;
       } else {
-        var _bcr = this.scrollTargets[0].getBoundingClientRect();
-
-        this.scrollLength = this.horizontalScroll ? _bcr.width : _bcr.height;
+        this.scrollLength = this.horizontalScroll ? this.scrollTargets[0].scrollWidth : this.scrollTargets[0].scrollHeight;
       }
 
       var windowSize = this.horizontalScroll ? Store_default.a.windowSize.w : Store_default.a.windowSize.h;
