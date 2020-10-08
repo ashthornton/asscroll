@@ -28,7 +28,7 @@ export default class Scrollbar {
             this.handle.style.height = 0
             return
         }
-        this.trueSize = Math.min(Store.windowSize.h / -this.smoothScroll.maxScroll, 1) * Store.windowSize.h
+        this.trueSize = Store.windowSize.h / this.scale
         this.handleHeight = Math.max(this.trueSize, 40)
         this.handle.style.height = `${this.handleHeight}px`
     }
