@@ -1,6 +1,6 @@
 {
   "name": "@ashthornton/asscroll",
-  "version": "1.6.4",
+  "version": "1.6.5",
   "description": "Ash's Smooth Scroll",
   "main": "build/asscroll.js",
   "unpkg": "build/asscroll.min.js",
