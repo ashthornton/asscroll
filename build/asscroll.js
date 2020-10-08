@@ -2194,7 +2194,7 @@ var Scrollbar_Scrollbar = /*#__PURE__*/function () {
         return;
       }
 
-      this.trueSize = Math.min(Store_default.a.windowSize.h / -this.smoothScroll.maxScroll, 1) * Store_default.a.windowSize.h;
+      this.trueSize = Store_default.a.windowSize.h / this.scale;
       this.handleHeight = Math.max(this.trueSize, 40);
       this.handle.style.height = "".concat(this.handleHeight, "px");
     }
