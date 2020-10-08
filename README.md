@@ -22,6 +22,7 @@ Using GSAP's <a href="https://greensock.com/docs/v3/Plugins/ScrollTrigger" targe
 ### Sites using ASScroll
 - <a href="https://shapestudio.co.uk/" target="_blank">Shape Studio</a>
 - <a href="https://straightfromyard.co.uk/" target="_blank">Wray and Nephew</a>
+- <a href="https://www.havoc.co/" target="_blank">Havoc</a>
 
 Table of contents
 =================
