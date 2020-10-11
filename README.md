@@ -16,6 +16,7 @@ Advantages over pure virtual scroll:
 Demos
 ================
 - <a href="https://codepen.io/ashthornton/pen/pobJRQX?editors=1010" target="_blank">Zero Config Demo</a>
+- <a href="https://codepen.io/ashthornton/pen/YzWXZqL?editors=1010" target="_blank">Options Demo</a>
 - <a href="https://codepen.io/ashthornton/pen/PoZRwPW" target="_blank">Using GSAP's ScrollTrigger with ASScroll</a>
 
 ### Sites using ASScroll
