@@ -2,27 +2,36 @@
 
 <h3 align="center"><strong>ASScroll is a hybrid smooth scroll setup that combines the<br>performance gains of virtual scroll with the reliability of native scroll.</strong></h3>
 
-<p align="center">This setup aims to be a lightweight solution that provides a consistent smooth scrolling experience across all platforms, devices and hardware. It doesn't include any form of scroll-based animation functionality such as parallaxing, and never will. That functionality becomes very opinionated and is better left up to you to decide how to implement.</p>
+<p align="center" style="padding: 0 15%">This setup aims to be a lightweight solution that provides a consistent smooth scrolling experience across all platforms, devices and hardware.</p>
 
 ---
 
-Advantages over pure virtual scroll:
-- accessibility / keyboard friendly (without overriding the browser's native scroll)
-- no special cases to cater for when handling manual key detection (i.e. pressing space in a form input)
-- doesn't stop working when hovering over an iframe
-- handles hardware that doesn't fire the 'wheel' event i.e. Windows trackpads in Edge + IE
-- no lag between DOM and WebGL elements on mobile, whilst retaining native interia scroll
+#### Advantages over pure virtual scroll:
+- Accessibility / keyboard friendly (without overriding the browser's native scroll)
+- No special cases to cater for when handling manual key detection (i.e. pressing space in a form input)
+- Doesn't stop working when hovering over an iframe
+- Handles hardware that doesn't fire the 'wheel' event i.e. Windows trackpads in Edge + IE
+- No lag between DOM and WebGL elements on mobile, whilst retaining native interia scroll
+
+#### Other Features:
+- Horizontal scroll
+- Custom scroll bar
+- Use your own external RAF loop and resize events
+- Consistent lerp speeds on high refresh rate displays
+
+_No animation features are included as there are other libraries that can be used with ASScroll. GreenSock's [ScrollTrigger](https://greensock.com/scrolltrigger/) is a great example and a demo is included below_
 
 Demos
 ================
-- <a href="https://codepen.io/ashthornton/pen/pobJRQX?editors=1010" target="_blank">Zero Config Demo</a>
-- <a href="https://codepen.io/ashthornton/pen/YzWXZqL?editors=1010" target="_blank">Options Demo</a>
-- <a href="https://codepen.io/ashthornton/pen/PoZRwPW" target="_blank">Using GSAP's ScrollTrigger with ASScroll</a>
+- [Zero Config Demo](https://codepen.io/ashthornton/pen/pobJRQX?editors=1010)
+- [Options Demo](https://codepen.io/ashthornton/pen/YzWXZqL?editors=1010)
+- [Using GSAP's ScrollTrigger with ASScroll](https://codepen.io/ashthornton/pen/PoZRwPW)
 
 ### Sites using ASScroll
-- <a href="https://shapestudio.co.uk/" target="_blank">Shape Studio</a>
-- <a href="https://straightfromyard.co.uk/" target="_blank">Wray and Nephew</a>
-- <a href="https://www.havoc.co/" target="_blank">Havoc</a>
+- [Shape Studio](https://shapestudio.co.uk/)
+- [Wray and Nephew](https://straightfromyard.co.uk/)
+- [Havoc](https://www.havoc.co/)
+- [FanFan](https://fanfan.fan/)
 
 Table of contents
 =================
