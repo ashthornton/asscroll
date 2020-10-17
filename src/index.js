@@ -17,7 +17,8 @@ export default class ASScroll {
         disableNativeScrollbar = true,
         disableOnTouch = false,
         disableRaf = false,
-        disableResize = false
+        disableResize = false,
+        limitLerpRate = true
     } = {} ) {
 
         E.bindAll(this, ['enable', 'disable', 'on', 'scrollTo', 'onRaf', 'onResize'])
@@ -37,7 +38,8 @@ export default class ASScroll {
             scrollbarHandleEl,
             scrollbarStyles,
             disableNativeScrollbar,
-            disableOnTouch
+            disableOnTouch,
+            limitLerpRate
         })
 
     }

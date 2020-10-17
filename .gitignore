@@ -2,3 +2,4 @@ node_modules
 mix-manifest.json
 demo
 .npmrc
+.vscode

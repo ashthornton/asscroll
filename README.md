@@ -83,6 +83,7 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 | `disableOnTouch`         | `Boolean` | `false`                 | Set this to `true` to disable on touch devices and use native scroll                       |
 | `disableRaf`             | `Boolean` | `false`                 | Disable internal requestAnimationFrame loop in order to use an external one                |
 | `disableResize`          | `Boolean` | `false`                 | Disable internal resize event on the window in order to use an external one                |
+| `limitLerpRate`          | `Boolean` | `true`                 | Match lerp speed on >60Hz displays to that of a 60Hz display              |
 
 ## Methods
 

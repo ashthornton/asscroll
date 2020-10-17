@@ -27,6 +27,9 @@ export default class Scroll {
         this.horizontalScroll = false
         this.ease = Store.isTouch ? this.options.touchEase : this.options.ease
 
+        this.delta = 1
+        this.time = this.startTime = performance.now()
+
         if( !Store.isTouch || !this.options.disableOnTouch ) {
             if( Store.isTouch ) this.options.customScrollbar = false
             this.smoothSetup()
@@ -120,6 +123,12 @@ export default class Scroll {
         
         this.clamp()
 
+        if (this.options.limitLerpRate) {
+            this.time = performance.now() * 0.001
+            this.delta = (this.time - this.startTime) * 60
+            this.startTime = this.time
+        }
+
         if( Math.abs( this.scrollPos - this.smoothScrollPos ) < 0.5 ) {
             this.smoothScrollPos = this.scrollPos
             if( this.syncScroll ) {
@@ -132,7 +141,7 @@ export default class Scroll {
                 this.scrolling = false
             }
         } else {
-            this.smoothScrollPos += ( this.scrollPos - this.smoothScrollPos ) * this.ease
+            this.smoothScrollPos += (this.scrollPos - this.smoothScrollPos) * this.ease * this.delta
         }
 
         const x = this.horizontalScroll ? this.smoothScrollPos : 0
