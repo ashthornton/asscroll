@@ -2415,6 +2415,8 @@ var Scroll_Scroll = /*#__PURE__*/function () {
     this.wheel = true;
     this.horizontalScroll = false;
     this.ease = Store_default.a.isTouch ? this.options.touchEase : this.options.ease;
+    this.delta = 1;
+    this.time = this.startTime = performance.now();
 
     if (!Store_default.a.isTouch || !this.options.disableOnTouch) {
       if (Store_default.a.isTouch) this.options.customScrollbar = false;
@@ -2504,6 +2506,12 @@ var Scroll_Scroll = /*#__PURE__*/function () {
 
       this.clamp();
 
+      if (this.options.limitLerpRate) {
+        this.time = performance.now() * 0.001;
+        this.delta = (this.time - this.startTime) * 60;
+        this.startTime = this.time;
+      }
+
       if (Math.abs(this.scrollPos - this.smoothScrollPos) < 0.5) {
         this.smoothScrollPos = this.scrollPos;
 
@@ -2518,7 +2526,7 @@ var Scroll_Scroll = /*#__PURE__*/function () {
           this.scrolling = false;
         }
       } else {
-        this.smoothScrollPos += (this.scrollPos - this.smoothScrollPos) * this.ease;
+        this.smoothScrollPos += (this.scrollPos - this.smoothScrollPos) * this.ease * this.delta;
       }
 
       var x = this.horizontalScroll ? this.smoothScrollPos : 0;
@@ -2696,7 +2704,9 @@ var src_ASScroll = /*#__PURE__*/function () {
         _ref$disableRaf = _ref.disableRaf,
         disableRaf = _ref$disableRaf === void 0 ? false : _ref$disableRaf,
         _ref$disableResize = _ref.disableResize,
-        disableResize = _ref$disableResize === void 0 ? false : _ref$disableResize;
+        disableResize = _ref$disableResize === void 0 ? false : _ref$disableResize,
+        _ref$limitLerpRate = _ref.limitLerpRate,
+        limitLerpRate = _ref$limitLerpRate === void 0 ? true : _ref$limitLerpRate;
 
     src_classCallCheck(this, ASScroll);
 
@@ -2715,7 +2725,8 @@ var src_ASScroll = /*#__PURE__*/function () {
       scrollbarHandleEl,
       scrollbarStyles,
       disableNativeScrollbar,
-      disableOnTouch
+      disableOnTouch,
+      limitLerpRate
     });
   }
 
