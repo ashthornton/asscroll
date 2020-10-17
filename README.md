@@ -13,15 +13,16 @@ Advantages over pure virtual scroll:
 - handles hardware that doesn't fire the 'wheel' event i.e. Windows trackpads in Edge + IE
 - no lag between DOM and WebGL elements on mobile, whilst retaining native interia scroll
 
-Demo
+Demos
 ================
-**Coming Soon!**
-
-Using GSAP's <a href="https://greensock.com/docs/v3/Plugins/ScrollTrigger" target="_blank">ScrollTrigger</a> with ASScroll: <a href="https://codepen.io/ashthornton/pen/PoZRwPW" target="_blank">Demo</a>
+- <a href="https://codepen.io/ashthornton/pen/pobJRQX?editors=1010" target="_blank">Zero Config Demo</a>
+- <a href="https://codepen.io/ashthornton/pen/YzWXZqL?editors=1010" target="_blank">Options Demo</a>
+- <a href="https://codepen.io/ashthornton/pen/PoZRwPW" target="_blank">Using GSAP's ScrollTrigger with ASScroll</a>
 
 ### Sites using ASScroll
 - <a href="https://shapestudio.co.uk/" target="_blank">Shape Studio</a>
 - <a href="https://straightfromyard.co.uk/" target="_blank">Wray and Nephew</a>
+- <a href="https://www.havoc.co/" target="_blank">Havoc</a>
 
 Table of contents
 =================
