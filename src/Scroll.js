@@ -50,6 +50,9 @@ export default class Scroll {
         })
 
         E.on('keydown', window, e => {
+            if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'PageUp' || e.key === 'PageDown' || e.key === 'Home' || e.key === 'End' || e.key === 'Tab') {
+                window.scrollTo(0, -this.scrollPos)
+            }
             if( e.key === 'Tab' ) {
                 this.toggleFixedContainer()
             }
