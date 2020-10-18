@@ -125,7 +125,7 @@ export default class Scroll {
 
         if (this.options.limitLerpRate) {
             this.time = performance.now() * 0.001
-            this.delta = (this.time - this.startTime) * 60
+            this.delta = Math.min((this.time - this.startTime) * 60, 1)
             this.startTime = this.time
         }
 
