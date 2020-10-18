@@ -2438,6 +2438,10 @@ var Scroll_Scroll = /*#__PURE__*/function () {
       window.scrollTo(0, -_this.scrollPos);
     });
     src_E.on('keydown', window, function (e) {
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'PageUp' || e.key === 'PageDown' || e.key === 'Home' || e.key === 'End' || e.key === 'Tab') {
+        window.scrollTo(0, -_this.scrollPos);
+      }
+
       if (e.key === 'Tab') {
         _this.toggleFixedContainer();
       }
@@ -2508,7 +2512,7 @@ var Scroll_Scroll = /*#__PURE__*/function () {
 
       if (this.options.limitLerpRate) {
         this.time = performance.now() * 0.001;
-        this.delta = (this.time - this.startTime) * 60;
+        this.delta = Math.min((this.time - this.startTime) * 60, 1);
         this.startTime = this.time;
       }
 
