@@ -2414,6 +2414,7 @@ var Scroll_Scroll = /*#__PURE__*/function () {
     this.wheeling = false;
     this.wheel = true;
     this.horizontalScroll = false;
+    this.touchScroll = false;
     this.ease = Store_default.a.isTouch ? this.options.touchEase : this.options.ease;
     this.delta = 1;
     this.time = this.startTime = performance.now();
@@ -2422,12 +2423,22 @@ var Scroll_Scroll = /*#__PURE__*/function () {
       if (Store_default.a.isTouch) this.options.customScrollbar = false;
       this.smoothSetup();
     } else {
+      this.touchScroll = true;
+      document.documentElement.classList.add('asscroll-touch');
       this.options.customScrollbar = false;
+      src_E.on('scroll', this.scrollContainer, function (e) {
+        src_E.emit(Store_default.a.events.SCROLL, {
+          event: e
+        });
+      }, {
+        passive: true
+      });
     } // enable smooth scroll if mouse is detected
 
 
     src_E.on(Store_default.a.events.TOUCHMOUSE, function () {
       if (!_this.options.disableOnTouch) return;
+      _this.touchScroll = false;
       _this.options.customScrollbar = _this.scrollbarCheck;
 
       _this.smoothSetup();
@@ -2487,7 +2498,7 @@ var Scroll_Scroll = /*#__PURE__*/function () {
         this.wheel = true;
         return;
       } else {
-        this.scrollPos = -window.scrollY;
+        this.scrollPos = this.touchScroll ? -this.scrollContainer.scrollTop : -window.scrollY;
         this.wheel = false;
 
         if (Store_default.a.isTouch && this.options.disableOnTouch) {
@@ -2617,6 +2628,11 @@ var Scroll_Scroll = /*#__PURE__*/function () {
     value: function scrollTo(y) {
       var emitEvent = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       this.scrollPos = y;
+
+      if (Store_default.a.isTouch && this.options.disableOnTouch) {
+        this.scrollContainer.scrollTo(0, -this.scrollPos);
+      }
+
       this.clamp();
       this.syncScroll = true;
       if (emitEvent) src_E.emit(Store_default.a.events.COMBOSCROLL, this.scrollPos);
@@ -2704,7 +2720,7 @@ var src_ASScroll = /*#__PURE__*/function () {
         _ref$disableNativeScr = _ref.disableNativeScrollbar,
         disableNativeScrollbar = _ref$disableNativeScr === void 0 ? true : _ref$disableNativeScr,
         _ref$disableOnTouch = _ref.disableOnTouch,
-        disableOnTouch = _ref$disableOnTouch === void 0 ? false : _ref$disableOnTouch,
+        disableOnTouch = _ref$disableOnTouch === void 0 ? true : _ref$disableOnTouch,
         _ref$disableRaf = _ref.disableRaf,
         disableRaf = _ref$disableRaf === void 0 ? false : _ref$disableRaf,
         _ref$disableResize = _ref.disableResize,
