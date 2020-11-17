@@ -15,7 +15,7 @@ export default class ASScroll {
         scrollbarHandleEl = '.asscrollbar__handle',
         scrollbarStyles = true,
         disableNativeScrollbar = true,
-        disableOnTouch = false,
+        disableOnTouch = true,
         disableRaf = false,
         disableResize = false,
         limitLerpRate = true

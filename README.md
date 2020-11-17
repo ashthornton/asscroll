@@ -90,7 +90,7 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 | `scrollbarHandleEl`      | `String`  | `.asscrollbar__handle`  | The grabbable bar element in the custom scrollbar                                          |
 | `scrollbarStyles`        | `Boolean` | `true`                  | Include the default scrollbar CSS                                                          |
 | `disableNativeScrollbar` | `Boolean` | `true`                  | Disables the browser's scrollbar                                                           |
-| `disableOnTouch`         | `Boolean` | `false`                 | Set this to `true` to disable on touch devices and use native scroll                       |
+| `disableOnTouch`         | `Boolean` | `true`                 | Set this to `false` to transform the scroll element on touch devices              |
 | `disableRaf`             | `Boolean` | `false`                 | Disable internal requestAnimationFrame loop in order to use an external one                |
 | `disableResize`          | `Boolean` | `false`                 | Disable internal resize event on the window in order to use an external one                |
 | `limitLerpRate`          | `Boolean` | `true`                 | Match lerp speed on >60Hz displays to that of a 60Hz display              |

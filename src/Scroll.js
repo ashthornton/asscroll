@@ -25,6 +25,7 @@ export default class Scroll {
         this.wheeling = false
         this.wheel = true
         this.horizontalScroll = false
+        this.touchScroll = false
         this.ease = Store.isTouch ? this.options.touchEase : this.options.ease
 
         this.delta = 1
@@ -34,12 +35,16 @@ export default class Scroll {
             if( Store.isTouch ) this.options.customScrollbar = false
             this.smoothSetup()
         } else {
+            this.touchScroll = true
+            document.documentElement.classList.add('asscroll-touch')
             this.options.customScrollbar = false
+            E.on('scroll', this.scrollContainer, e => { E.emit(Store.events.SCROLL, { event: e }) }, { passive: true })
         }
 
         // enable smooth scroll if mouse is detected
         E.on(Store.events.TOUCHMOUSE, () => {
             if (!this.options.disableOnTouch) return
+            this.touchScroll = false
             this.options.customScrollbar = this.scrollbarCheck
             this.smoothSetup()
             this.onResize()
@@ -103,7 +108,7 @@ export default class Scroll {
 
         } else {
 
-            this.scrollPos = -window.scrollY
+            this.scrollPos = this.touchScroll ? -this.scrollContainer.scrollTop : -window.scrollY
             
             this.wheel = false
             if( Store.isTouch && this.options.disableOnTouch ) {
@@ -225,6 +230,9 @@ export default class Scroll {
 
     scrollTo( y, emitEvent = true ) {
         this.scrollPos = y
+        if( Store.isTouch && this.options.disableOnTouch ) {
+            this.scrollContainer.scrollTo(0, -this.scrollPos)
+        }
         this.clamp()
         this.syncScroll = true
         if (emitEvent) E.emit(Store.events.COMBOSCROLL, this.scrollPos)
