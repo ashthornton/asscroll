@@ -2583,7 +2583,8 @@ var Scroll_Scroll = /*#__PURE__*/function () {
         Store_default.a.body.style.removeProperty('height');
 
         if (reset) {
-          window.scrollTo(0, 0);
+          this.scrollPos = this.smoothScrollPos = 0;
+          this.scrollTo(0, false);
         }
       } else {
         if (reset) {
@@ -2595,8 +2596,7 @@ var Scroll_Scroll = /*#__PURE__*/function () {
       }
 
       if (restore) {
-        this.scrollPos = this.prevScrollPos;
-        window.scrollTo(0, -this.prevScrollPos);
+        this.scrollTo(this.prevScrollPos, false);
       }
 
       src_E.on(Store_default.a.events.WHEEL, this.onScroll);
