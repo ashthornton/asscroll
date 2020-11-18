@@ -187,7 +187,8 @@ export default class Scroll {
         if( Store.isTouch && this.options.disableOnTouch ) {
             Store.body.style.removeProperty('height')
             if( reset ) {
-                window.scrollTo(0, 0)
+                this.scrollPos = this.smoothScrollPos = 0
+                this.scrollTo(0, false)
             }
         } else {
             if( reset ) {
@@ -198,8 +199,7 @@ export default class Scroll {
         }
 
         if( restore ) {
-            this.scrollPos = this.prevScrollPos
-            window.scrollTo( 0, -this.prevScrollPos )
+            this.scrollTo(this.prevScrollPos, false)
         }
         
         E.on(Store.events.WHEEL, this.onScroll)
