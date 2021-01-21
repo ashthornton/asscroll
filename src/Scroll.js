@@ -108,7 +108,11 @@ export default class Scroll {
 
         } else {
 
-            this.scrollPos = this.touchScroll ? -this.scrollContainer.scrollTop : -window.scrollY
+            if (this.touchScroll) {
+                this.scrollPos = this.horizontalScroll ? -this.scrollContainer.scrollLeft : -this.scrollContainer.scrollTop
+            } else {
+                this.scrollPos = -window.scrollY
+            }
             
             this.wheel = false
             if( Store.isTouch && this.options.disableOnTouch ) {
@@ -231,7 +235,11 @@ export default class Scroll {
     scrollTo( y, emitEvent = true ) {
         this.scrollPos = y
         if( Store.isTouch && this.options.disableOnTouch ) {
-            this.scrollContainer.scrollTo(0, -this.scrollPos)
+            if (this.horizontalScroll) {
+                this.scrollContainer.scrollTo(-this.scrollPos, 0)
+            } else {
+                this.scrollContainer.scrollTo(0, -this.scrollPos)
+            }
         }
         this.clamp()
         this.syncScroll = true
