@@ -32,6 +32,7 @@ Demos
 - [Wray and Nephew](https://straightfromyard.co.uk/)
 - [Havoc](https://www.havoc.co/)
 - [FanFan](https://fanfan.fan/)
+- [Eder Anaya](https://ederanaya.me/)
 
 Table of contents
 =================
