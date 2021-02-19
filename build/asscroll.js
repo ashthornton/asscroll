@@ -2463,14 +2463,45 @@ var Scroll_Scroll = /*#__PURE__*/function () {
   Scroll_createClass(Scroll, [{
     key: "smoothSetup",
     value: function smoothSetup() {
-      Object.assign(this.scrollContainer.style, {
-        position: 'fixed',
-        top: '0px',
-        left: '0px',
-        width: '100%',
-        height: '100%',
-        contain: 'content'
-      });
+      if (this.options.transformOnTouch) {
+        Object.assign(this.scrollContainer.style, {
+          position: 'absolute',
+          top: '0px',
+          left: '0px',
+          bottom: '-1px',
+          right: '0px',
+          overflowY: 'scroll'
+        });
+        src_E.on('scroll', this.scrollContainer, function (e) {
+          src_E.emit(Store_default.a.events.SCROLL, {
+            event: e
+          });
+        }, {
+          passive: true
+        });
+        this.touchScrollBuffer = document.createElement('div');
+        Object.assign(this.touchScrollBuffer.style, {
+          position: 'relative',
+          overflow: 'hidden',
+          marginBottom: '1px',
+          pointerEvents: 'none'
+        });
+        this.scrollContainer.appendChild(this.touchScrollBuffer);
+
+        for (var i = 0; i < this.scrollTargetsLength; i++) {
+          this.scrollTargets[i].style.position = 'fixed';
+          this.scrollTargets[i].style.top = 0;
+        }
+      } else {
+        Object.assign(this.scrollContainer.style, {
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          contain: 'content'
+        });
+      }
 
       if (this.options.customScrollbar) {
         this.scrollbar = new Scrollbar_Scrollbar(this);
@@ -2501,7 +2532,11 @@ var Scroll_Scroll = /*#__PURE__*/function () {
         if (this.touchScroll) {
           this.scrollPos = this.horizontalScroll ? -this.scrollContainer.scrollLeft : -this.scrollContainer.scrollTop;
         } else {
-          this.scrollPos = -window.scrollY;
+          if (this.options.transformOnTouch) {
+            this.scrollPos = this.horizontalScroll ? -this.scrollContainer.scrollLeft : -this.scrollContainer.scrollTop;
+          } else {
+            this.scrollPos = -window.scrollY;
+          }
         }
 
         this.wheel = false;
@@ -2662,7 +2697,13 @@ var Scroll_Scroll = /*#__PURE__*/function () {
 
       var windowSize = this.horizontalScroll ? Store_default.a.windowSize.w : Store_default.a.windowSize.h;
       this.maxScroll = this.scrollLength > windowSize ? -(this.scrollLength - windowSize) : 0;
-      Store_default.a.body.style.height = this.scrollLength + 'px';
+
+      if (this.touchScrollBuffer) {
+        this.touchScrollBuffer.style.height = this.scrollLength + 'px';
+      } else {
+        Store_default.a.body.style.height = this.scrollLength + 'px';
+      }
+
       this.options.customScrollbar && this.scrollbar.onResize();
     }
   }, {
@@ -2726,6 +2767,8 @@ var src_ASScroll = /*#__PURE__*/function () {
         scrollbarHandleEl = _ref$scrollbarHandleE === void 0 ? '.asscrollbar__handle' : _ref$scrollbarHandleE,
         _ref$scrollbarStyles = _ref.scrollbarStyles,
         scrollbarStyles = _ref$scrollbarStyles === void 0 ? true : _ref$scrollbarStyles,
+        _ref$transformOnTouch = _ref.transformOnTouch,
+        transformOnTouch = _ref$transformOnTouch === void 0 ? false : _ref$transformOnTouch,
         _ref$disableNativeScr = _ref.disableNativeScrollbar,
         disableNativeScrollbar = _ref$disableNativeScr === void 0 ? true : _ref$disableNativeScr,
         _ref$disableOnTouch = _ref.disableOnTouch,
@@ -2753,6 +2796,7 @@ var src_ASScroll = /*#__PURE__*/function () {
       scrollbarEl,
       scrollbarHandleEl,
       scrollbarStyles,
+      transformOnTouch,
       disableNativeScrollbar,
       disableOnTouch,
       limitLerpRate
