@@ -14,6 +14,7 @@ export default class ASScroll {
         scrollbarEl = '.asscrollbar',
         scrollbarHandleEl = '.asscrollbar__handle',
         scrollbarStyles = true,
+        transformOnTouch = false,
         disableNativeScrollbar = true,
         disableOnTouch = true,
         disableRaf = false,
@@ -37,6 +38,7 @@ export default class ASScroll {
             scrollbarEl,
             scrollbarHandleEl,
             scrollbarStyles,
+            transformOnTouch,
             disableNativeScrollbar,
             disableOnTouch,
             limitLerpRate

@@ -69,14 +69,42 @@ export default class Scroll {
 
     smoothSetup() {
 
-        Object.assign(this.scrollContainer.style, {
-            position: 'fixed',
-            top: '0px',
-            left: '0px',
-            width: '100%',
-            height: '100%',
-            contain: 'content'
-        })
+        if (this.options.transformOnTouch) {
+            Object.assign(this.scrollContainer.style, {
+                position: 'absolute',
+                top: '0px',
+                left: '0px',
+                bottom: '-1px',
+                right: '0px',
+                overflowY: 'scroll'
+            })
+        
+            E.on('scroll', this.scrollContainer, e => { E.emit(Store.events.SCROLL, { event: e }) }, { passive: true })
+
+            this.touchScrollBuffer = document.createElement('div')
+            Object.assign(this.touchScrollBuffer.style, {
+                position: 'relative',
+                overflow: 'hidden',
+                marginBottom: '1px',
+                pointerEvents: 'none'
+            })
+            this.scrollContainer.appendChild(this.touchScrollBuffer)
+
+            for (let i = 0; i < this.scrollTargetsLength; i++) {
+                this.scrollTargets[i].style.position = 'fixed'
+                this.scrollTargets[i].style.top = 0
+            }
+
+        } else {
+            Object.assign(this.scrollContainer.style, {
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                contain: 'content'
+            })
+        }
 
         if( this.options.customScrollbar ) {
             this.scrollbar = new Scrollbar(this)
@@ -111,7 +139,11 @@ export default class Scroll {
             if (this.touchScroll) {
                 this.scrollPos = this.horizontalScroll ? -this.scrollContainer.scrollLeft : -this.scrollContainer.scrollTop
             } else {
-                this.scrollPos = -window.scrollY
+                if (this.options.transformOnTouch) {
+                    this.scrollPos = this.horizontalScroll ? -this.scrollContainer.scrollLeft : -this.scrollContainer.scrollTop
+                } else {
+                    this.scrollPos = -window.scrollY
+                }
             }
             
             this.wheel = false
@@ -260,7 +292,11 @@ export default class Scroll {
         
         const windowSize = this.horizontalScroll ? Store.windowSize.w : Store.windowSize.h
         this.maxScroll = this.scrollLength > windowSize ? -(this.scrollLength - windowSize) : 0
-        Store.body.style.height = this.scrollLength + 'px'
+        if (this.touchScrollBuffer) {
+            this.touchScrollBuffer.style.height = this.scrollLength + 'px'
+        } else {
+            Store.body.style.height = this.scrollLength + 'px'
+        }
         this.options.customScrollbar && this.scrollbar.onResize()
     }
 
