@@ -2582,6 +2582,7 @@ var Scroll_Scroll = /*#__PURE__*/function () {
         this.scrollTargetsLength = this.scrollTargets.length;
       }
 
+      !this.scrollBlockElements && this.updateScrollBlockElements();
       this.iframes = this.scrollContainer.querySelectorAll('iframe');
 
       if (Store_default.a.isTouch && this.options.disableOnTouch) {
@@ -2673,6 +2674,20 @@ var Scroll_Scroll = /*#__PURE__*/function () {
       }
     }
   }, {
+    key: "updateScrollBlockElements",
+    value: function updateScrollBlockElements() {
+      this.scrollBlockElements = document.querySelectorAll(this.options.blockScrollClass);
+
+      for (var i = 0; i < this.scrollBlockElements.length; i++) {
+        this.scrollBlockElements[i].addEventListener('wheel', this.blockScrollEvent);
+      }
+    }
+  }, {
+    key: "blockScrollEvent",
+    value: function blockScrollEvent(e) {
+      e.stopPropagation();
+    }
+  }, {
     key: "toggleFixedContainer",
     value: function toggleFixedContainer() {
       var _this2 = this;
@@ -2735,7 +2750,9 @@ var src_ASScroll = /*#__PURE__*/function () {
         _ref$disableResize = _ref.disableResize,
         disableResize = _ref$disableResize === void 0 ? false : _ref$disableResize,
         _ref$limitLerpRate = _ref.limitLerpRate,
-        limitLerpRate = _ref$limitLerpRate === void 0 ? true : _ref$limitLerpRate;
+        limitLerpRate = _ref$limitLerpRate === void 0 ? true : _ref$limitLerpRate,
+        _ref$blockScrollClass = _ref.blockScrollClass,
+        blockScrollClass = _ref$blockScrollClass === void 0 ? '.asscroll-block' : _ref$blockScrollClass;
 
     src_classCallCheck(this, ASScroll);
 
@@ -2755,7 +2772,8 @@ var src_ASScroll = /*#__PURE__*/function () {
       scrollbarStyles,
       disableNativeScrollbar,
       disableOnTouch,
-      limitLerpRate
+      limitLerpRate,
+      blockScrollClass
     });
   }
 
