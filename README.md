@@ -96,6 +96,7 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 | `disableRaf`             | `Boolean` | `false`                 | Disable internal requestAnimationFrame loop in order to use an external one                |
 | `disableResize`          | `Boolean` | `false`                 | Disable internal resize event on the window in order to use an external one                |
 | `limitLerpRate`          | `Boolean` | `true`                 | Match lerp speed on >60Hz displays to that of a 60Hz display              |
+| `blockScrollClass`          | `String` | `.asscroll-block`                 | Add this to elements that should prevent the page from scrolling whilst hovered. Useful for scrollable elements (with `overflow`) within the ASScroll page              |
 
 ## Methods
 
@@ -103,7 +104,7 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 
 - `restore` - restores the previous scroll position when `disable()` was last called
 - `reset` - force resetting scroll position to 0
-- `newTarget` - pass in a selected DOM node to set a new scroll target i.e. when loading in a new page via PJAX.
+- `newTarget` - pass in a selected DOM node to set a new scroll target i.e. when dynamically loading in a new page via AJAX.
 - `horizontalScroll` - set to true if you want the content to scroll horizontally
 
 `disable()` - Disable scroll
