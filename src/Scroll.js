@@ -64,6 +64,7 @@ export default class Scroll {
         })
 
         E.delegate('click', 'a[href^="#"]', this.toggleFixedContainer)
+        E.delegate('wheel', this.options.blockScrollClass, this.blockScrollEvent)
 
     }
 
@@ -185,8 +186,6 @@ export default class Scroll {
             this.scrollTargets = newTargets.length ? newTargets : [newTargets]
             this.scrollTargetsLength = this.scrollTargets.length
         }
-
-        !this.scrollBlockElements && this.updateScrollBlockElements()
         
         this.iframes = this.scrollContainer.querySelectorAll('iframe')
 
@@ -269,13 +268,6 @@ export default class Scroll {
     toggleIframes(enable) {
         for (let i = 0; i < this.iframes.length; i++) {
             this.iframes[i].style.pointerEvents = enable ? 'auto' : 'none'
-        }
-    }
-
-    updateScrollBlockElements() {
-        this.scrollBlockElements = document.querySelectorAll(this.options.blockScrollClass)
-        for (let i = 0; i < this.scrollBlockElements.length; i++) {
-            this.scrollBlockElements[i].addEventListener('wheel', this.blockScrollEvent)
         }
     }
 
