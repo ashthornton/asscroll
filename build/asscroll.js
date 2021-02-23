@@ -2458,6 +2458,7 @@ var Scroll_Scroll = /*#__PURE__*/function () {
       }
     });
     src_E.delegate('click', 'a[href^="#"]', this.toggleFixedContainer);
+    src_E.delegate('wheel', this.options.blockScrollClass, this.blockScrollEvent);
   }
 
   Scroll_createClass(Scroll, [{
@@ -2582,7 +2583,6 @@ var Scroll_Scroll = /*#__PURE__*/function () {
         this.scrollTargetsLength = this.scrollTargets.length;
       }
 
-      !this.scrollBlockElements && this.updateScrollBlockElements();
       this.iframes = this.scrollContainer.querySelectorAll('iframe');
 
       if (Store_default.a.isTouch && this.options.disableOnTouch) {
@@ -2671,15 +2671,6 @@ var Scroll_Scroll = /*#__PURE__*/function () {
     value: function toggleIframes(enable) {
       for (var i = 0; i < this.iframes.length; i++) {
         this.iframes[i].style.pointerEvents = enable ? 'auto' : 'none';
-      }
-    }
-  }, {
-    key: "updateScrollBlockElements",
-    value: function updateScrollBlockElements() {
-      this.scrollBlockElements = document.querySelectorAll(this.options.blockScrollClass);
-
-      for (var i = 0; i < this.scrollBlockElements.length; i++) {
-        this.scrollBlockElements[i].addEventListener('wheel', this.blockScrollEvent);
       }
     }
   }, {
