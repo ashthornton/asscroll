@@ -4,9 +4,7 @@ import Store from './Store'
 import E from './E'
 
 export default class Events {
-
-    constructor( options = {} ) {
-
+    constructor(options = {}) {
         this.options = options
 
         E.bindAll(this, ['onRaf'])
@@ -20,34 +18,31 @@ export default class Events {
             RESIZE: 6,
             TOUCHMOUSE: 7,
         }
-        
-        this.addEvents()
 
+        this.addEvents()
     }
 
     addEvents() {
-
-        if( !this.options.disableRaf ) {
+        if (!this.options.disableRaf) {
             requestAnimationFrame(this.onRaf)
         }
 
-        if( !this.options.disableResize ) {
-            E.on('resize', window, debounce( () => { this.onResize() }, 150 ))
+        if (!this.options.disableResize) {
+            E.on('resize', window, debounce(() => { this.onResize() }, 150))
         }
 
         this.onScroll()
 
-        if( 'ontouchstart' in document.documentElement ) {
+        if ('ontouchstart' in document.documentElement) {
             Store.isTouch = true
             // touch has been detected in the browser, but let's check for a mouse input
             this.detectMouse()
         }
-
     }
 
     onRaf() {
         E.emit(Store.events.RAF)
-        if( this.options.disableRaf ) return
+        if (this.options.disableRaf) return
         requestAnimationFrame(this.onRaf)
     }
 
@@ -56,15 +51,15 @@ export default class Events {
         E.on('scroll', window, e => { E.emit(Store.events.SCROLL, { event: e }) }, { passive: true })
     }
 
-    onResize( windowWidth, windowHeight ) {
-        Store.windowSize.w = windowWidth || window.innerWidth
-        Store.windowSize.h = windowHeight || window.innerHeight
+    onResize({ width, height } = {}) {
+        Store.windowSize.w = width || window.innerWidth
+        Store.windowSize.h = height || window.innerHeight
         E.emit(Store.events.RESIZE)
     }
 
     detectMouse() {
         window.addEventListener('mousemove', function detectMouse(e) {
-            if( Math.abs(e.movementX) > 0 || Math.abs(e.movementY) > 0 ) {
+            if (Math.abs(e.movementX) > 0 || Math.abs(e.movementY) > 0) {
                 // mouse has moved on touch screen, not just a tap firing mousemove
                 Store.isTouch = false
                 E.emit(Store.events.TOUCHMOUSE)
@@ -72,5 +67,4 @@ export default class Events {
             }
         })
     }
-
 }

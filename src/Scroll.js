@@ -4,16 +4,14 @@ import Scrollbar from './Scrollbar'
 import normalizeWheel from './utils/normalizeWheel'
 
 export default class Scroll {
-
-    constructor( options = {} ) {
-
+    constructor(options = {}) {
         this.options = options
         this.scrollbarCheck = this.options.customScrollbar
 
         E.bindAll(this, ['onScroll', 'onRAF', 'onResize', 'toggleFixedContainer'])
 
-        this.scrollContainer = document.querySelector( this.options.element )
-        const possibleScrollTargets = this.scrollContainer.querySelectorAll( this.options.innerElement )
+        this.scrollContainer = document.querySelector(this.options.element)
+        const possibleScrollTargets = this.scrollContainer.querySelectorAll(this.options.innerElement)
         this.scrollTargets = possibleScrollTargets.length ? possibleScrollTargets : [this.scrollContainer.firstElementChild]
         this.scrollTargetsLength = this.scrollTargets.length
         this.scrollPos = this.smoothScrollPos = this.prevScrollPos = this.maxScroll = 0
@@ -31,8 +29,8 @@ export default class Scroll {
         this.delta = 1
         this.time = this.startTime = performance.now()
 
-        if( !Store.isTouch || !this.options.disableOnTouch ) {
-            if( Store.isTouch ) this.options.customScrollbar = false
+        if (!Store.isTouch || !this.options.disableOnTouch) {
+            if (Store.isTouch) this.options.customScrollbar = false
             this.smoothSetup()
         } else {
             this.touchScroll = true
@@ -58,18 +56,16 @@ export default class Scroll {
             if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'PageUp' || e.key === 'PageDown' || e.key === 'Home' || e.key === 'End' || e.key === 'Tab') {
                 window.scrollTo(0, -this.scrollPos)
             }
-            if( e.key === 'Tab' ) {
+            if (e.key === 'Tab') {
                 this.toggleFixedContainer()
             }
         })
 
         E.delegate('click', 'a[href^="#"]', this.toggleFixedContainer)
         E.delegate('wheel', this.options.blockScrollClass, this.blockScrollEvent)
-
     }
 
     smoothSetup() {
-
         Object.assign(this.scrollContainer.style, {
             position: 'fixed',
             top: '0px',
@@ -79,24 +75,22 @@ export default class Scroll {
             contain: 'content'
         })
 
-        if( this.options.customScrollbar ) {
+        if (this.options.customScrollbar) {
             this.scrollbar = new Scrollbar(this)
         }
 
         E.on(Store.events.RAF, this.onRAF)
         E.on(Store.events.RESIZE, this.onResize)
-
     }
 
     onScroll({ event }) {
-
-        if( !this.scrolling ) {
+        if (!this.scrolling) {
             this.options.customScrollbar && this.scrollbar.show()
             this.toggleIframes()
             this.scrolling = true
         }
 
-        if( !Store.isTouch && event.type === 'wheel' ) {
+        if (!Store.isTouch && event.type === 'wheel') {
 
             event.preventDefault()
 
@@ -104,7 +98,7 @@ export default class Scroll {
             this.wheeling = true
             this.syncScroll = true
             this.wheel = true
-            
+
             return
 
         } else {
@@ -114,26 +108,24 @@ export default class Scroll {
             } else {
                 this.scrollPos = -window.scrollY
             }
-            
+
             this.wheel = false
-            if( Store.isTouch && this.options.disableOnTouch ) {
+            if (Store.isTouch && this.options.disableOnTouch) {
                 this.smoothScrollPos = this.scrollPos
             }
             E.emit(Store.events.COMBOSCROLL, this.scrollPos)
         }
-
     }
 
     onRAF() {
+        if (!this.render) return
 
-        if( !this.render ) return
-
-        if( this.wheeling ) {
+        if (this.wheeling) {
             this.scrollPos += this.deltaY * -1
             this.wheeling = false
             E.emit(Store.events.COMBOSCROLL, this.scrollPos)
         }
-        
+
         this.clamp()
 
         if (this.options.limitLerpRate) {
@@ -142,13 +134,13 @@ export default class Scroll {
             this.startTime = this.time
         }
 
-        if( Math.abs( this.scrollPos - this.smoothScrollPos ) < 0.5 ) {
+        if (Math.abs(this.scrollPos - this.smoothScrollPos) < 0.5) {
             this.smoothScrollPos = this.scrollPos
-            if( this.syncScroll ) {
+            if (this.syncScroll) {
                 window.scrollTo(0, -this.scrollPos)
                 this.syncScroll = false
             }
-            if( this.scrolling ) {
+            if (this.scrolling) {
                 this.options.customScrollbar && this.scrollbar.hide()
                 this.toggleIframes(true)
                 this.scrolling = false
@@ -164,18 +156,16 @@ export default class Scroll {
         this.options.customScrollbar && this.scrollbar.transform()
 
         E.emit(Store.events.EXTERNALRAF, { scrollPos: this.scrollPos, smoothScrollPos: this.smoothScrollPos })
-
     }
 
     applyTransform(x, y) {
         for (let i = 0; i < this.scrollTargetsLength; i++) {
-            this.scrollTargets[i].style.transform = `translate3d(${ x }px, ${ y }px, 0px)`
+            this.scrollTargets[i].style.transform = `translate3d(${x}px, ${y}px, 0px)`
         }
     }
 
-    enable( restore = false, reset = false, newTargets = false, horizontalScroll = false ) {
-
-        if( this.enabled ) return
+    enable({ restore = false, reset = false, newTargets = false, horizontalScroll = false } = {}) {
+        if (this.enabled) return
         this.enabled = true
 
         this.render = true
@@ -186,38 +176,36 @@ export default class Scroll {
             this.scrollTargets = newTargets.length ? newTargets : [newTargets]
             this.scrollTargetsLength = this.scrollTargets.length
         }
-        
+
         this.iframes = this.scrollContainer.querySelectorAll('iframe')
 
-        if( Store.isTouch && this.options.disableOnTouch ) {
+        if (Store.isTouch && this.options.disableOnTouch) {
             Store.body.style.removeProperty('height')
-            if( reset ) {
+            if (reset) {
                 this.scrollPos = this.smoothScrollPos = 0
                 this.scrollTo(0, false)
             }
         } else {
-            if( reset ) {
+            if (reset) {
                 this.scrollPos = this.smoothScrollPos = 0
                 this.applyTransform(0, 0)
             }
             this.onResize()
         }
 
-        if( restore ) {
+        if (restore) {
             this.scrollTo(this.prevScrollPos, false)
         }
-        
+
         E.on(Store.events.WHEEL, this.onScroll)
         E.on(Store.events.SCROLL, this.onScroll)
-
     }
 
-    disable( inputOnly = false ) {
-
-        if( !this.enabled ) return
+    disable({ inputOnly = false } = {}) {
+        if (!this.enabled) return
         this.enabled = false
 
-        if( !inputOnly ) {
+        if (!inputOnly) {
             this.render = false
         }
 
@@ -226,16 +214,15 @@ export default class Scroll {
 
         this.prevScrollPos = this.scrollPos
         Store.body.style.height = '0px'
-
     }
 
     clamp() {
         this.scrollPos = Math.max(Math.min(this.scrollPos, 0), this.maxScroll)
     }
 
-    scrollTo( y, emitEvent = true ) {
+    scrollTo(y, emitEvent = true) {
         this.scrollPos = y
-        if( Store.isTouch && this.options.disableOnTouch ) {
+        if (Store.isTouch && this.options.disableOnTouch) {
             if (this.horizontalScroll) {
                 this.scrollContainer.scrollTo(-this.scrollPos, 0)
             } else {
@@ -258,7 +245,7 @@ export default class Scroll {
         } else {
             this.scrollLength = this.horizontalScroll ? this.scrollTargets[0].scrollWidth : this.scrollTargets[0].scrollHeight
         }
-        
+
         const windowSize = this.horizontalScroll ? Store.windowSize.w : Store.windowSize.h
         this.maxScroll = this.scrollLength > windowSize ? -(this.scrollLength - windowSize) : 0
         Store.body.style.height = this.scrollLength + 'px'
@@ -286,5 +273,4 @@ export default class Scroll {
             this.applyTransform(x, y)
         })
     }
-
 }
