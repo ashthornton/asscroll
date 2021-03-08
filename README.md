@@ -11,7 +11,7 @@
 - No special cases to cater for when handling manual key detection (i.e. pressing space in a form input)
 - Doesn't stop working when hovering over an iframe
 - Handles hardware that doesn't fire the 'wheel' event i.e. Windows trackpads in Edge + IE
-- No lag between DOM and WebGL elements on mobile, whilst retaining native interia scroll
+- No lag between DOM and WebGL elements on mobile, whilst retaining native inertia scroll
 
 #### Other Features:
 - Horizontal scroll
