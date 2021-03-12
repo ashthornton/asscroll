@@ -28,12 +28,13 @@ Demos
 - [Using GSAP's ScrollTrigger with ASScroll](https://codepen.io/ashthornton/pen/PoZRwPW)
 
 ### Sites using ASScroll
-- [Shape Studio](https://shapestudio.co.uk/)
-- [Wray and Nephew](https://straightfromyard.co.uk/)
-- [Havoc](https://www.havoc.co/)
-- [FanFan](https://fanfan.fan/)
-- [Eder Anaya](https://ederanaya.me/)
 - [Lewa House](https://lewahouse.com/)
+- [Eder Anaya](https://ederanaya.me/)
+- [FanFan](https://fanfan.fan/)
+- [Havoc](https://www.havoc.co/)
+- [Wray and Nephew](https://straightfromyard.co.uk/)
+- [Shape Studio](https://shapestudio.co.uk/)
+
 
 Table of contents
 =================
