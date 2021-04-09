@@ -28,6 +28,7 @@ Demos
 - [Using GSAP's ScrollTrigger with ASScroll](https://codepen.io/ashthornton/pen/PoZRwPW)
 
 ### Sites using ASScroll
+- [Superlist](https://superlist.com/)
 - [Lewa House](https://lewahouse.com/)
 - [Eder Anaya](https://ederanaya.me/)
 - [FanFan](https://fanfan.fan/)
