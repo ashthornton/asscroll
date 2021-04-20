@@ -2415,6 +2415,8 @@ var Scroll_Scroll = /*#__PURE__*/function () {
     this.wheel = true;
     this.horizontalScroll = false;
     this.touchScroll = false;
+    this.firstResize = true;
+    this.preventResizeScroll = false;
     this.ease = Store_default.a.isTouch ? this.options.touchEase : this.options.ease;
     this.delta = 1;
     this.time = this.startTime = performance.now();
@@ -2499,6 +2501,11 @@ var Scroll_Scroll = /*#__PURE__*/function () {
         this.wheel = true;
         return;
       } else {
+        if (this.preventResizeScroll) {
+          this.preventResizeScroll = false;
+          return;
+        }
+
         if (this.touchScroll) {
           this.scrollPos = this.horizontalScroll ? -this.scrollContainer.scrollLeft : -this.scrollContainer.scrollTop;
         } else {
@@ -2593,6 +2600,8 @@ var Scroll_Scroll = /*#__PURE__*/function () {
           this.scrollTo(0, false);
         }
       } else {
+        this.firstResize = true;
+
         if (reset) {
           this.scrollPos = this.smoothScrollPos = 0;
           this.applyTransform(0, 0);
@@ -2663,8 +2672,14 @@ var Scroll_Scroll = /*#__PURE__*/function () {
 
       var windowSize = this.horizontalScroll ? Store_default.a.windowSize.w : Store_default.a.windowSize.h;
       this.maxScroll = this.scrollLength > windowSize ? -(this.scrollLength - windowSize) : 0;
+
+      if (!this.firstResize) {
+        this.preventResizeScroll = true;
+      }
+
       Store_default.a.body.style.height = this.scrollLength + 'px';
       this.options.customScrollbar && this.scrollbar.onResize();
+      this.firstResize = false;
     }
   }, {
     key: "toggleIframes",
