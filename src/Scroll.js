@@ -165,6 +165,7 @@ export default class Scroll {
     }
 
     enable({ restore = false, reset = false, newTargets = false, horizontalScroll = false } = {}) {
+        console.log(reset, restore)
         if (this.enabled) return
         this.enabled = true
 

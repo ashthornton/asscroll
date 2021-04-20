@@ -100,7 +100,7 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 
 ## Methods
 
-`enable( restore = false, reset = false, newTarget = false, horizontalScroll = false )` - Enable scroll
+`enable({ restore = false, reset = false, newTarget = false, horizontalScroll = false })` - Enable scroll
 
 - `restore` - restores the previous scroll position when `disable()` was last called
 - `reset` - force resetting scroll position to 0
@@ -111,15 +111,15 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 
 `onRaf()` - Trigger the internal animation frame loop
 
-`onResize( windowWidth = null, windowHeight = null )` - Trigger the internal resize event
+`onResize({ windowWidth = null, windowHeight = null })` - Trigger the internal resize event
 
 - Pass window size manually to this function if you're already getting it in your own resize handler.
 
-`scrollTo( y, emitEvent = true )` - Scroll to a y coordinate on the page. Choose whether to emit the `'scroll'` event.
+`scrollTo(y, emitEvent = true)` - Scroll to a y coordinate on the page. Choose whether to emit the `'scroll'` event.
 
-`on( event, callback )` - Add a callback to an event
+`on(event, callback)` - Add a callback to an event
 
-`off( event, callback )` - Remove a callback from an event
+`off(event, callback)` - Remove a callback from an event
 
 ## Properties
 
