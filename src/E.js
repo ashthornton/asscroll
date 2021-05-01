@@ -1,4 +1,3 @@
-import e from '@unseenco/e'
+import E from '@unseenco/e'
 
-const E = new e()
-export default E
+export default new E()

@@ -4,68 +4,63 @@ import store from './store'
 import E from './E'
 
 export default class Events {
-    constructor(options = {}) {
-        this.options = options
+	static INTERNALRAF = 'raf:internal'
+	static EXTERNALRAF = 'raf:external'
+	static WHEEL = 'wheel'
+	static INTERNALSCROLL = 'scroll:internal'
+	static EXTERNALSCROLL = 'scroll:external'
+	static RESIZE = 'resize'
+	static MOUSEDETECTED = 'mouseDetected'
+	static SCROLLEND = 'scrollEnd'
 
-        E.bindAll(this, ['onRaf'])
+	constructor(options = {}) {
+		this.options = options
+		this.addEvents()
+	}
 
-        store.eventNames = {
-            RAF: 1,
-            EXTERNALRAF: 2,
-            SCROLL: 3,
-            WHEEL: 4,
-            COMBOSCROLL: 5,
-            RESIZE: 6,
-            TOUCHMOUSE: 7,
-            SCROLLEND: 8
-        }
+	addEvents() {
+		if (!this.options.disableRaf) {
+			requestAnimationFrame(this.onRaf)
+		}
 
-        this.addEvents()
-    }
+		if (!this.options.disableResize) {
+			E.on('resize', window, debounce(() => { this.onResize() }, 150))
+		}
 
-    addEvents() {
-        if (!this.options.disableRaf) {
-            requestAnimationFrame(this.onRaf)
-        }
+		this.onScroll()
 
-        if (!this.options.disableResize) {
-            E.on('resize', window, debounce(() => { this.onResize() }, 150))
-        }
+		if ('ontouchstart' in document.documentElement) {
+			store.isTouch = true
+			// touch has been detected in the browser, but let's check for a mouse input
+			this.detectMouse()
+		}
+	}
 
-        this.onScroll()
+	onRaf = () => {
+		E.emit(Events.INTERNALRAF)
+		if (this.options.disableRaf) return
+		requestAnimationFrame(this.onRaf)
+	}
 
-        if ('ontouchstart' in document.documentElement) {
-            store.isTouch = true
-            // touch has been detected in the browser, but let's check for a mouse input
-            this.detectMouse()
-        }
-    }
+	onScroll() {
+		E.on('wheel', window, e => { E.emit(Events.WHEEL, { event: e }) }, { passive: false })
+		E.on('scroll', window, e => { E.emit(Events.SCROLL, { event: e }) }, { passive: true })
+	}
 
-    onRaf() {
-        E.emit(store.eventNames.RAF)
-        if( this.options.disableRaf ) return
-        requestAnimationFrame(this.onRaf)
-    }
+	onResize(windowWidth, windowHeight) {
+		store.windowSize.w = windowWidth || window.innerWidth
+		store.windowSize.h = windowHeight || window.innerHeight
+		E.emit(Events.RESIZE)
+	}
 
-    onScroll() {
-        E.on('wheel', window, e => { E.emit(store.eventNames.WHEEL, { event: e }) }, { passive: false })
-        E.on('scroll', window, e => { E.emit(store.eventNames.SCROLL, { event: e }) }, { passive: true })
-    }
-
-    onResize( windowWidth, windowHeight ) {
-        store.windowSize.w = windowWidth || window.innerWidth
-        store.windowSize.h = windowHeight || window.innerHeight
-        E.emit(store.eventNames.RESIZE)
-    }
-
-    detectMouse() {
-        window.addEventListener('mousemove', function detectMouse(e) {
-            if (Math.abs(e.movementX) > 0 || Math.abs(e.movementY) > 0) {
-                // mouse has moved on touch screen, not just a tap firing mousemove
-                store.isTouch = false
-                E.emit(store.events.TOUCHMOUSE)
-                window.removeEventListener('mousemove', detectMouse)
-            }
-        })
-    }
+	detectMouse() {
+		window.addEventListener('mousemove', function detectMouse(e) {
+			if (Math.abs(e.movementX) > 0 || Math.abs(e.movementY) > 0) {
+				// mouse has moved on touch screen, not just a tap firing mousemove
+				store.isTouch = false
+				E.emit(Events.MOUSEDETECTED)
+				window.removeEventListener('mousemove', detectMouse)
+			}
+		})
+	}
 }

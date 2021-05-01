@@ -39,7 +39,7 @@ module.exports = {
                   corejs: 3,
                   useBuiltIns: 'usage'
                 }]
-              ]
+              ],
             }
           },
           'eslint-loader'
