@@ -69,15 +69,20 @@ export default class ASScroll {
 
     /**
      * Enable ASScroll.
+     * 
+     * ```js
+     * asscroll.enable({ scrollTargets: document.querySelector('.scroll-element'), reset: true  })
+     * ```
+     * 
      * @param {Object} parameters
-     * @param {boolean} [parameters.restore = false] Restore the scroll position to where it was when disable() was called
+     * @param {boolean|NodeList|HTMLElement} [parameters.scrollTargets = false] Specify the new element(s) that should be transformed
      * @param {boolean} [parameters.reset = false] Reset the scroll position to 0
-     * @param {boolean|NodeList|HTMLElement} [parameters.newTargets = false] Specify the new element(s) that should be transformed
+     * @param {boolean} [parameters.restore = false] Restore the scroll position to where it was when disable() was called
      * @param {boolean} [parameters.horizontalScroll = false] Toggle horizontal scrolling
      */
     enable(parameters) {
-        if (typeof parameters !== 'object') {
-            console.warn('Please pass an object with your parameters. Since 1.8')
+        if (parameters !== undefined && typeof parameters !== 'object') {
+            console.warn('ASScroll: Please pass an object with your parameters. Since 2.0')
         }
         this.Scroll.enable(parameters)
     }
@@ -88,8 +93,8 @@ export default class ASScroll {
      * @param {boolean} [parameters.inputOnly = false] Only disable the ability to manually scroll (still allow transforms)
      */
     disable(parameters) {
-        if (typeof parameters !== 'object') {
-            console.warn('Please pass an object with your parameters. Since 1.8')
+        if (parameters !== undefined && typeof parameters !== 'object') {
+            console.warn('ASScroll: Please pass an object with your parameters. Since 2.0')
         }
         this.Scroll.disable(parameters)
     }
@@ -114,11 +119,11 @@ export default class ASScroll {
     /**
      * Add an event listener.
      * @param {string} eventName Name of the event you wish to listen for
-     * @param {*} cb Callback function that should be executed when the event fires
+     * @param {function} cb Callback function that should be executed when the event fires
      */
     on(eventName, cb) {
         if (typeof cb !== 'function') {
-            console.error('Function not provided as second parameter')
+            console.error('ASScroll: Function not provided as second parameter')
             return
         }
 
@@ -132,12 +137,17 @@ export default class ASScroll {
             return
         }
 
-        console.warn(`"${eventName}" is not a valid event`)
+        console.warn(`ASScroll: "${eventName}" is not a valid event`)
     }
 
+    /**
+     * Remove an event listener.
+     * @param {string} eventName Name of the event
+     * @param {function} cb Callback function
+     */
     off(eventName, cb) {
         if (typeof cb !== 'function') {
-            console.error('Function not provided as second parameter')
+            console.error('ASScroll: Function not provided as second parameter')
             return
         }
 
@@ -151,7 +161,7 @@ export default class ASScroll {
             return
         }
 
-        console.warn(`"${eventName}" is not a valid event`)
+        console.warn(`ASScroll: "${eventName}" is not a valid event`)
     }
 
     /**

@@ -171,8 +171,12 @@ export default class Scroll {
         }
     }
 
-    enable({ restore = false, reset = false, newTargets = false, horizontalScroll = false } = {}) {
-        console.log(reset, restore)
+    enable({
+        scrollTargets = false,
+        reset = false,
+        restore = false,
+        horizontalScroll = false
+    } = {}) {
         if (this.enabled) return
         this.enabled = true
 
@@ -180,8 +184,8 @@ export default class Scroll {
 
         this.horizontalScroll = horizontalScroll
 
-        if (newTargets) {
-            this.scrollTargets = newTargets.length ? newTargets : [newTargets]
+        if (scrollTargets) {
+            this.scrollTargets = scrollTargets.length ? scrollTargets : [scrollTargets]
             this.scrollTargetsLength = this.scrollTargets.length
         }
 
