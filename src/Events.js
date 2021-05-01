@@ -52,7 +52,8 @@ export default class Events {
     }
 
     onScroll() {
-        E.on('wheel', window, e => { E.emit(Store.events.WHEEL, { event: e }) }, { passive: false })
+        this.wheelEvent = navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ? 'DOMMouseScroll' : 'wheel'
+        E.on(this.wheelEvent, window, e => { console.log(e); E.emit(Store.events.WHEEL, { event: e }) }, { passive: false })
         E.on('scroll', window, e => { E.emit(Store.events.SCROLL, { event: e }) }, { passive: true })
     }
 

@@ -96,7 +96,7 @@ export default class Scroll {
             this.scrolling = true
         }
 
-        if( !Store.isTouch && event.type === 'wheel' ) {
+        if( !Store.isTouch && event.type === Store.events.wheelEvent ) {
 
             event.preventDefault()
 
