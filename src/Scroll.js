@@ -23,6 +23,7 @@ export default class Scroll {
 		this.preventResizeScroll = false
 		this.ease = store.isTouch ? this.options.touchEase : this.options.ease
 
+		this.testFps = true
 		this.delta = 1
 		this.time = this.startTime = performance.now()
 
@@ -82,6 +83,11 @@ export default class Scroll {
 
 		E.on(Events.INTERNALRAF, this.onRAF)
 		E.on(Events.RESIZE, this.onResize)
+
+		setTimeout(() => {
+			this.testFps = false
+			this.delta = Math.round(this.delta * 10) * 0.1
+		}, 2000)
 	}
 
 	onScroll = ({ event }) => {
@@ -118,13 +124,13 @@ export default class Scroll {
 	}
 
 	onRAF = () => {
-		if (!this.render) return
-
-		if (this.options.limitLerpRate) {
+		if (this.testFps && this.options.limitLerpRate) {
 			this.time = performance.now() * 0.001
 			this.delta = Math.min((this.time - this.startTime) * 60, 1)
 			this.startTime = this.time
 		}
+
+		if (!this.render) return
 
 		if (Math.abs(this.scrollPos - this.smoothScrollPos) < 0.5) {
 			this.smoothScrollPos = this.scrollPos
