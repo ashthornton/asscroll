@@ -44,9 +44,6 @@ export default class ASScroll {
             blockScrollClass
         })
 
-        Store.Events = this.Events
-        Store.Scroll = this.Scroll
-
     }
 
     enable(...args) {

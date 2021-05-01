@@ -1,7 +1,6 @@
 import Store from './Store'
 import E from './E'
 import Scrollbar from './Scrollbar'
-import normalizeWheel from './utils/normalizeWheel'
 
 export default class Scroll {
 
@@ -96,11 +95,11 @@ export default class Scroll {
             this.scrolling = true
         }
 
-        if( !Store.isTouch && event.type === Store.Events.wheelEvent ) {
+        if( !Store.isTouch && event.type === 'wheel' ) {
 
             event.preventDefault()
 
-            this.deltaY = normalizeWheel(event).pixelY
+            this.deltaY = event.deltaY
             this.syncScroll = true
             this.scrollPos += this.deltaY * -1
             this.clamp()

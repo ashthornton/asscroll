@@ -9,7 +9,7 @@ export default class Events {
 
         this.options = options
 
-        E.bindAll(this, ['onRaf', 'onScroll'])
+        E.bindAll(this, ['onRaf'])
 
         Store.eventNames = {
             RAF: 1,
@@ -53,8 +53,7 @@ export default class Events {
     }
 
     onScroll() {
-        this.wheelEvent = navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ? 'DOMMouseScroll' : 'wheel'
-        E.on(this.wheelEvent, window, e => { E.emit(Store.eventNames.WHEEL, { event: e }) }, { passive: false })
+        E.on('wheel', window, e => { E.emit(Store.eventNames.WHEEL, { event: e }) }, { passive: false })
         E.on('scroll', window, e => { E.emit(Store.eventNames.SCROLL, { event: e }) }, { passive: true })
     }
 
@@ -69,7 +68,7 @@ export default class Events {
             if( Math.abs(e.movementX) > 0 || Math.abs(e.movementY) > 0 ) {
                 // mouse has moved on touch screen, not just a tap firing mousemove
                 Store.isTouch = false
-                E.emit(Store.eventNames.TOUCHMOUSE)
+                E.emit(Store.events.TOUCHMOUSE)
                 window.removeEventListener('mousemove', detectMouse)
             }
         })
