@@ -94,7 +94,6 @@ export default class Scroll {
 			this.deltaY = event.deltaY
 			this.syncScroll = true
 			this.scrollPos += this.deltaY * -1
-			
 		} else {
 			if (this.preventResizeScroll) {
 				this.preventResizeScroll = false
@@ -112,8 +111,8 @@ export default class Scroll {
 			}
 		}
 
-        this.clamp()
-        E.emit(Events.EXTERNALSCROLL, this.scrollPos)
+		this.clamp()
+		E.emit(Events.EXTERNALSCROLL, this.scrollPos)
 	}
 
 	onRAF = () => {

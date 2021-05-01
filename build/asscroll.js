@@ -2628,13 +2628,13 @@ var es_string_iterator = __webpack_require__(84);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom-collections.iterator.js
 var web_dom_collections_iterator = __webpack_require__(86);
 
-// EXTERNAL MODULE: ./src/store.js
-var store = __webpack_require__(0);
-var store_default = /*#__PURE__*/__webpack_require__.n(store);
-
 // EXTERNAL MODULE: ./src/utils/debounce.js
 var debounce = __webpack_require__(58);
 var debounce_default = /*#__PURE__*/__webpack_require__.n(debounce);
+
+// EXTERNAL MODULE: ./src/store.js
+var store = __webpack_require__(0);
+var store_default = /*#__PURE__*/__webpack_require__.n(store);
 
 // CONCATENATED MODULE: ./node_modules/selector-set/selector-set.next.js
 // Public: Create a new SelectorSet.
@@ -3389,25 +3389,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var Events_Events = /*#__PURE__*/function () {
   function Events() {
+    var _this = this;
+
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
     _classCallCheck(this, Events);
 
+    _defineProperty(this, "onRaf", function () {
+      src_E.emit(Events.INTERNALRAF);
+      if (_this.options.disableRaf) return;
+      requestAnimationFrame(_this.onRaf);
+    });
+
     this.options = options;
-    src_E.bindAll(this, ['onRaf']);
-    store_default.a.eventNames = {
-      COMBOSCROLL: 5,
-      RESIZE: 6,
-      TOUCHMOUSE: 7,
-      SCROLLEND: 8
-    };
     this.addEvents();
   }
 
   _createClass(Events, [{
     key: "addEvents",
     value: function addEvents() {
-      var _this = this;
+      var _this2 = this;
 
       if (!this.options.disableRaf) {
         requestAnimationFrame(this.onRaf);
@@ -3415,7 +3416,7 @@ var Events_Events = /*#__PURE__*/function () {
 
       if (!this.options.disableResize) {
         src_E.on('resize', window, debounce_default()(function () {
-          _this.onResize();
+          _this2.onResize();
         }, 150));
       }
 
@@ -3428,24 +3429,17 @@ var Events_Events = /*#__PURE__*/function () {
       }
     }
   }, {
-    key: "onRaf",
-    value: function onRaf() {
-      src_E.emit('raf:internal');
-      if (this.options.disableRaf) return;
-      requestAnimationFrame(this.onRaf);
-    }
-  }, {
     key: "onScroll",
     value: function onScroll() {
       src_E.on('wheel', window, function (e) {
-        src_E.emit(store_default.a.eventNames.WHEEL, {
+        src_E.emit(Events.WHEEL, {
           event: e
         });
       }, {
         passive: false
       });
       src_E.on('scroll', window, function (e) {
-        src_E.emit(store_default.a.eventNames.SCROLL, {
+        src_E.emit(Events.SCROLL, {
           event: e
         });
       }, {
@@ -3457,7 +3451,7 @@ var Events_Events = /*#__PURE__*/function () {
     value: function onResize(windowWidth, windowHeight) {
       store_default.a.windowSize.w = windowWidth || window.innerWidth;
       store_default.a.windowSize.h = windowHeight || window.innerHeight;
-      src_E.emit(store_default.a.eventNames.RESIZE);
+      src_E.emit(Events.RESIZE);
     }
   }, {
     key: "detectMouse",
@@ -3466,7 +3460,7 @@ var Events_Events = /*#__PURE__*/function () {
         if (Math.abs(e.movementX) > 0 || Math.abs(e.movementY) > 0) {
           // mouse has moved on touch screen, not just a tap firing mousemove
           store_default.a.isTouch = false;
-          src_E.emit(store_default.a.events.TOUCHMOUSE);
+          src_E.emit(Events.MOUSEDETECTED);
           window.removeEventListener('mousemove', detectMouse);
         }
       });
@@ -3477,6 +3471,20 @@ var Events_Events = /*#__PURE__*/function () {
 }();
 
 _defineProperty(Events_Events, "INTERNALRAF", 'raf:internal');
+
+_defineProperty(Events_Events, "EXTERNALRAF", 'raf:external');
+
+_defineProperty(Events_Events, "WHEEL", 'wheel');
+
+_defineProperty(Events_Events, "INTERNALSCROLL", 'scroll:internal');
+
+_defineProperty(Events_Events, "EXTERNALSCROLL", 'scroll:external');
+
+_defineProperty(Events_Events, "RESIZE", 'resize');
+
+_defineProperty(Events_Events, "MOUSEDETECTED", 'mouseDetected');
+
+_defineProperty(Events_Events, "SCROLLEND", 'scrollEnd');
 
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.assign.js
@@ -3494,14 +3502,42 @@ function Scrollbar_defineProperties(target, props) { for (var i = 0; i < props.l
 
 function Scrollbar_createClass(Constructor, protoProps, staticProps) { if (protoProps) Scrollbar_defineProperties(Constructor.prototype, protoProps); if (staticProps) Scrollbar_defineProperties(Constructor, staticProps); return Constructor; }
 
+function Scrollbar_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
 
 
 
 var Scrollbar_Scrollbar = /*#__PURE__*/function () {
   function Scrollbar(smoothScroll) {
+    var _this = this;
+
     Scrollbar_classCallCheck(this, Scrollbar);
 
-    src_E.bindAll(this, ['onMouseMove', 'onMouseDown', 'onMouseUp']);
+    Scrollbar_defineProperty(this, "onMouseMove", function (e) {
+      if (!_this.mouseDown) return;
+      var totalHeight = store_default.a.windowSize.h + (_this.trueSize - _this.handleHeight);
+      _this.smoothScroll.scrollPos = e.clientY / totalHeight * _this.smoothScroll.maxScroll;
+      _this.smoothScroll.syncScroll = true;
+      src_E.emit(Events_Events.EXTERNALSCROLL, _this.smoothScroll.scrollPos);
+    });
+
+    Scrollbar_defineProperty(this, "onMouseDown", function () {
+      _this.mouseDown = true;
+      store_default.a.body.style.userSelect = 'none';
+      store_default.a.body.style['-ms-user-select'] = 'none';
+
+      _this.el.classList.add('active');
+    });
+
+    Scrollbar_defineProperty(this, "onMouseUp", function () {
+      _this.mouseDown = false;
+      store_default.a.body.style.removeProperty('user-select');
+      store_default.a.body.style.removeProperty('-ms-user-select');
+
+      _this.el.classList.remove('active');
+    });
+
     this.smoothScroll = smoothScroll;
     this.addHTML();
     this.el = document.querySelector(this.smoothScroll.options.scrollbarEl);
@@ -3546,31 +3582,6 @@ var Scrollbar_Scrollbar = /*#__PURE__*/function () {
     key: "hide",
     value: function hide() {
       this.el.classList.remove('show');
-    }
-  }, {
-    key: "onMouseMove",
-    value: function onMouseMove(e) {
-      if (!this.mouseDown) return;
-      var totalHeight = store_default.a.windowSize.h + (this.trueSize - this.handleHeight);
-      this.smoothScroll.scrollPos = e.clientY / totalHeight * this.smoothScroll.maxScroll;
-      this.smoothScroll.syncScroll = true;
-      src_E.emit(store_default.a.eventNames.COMBOSCROLL, this.smoothScroll.scrollPos);
-    }
-  }, {
-    key: "onMouseDown",
-    value: function onMouseDown() {
-      this.mouseDown = true;
-      store_default.a.body.style.userSelect = 'none';
-      store_default.a.body.style['-ms-user-select'] = 'none';
-      this.el.classList.add('active');
-    }
-  }, {
-    key: "onMouseUp",
-    value: function onMouseUp() {
-      this.mouseDown = false;
-      store_default.a.body.style.removeProperty('user-select');
-      store_default.a.body.style.removeProperty('-ms-user-select');
-      this.el.classList.remove('active');
     }
   }, {
     key: "addHTML",
@@ -3623,6 +3634,9 @@ function Scroll_defineProperties(target, props) { for (var i = 0; i < props.leng
 
 function Scroll_createClass(Constructor, protoProps, staticProps) { if (protoProps) Scroll_defineProperties(Constructor.prototype, protoProps); if (staticProps) Scroll_defineProperties(Constructor, staticProps); return Constructor; }
 
+function Scroll_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
 
 
 
@@ -3635,9 +3649,126 @@ var Scroll_Scroll = /*#__PURE__*/function () {
 
     Scroll_classCallCheck(this, Scroll);
 
+    Scroll_defineProperty(this, "onScroll", function (_ref) {
+      var event = _ref.event;
+
+      if (!_this.scrolling) {
+        _this.options.customScrollbar && _this.scrollbar.show();
+
+        _this.toggleIframes();
+
+        _this.scrolling = true;
+      }
+
+      if (!store_default.a.isTouch && event.type === 'wheel') {
+        event.preventDefault();
+        _this.deltaY = event.deltaY;
+        _this.syncScroll = true;
+        _this.scrollPos += _this.deltaY * -1;
+      } else {
+        if (_this.preventResizeScroll) {
+          _this.preventResizeScroll = false;
+          return;
+        }
+
+        if (_this.touchScroll) {
+          _this.scrollPos = _this.horizontalScroll ? -_this.scrollContainer.scrollLeft : -_this.scrollContainer.scrollTop;
+        } else {
+          _this.scrollPos = -window.scrollY;
+        }
+
+        if (store_default.a.isTouch && _this.options.disableOnTouch) {
+          _this.smoothScrollPos = _this.scrollPos;
+        }
+      }
+
+      _this.clamp();
+
+      src_E.emit(Events_Events.EXTERNALSCROLL, _this.scrollPos);
+    });
+
+    Scroll_defineProperty(this, "onRAF", function () {
+      if (!_this.render) return;
+      if (!_this.render) return;
+
+      if (_this.options.limitLerpRate) {
+        _this.time = performance.now() * 0.001;
+        _this.delta = Math.min((_this.time - _this.startTime) * 60, 1);
+        _this.startTime = _this.time;
+      }
+
+      if (Math.abs(_this.scrollPos - _this.smoothScrollPos) < 0.5) {
+        _this.smoothScrollPos = _this.scrollPos;
+
+        if (_this.syncScroll) {
+          _this.syncScroll = false;
+          window.scrollTo(0, -_this.scrollPos);
+          src_E.emit(Events_Events.SCROLLEND, _this.scrollPos);
+        }
+
+        if (_this.scrolling) {
+          _this.scrolling = false;
+          _this.options.customScrollbar && _this.scrollbar.hide();
+
+          _this.toggleIframes(true);
+        }
+      } else {
+        _this.smoothScrollPos += (_this.scrollPos - _this.smoothScrollPos) * _this.ease * _this.delta;
+      }
+
+      var x = _this.horizontalScroll ? _this.smoothScrollPos : 0;
+      var y = _this.horizontalScroll ? 0 : _this.smoothScrollPos;
+
+      _this.applyTransform(x, y);
+
+      _this.options.customScrollbar && _this.scrollbar.transform();
+      src_E.emit('raf:external', {
+        scrollPos: _this.scrollPos,
+        smoothScrollPos: _this.smoothScrollPos
+      });
+    });
+
+    Scroll_defineProperty(this, "onResize", function () {
+      if (_this.scrollTargetsLength > 1) {
+        var lastTarget = _this.scrollTargets[_this.scrollTargetsLength - 1];
+        var compStyle = window.getComputedStyle(lastTarget);
+        var marginOffset = parseFloat(_this.horizontalScroll ? compStyle.marginRight : compStyle.marginBottom);
+        var bcr = lastTarget.getBoundingClientRect();
+        var endPosition = _this.horizontalScroll ? bcr.right : bcr.bottom;
+        _this.scrollLength = endPosition + marginOffset - _this.smoothScrollPos;
+      } else {
+        _this.scrollLength = _this.horizontalScroll ? _this.scrollTargets[0].scrollWidth : _this.scrollTargets[0].scrollHeight;
+      }
+
+      var windowSize = _this.horizontalScroll ? store_default.a.windowSize.w : store_default.a.windowSize.h;
+      _this.maxScroll = _this.scrollLength > windowSize ? -(_this.scrollLength - windowSize) : 0;
+
+      if (!_this.firstResize) {
+        _this.preventResizeScroll = true;
+      }
+
+      store_default.a.body.style.height = _this.scrollLength + 'px';
+      _this.options.customScrollbar && _this.scrollbar.onResize();
+      _this.firstResize = false;
+    });
+
+    Scroll_defineProperty(this, "toggleFixedContainer", function () {
+      _this.scrollContainer.style.position = 'static';
+      var scrollPos = _this.smoothScrollPos;
+
+      _this.applyTransform(0, 0);
+
+      requestAnimationFrame(function () {
+        _this.scrollContainer.style.position = 'fixed';
+        var x = _this.horizontalScroll ? scrollPos : 0;
+        var y = _this.horizontalScroll ? 0 : scrollPos;
+
+        _this.applyTransform(x, y);
+      });
+    });
+
     this.options = options;
     this.scrollbarCheck = this.options.customScrollbar;
-    src_E.bindAll(this, ['onScroll', 'onRAF', 'onResize', 'toggleFixedContainer']);
     this.scrollContainer = document.querySelector(this.options.element);
     var possibleScrollTargets = this.scrollContainer.querySelectorAll(this.options.innerElement);
     this.scrollTargets = possibleScrollTargets.length ? possibleScrollTargets : [this.scrollContainer.firstElementChild];
@@ -3664,7 +3795,7 @@ var Scroll_Scroll = /*#__PURE__*/function () {
       document.documentElement.classList.add('asscroll-touch');
       this.options.customScrollbar = false;
       src_E.on('scroll', this.scrollContainer, function (e) {
-        src_E.emit(store_default.a.eventNames.SCROLL, {
+        src_E.emit(Events_Events.INTERNALSCROLL, {
           event: e
         });
       }, {
@@ -3673,7 +3804,7 @@ var Scroll_Scroll = /*#__PURE__*/function () {
     } // enable smooth scroll if mouse is detected
 
 
-    src_E.on(store_default.a.eventNames.TOUCHMOUSE, function () {
+    src_E.on(Events_Events.MOUSEDETECTED, function () {
       if (!_this.options.disableOnTouch) return;
       _this.touchScroll = false;
       _this.options.customScrollbar = _this.scrollbarCheck;
@@ -3714,85 +3845,8 @@ var Scroll_Scroll = /*#__PURE__*/function () {
         this.scrollbar = new Scrollbar_Scrollbar(this);
       }
 
-      src_E.on('raf:internal', this.onRAF);
-      src_E.on(store_default.a.eventNames.RESIZE, this.onResize);
-    }
-  }, {
-    key: "onScroll",
-    value: function onScroll(_ref) {
-      var event = _ref.event;
-
-      if (!this.scrolling) {
-        this.options.customScrollbar && this.scrollbar.show();
-        this.toggleIframes();
-        this.scrolling = true;
-      }
-
-      if (!store_default.a.isTouch && event.type === 'wheel') {
-        event.preventDefault();
-        this.deltaY = event.deltaY;
-        this.syncScroll = true;
-        this.scrollPos += this.deltaY * -1;
-        this.clamp();
-        src_E.emit(store_default.a.eventNames.COMBOSCROLL, this.scrollPos);
-      } else {
-        if (this.preventResizeScroll) {
-          this.preventResizeScroll = false;
-          return;
-        }
-
-        if (this.touchScroll) {
-          this.scrollPos = this.horizontalScroll ? -this.scrollContainer.scrollLeft : -this.scrollContainer.scrollTop;
-        } else {
-          this.scrollPos = -window.scrollY;
-        }
-
-        if (store_default.a.isTouch && this.options.disableOnTouch) {
-          this.smoothScrollPos = this.scrollPos;
-        }
-
-        this.clamp();
-        src_E.emit(store_default.a.eventNames.COMBOSCROLL, this.scrollPos);
-      }
-    }
-  }, {
-    key: "onRAF",
-    value: function onRAF() {
-      if (!this.render) return;
-      if (!this.render) return;
-
-      if (this.options.limitLerpRate) {
-        this.time = performance.now() * 0.001;
-        this.delta = Math.min((this.time - this.startTime) * 60, 1);
-        this.startTime = this.time;
-      }
-
-      if (Math.abs(this.scrollPos - this.smoothScrollPos) < 0.5) {
-        this.smoothScrollPos = this.scrollPos;
-
-        if (this.syncScroll) {
-          this.syncScroll = false;
-          window.scrollTo(0, -this.scrollPos);
-          src_E.emit(store_default.a.eventNames.SCROLLEND, this.scrollPos);
-        }
-
-        if (this.scrolling) {
-          this.scrolling = false;
-          this.options.customScrollbar && this.scrollbar.hide();
-          this.toggleIframes(true);
-        }
-      } else {
-        this.smoothScrollPos += (this.scrollPos - this.smoothScrollPos) * this.ease * this.delta;
-      }
-
-      var x = this.horizontalScroll ? this.smoothScrollPos : 0;
-      var y = this.horizontalScroll ? 0 : this.smoothScrollPos;
-      this.applyTransform(x, y);
-      this.options.customScrollbar && this.scrollbar.transform();
-      src_E.emit('raf:external', {
-        scrollPos: this.scrollPos,
-        smoothScrollPos: this.smoothScrollPos
-      });
+      src_E.on(Events_Events.INTERNALRAF, this.onRAF);
+      src_E.on(Events_Events.RESIZE, this.onResize);
     }
   }, {
     key: "applyTransform",
@@ -3848,8 +3902,8 @@ var Scroll_Scroll = /*#__PURE__*/function () {
         this.scrollTo(this.prevScrollPos, false);
       }
 
-      src_E.on(store_default.a.eventNames.WHEEL, this.onScroll);
-      src_E.on(store_default.a.eventNames.SCROLL, this.onScroll);
+      src_E.on(Events_Events.WHEEL, this.onScroll);
+      src_E.on(Events_Events.INTERNALSCROLL, this.onScroll);
     }
   }, {
     key: "disable",
@@ -3865,8 +3919,8 @@ var Scroll_Scroll = /*#__PURE__*/function () {
         this.render = false;
       }
 
-      src_E.off(store_default.a.eventNames.WHEEL, this.onScroll);
-      src_E.off(store_default.a.eventNames.SCROLL, this.onScroll);
+      src_E.off(Events_Events.WHEEL, this.onScroll);
+      src_E.off(Events_Events.SCROLL, this.onScroll);
       this.prevScrollPos = this.scrollPos;
       store_default.a.body.style.height = '0px';
     }
@@ -3891,32 +3945,7 @@ var Scroll_Scroll = /*#__PURE__*/function () {
 
       this.clamp();
       this.syncScroll = true;
-      if (emitEvent) src_E.emit(store_default.a.eventNames.COMBOSCROLL, this.scrollPos);
-    }
-  }, {
-    key: "onResize",
-    value: function onResize() {
-      if (this.scrollTargetsLength > 1) {
-        var lastTarget = this.scrollTargets[this.scrollTargetsLength - 1];
-        var compStyle = window.getComputedStyle(lastTarget);
-        var marginOffset = parseFloat(this.horizontalScroll ? compStyle.marginRight : compStyle.marginBottom);
-        var bcr = lastTarget.getBoundingClientRect();
-        var endPosition = this.horizontalScroll ? bcr.right : bcr.bottom;
-        this.scrollLength = endPosition + marginOffset - this.smoothScrollPos;
-      } else {
-        this.scrollLength = this.horizontalScroll ? this.scrollTargets[0].scrollWidth : this.scrollTargets[0].scrollHeight;
-      }
-
-      var windowSize = this.horizontalScroll ? store_default.a.windowSize.w : store_default.a.windowSize.h;
-      this.maxScroll = this.scrollLength > windowSize ? -(this.scrollLength - windowSize) : 0;
-
-      if (!this.firstResize) {
-        this.preventResizeScroll = true;
-      }
-
-      store_default.a.body.style.height = this.scrollLength + 'px';
-      this.options.customScrollbar && this.scrollbar.onResize();
-      this.firstResize = false;
+      if (emitEvent) src_E.emit(Events_Events.EXTERNALSCROLL, this.scrollPos);
     }
   }, {
     key: "toggleIframes",
@@ -3929,22 +3958,6 @@ var Scroll_Scroll = /*#__PURE__*/function () {
     key: "blockScrollEvent",
     value: function blockScrollEvent(e) {
       e.stopPropagation();
-    }
-  }, {
-    key: "toggleFixedContainer",
-    value: function toggleFixedContainer() {
-      var _this2 = this;
-
-      this.scrollContainer.style.position = 'static';
-      var scrollPos = this.smoothScrollPos;
-      this.applyTransform(0, 0);
-      requestAnimationFrame(function () {
-        _this2.scrollContainer.style.position = 'fixed';
-        var x = _this2.horizontalScroll ? scrollPos : 0;
-        var y = _this2.horizontalScroll ? 0 : scrollPos;
-
-        _this2.applyTransform(x, y);
-      });
     }
   }]);
 
@@ -3973,32 +3986,31 @@ function src_createClass(Constructor, protoProps, staticProps) { if (protoProps)
 
 
 
-
 /**
- * Ash's Smooth Scroll 🍑
- * @export
- * @class ASScroll
- */
+* Ash's Smooth Scroll 🍑
+* @export
+* @class ASScroll
+*/
 
 var src_ASScroll = /*#__PURE__*/function () {
   /**
-      * Creates an ASScroll instance
-      * @param {Object} parameters
-      * @param {string} [parameters.element='.asscroll-container'] The selector string for the outer container element
-      * @param {string} [parameters.innerElement='[data-asscroll'] The selector string for the inner element(s)
-      * @param {number} [parameters.ease=0.075] The ease amount for the transform lerp
-      * @param {number} [parameters.touchEase=1] The ease amount for the transform lerp on touch devices
-      * @param {boolean} [parameters.customScrollbar=true] Toggle the custom scrollbar
-      * @param {string} [parameters.scrollbarEl='.asscrollbar'] The selector string for the custom scrollbar element
-      * @param {string} [parameters.scrollbarHandleEl='.asscrollbar__handle'] The selector string for the custom scrollbar handle element
-      * @param {boolean} [parameters.scrollbarStyles=true] Include the scrollbar CSS via Javascript
-      * @param {boolean} [parameters.disableNativeScrollbar=true] Disable the native browser scrollbar
-      * @param {boolean} [parameters.disableOnTouch=true] Disable the transform on touch devices
-      * @param {boolean} [parameters.disableRaf=false] Disable internal requestAnimationFrame loop in order to use an external one
-      * @param {boolean} [parameters.disableResize=false] Disable internal resize event on the window in order to use an external one
-      * @param {boolean} [parameters.limitLerpRate=true] Match lerp speed on >60Hz displays to that of a 60Hz display
-      * @param {string} [parameters.blockScrollClass='.asscroll-block'] The class to add to elements that should block ASScroll when hovered
-      */
+  * Creates an ASScroll instance
+  * @param {Object} parameters
+  * @param {string} [parameters.element='.asscroll-container'] The selector string for the outer container element
+  * @param {string} [parameters.innerElement='[data-asscroll'] The selector string for the inner element(s)
+  * @param {number} [parameters.ease=0.075] The ease amount for the transform lerp
+  * @param {number} [parameters.touchEase=1] The ease amount for the transform lerp on touch devices
+  * @param {boolean} [parameters.customScrollbar=true] Toggle the custom scrollbar
+  * @param {string} [parameters.scrollbarEl='.asscrollbar'] The selector string for the custom scrollbar element
+  * @param {string} [parameters.scrollbarHandleEl='.asscrollbar__handle'] The selector string for the custom scrollbar handle element
+  * @param {boolean} [parameters.scrollbarStyles=true] Include the scrollbar CSS via Javascript
+  * @param {boolean} [parameters.disableNativeScrollbar=true] Disable the native browser scrollbar
+  * @param {boolean} [parameters.disableOnTouch=true] Disable the transform on touch devices
+  * @param {boolean} [parameters.disableRaf=false] Disable internal requestAnimationFrame loop in order to use an external one
+  * @param {boolean} [parameters.disableResize=false] Disable internal resize event on the window in order to use an external one
+  * @param {boolean} [parameters.limitLerpRate=true] Match lerp speed on >60Hz displays to that of a 60Hz display
+  * @param {string} [parameters.blockScrollClass='.asscroll-block'] The class to add to elements that should block ASScroll when hovered
+  */
   function ASScroll() {
     var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
         _ref$element = _ref.element,
@@ -4053,18 +4065,18 @@ var src_ASScroll = /*#__PURE__*/function () {
     });
   }
   /**
-      * Enable ASScroll.
-      *
-      * ```js
-      * asscroll.enable({ scrollTargets: document.querySelector('.scroll-element'), reset: true  })
-      * ```
-      *
-      * @param {Object} parameters
-      * @param {boolean|NodeList|HTMLElement} [parameters.scrollTargets = false] Specify the new element(s) that should be transformed
-      * @param {boolean} [parameters.reset = false] Reset the scroll position to 0
-      * @param {boolean} [parameters.restore = false] Restore the scroll position to where it was when disable() was called
-      * @param {boolean} [parameters.horizontalScroll = false] Toggle horizontal scrolling
-      */
+  * Enable ASScroll.
+  *
+  * ```js
+  * asscroll.enable({ scrollTargets: document.querySelector('.scroll-element'), reset: true  })
+  * ```
+  *
+  * @param {Object} parameters
+  * @param {boolean|NodeList|HTMLElement} [parameters.scrollTargets = false] Specify the new element(s) that should be transformed
+  * @param {boolean} [parameters.reset = false] Reset the scroll position to 0
+  * @param {boolean} [parameters.restore = false] Restore the scroll position to where it was when disable() was called
+  * @param {boolean} [parameters.horizontalScroll = false] Toggle horizontal scrolling
+  */
 
 
   src_createClass(ASScroll, [{
@@ -4077,10 +4089,10 @@ var src_ASScroll = /*#__PURE__*/function () {
       this.Scroll.enable(parameters);
     }
     /**
-        * Disable ASScroll.
-        * @param {Object} parameters
-        * @param {boolean} [parameters.inputOnly = false] Only disable the ability to manually scroll (still allow transforms)
-        */
+    * Disable ASScroll.
+    * @param {Object} parameters
+    * @param {boolean} [parameters.inputOnly = false] Only disable the ability to manually scroll (still allow transforms)
+    */
 
   }, {
     key: "disable",
@@ -4092,8 +4104,8 @@ var src_ASScroll = /*#__PURE__*/function () {
       this.Scroll.disable(parameters);
     }
     /**
-        * Call the internal animation frame request callback.
-        */
+    * Call the internal animation frame request callback.
+    */
 
   }, {
     key: "onRaf",
@@ -4101,11 +4113,11 @@ var src_ASScroll = /*#__PURE__*/function () {
       this.Events.onRaf();
     }
     /**
-        * Call the internal resize callback.
-        * @param {Object} parameters
-        * @param {number} parameters.width Window width
-        * @param {number} parameters.height Window height
-        */
+    * Call the internal resize callback.
+    * @param {Object} parameters
+    * @param {number} parameters.width Window width
+    * @param {number} parameters.height Window height
+    */
 
   }, {
     key: "onResize",
@@ -4113,10 +4125,10 @@ var src_ASScroll = /*#__PURE__*/function () {
       this.Events.onResize(parameters);
     }
     /**
-        * Add an event listener.
-        * @param {string} eventName Name of the event you wish to listen for
-        * @param {function} cb Callback function that should be executed when the event fires
-        */
+    * Add an event listener.
+    * @param {string} eventName Name of the event you wish to listen for
+    * @param {function} cb Callback function that should be executed when the event fires
+    */
 
   }, {
     key: "on",
@@ -4127,24 +4139,27 @@ var src_ASScroll = /*#__PURE__*/function () {
       }
 
       if (eventName === 'scroll') {
-        src_E.on(store_default.a.eventNames.COMBOSCROLL, cb);
+        src_E.on(Events_Events.EXTERNALSCROLL, cb);
+        return;
       }
 
       if (eventName === 'raf') {
-        src_E.on('raf:external', cb);
+        src_E.on(Events_Events.EXTERNALRAF, cb);
+        return;
       }
 
       if (eventName === 'scrollEnd') {
-        src_E.on(store_default.a.eventNames.SCROLLEND, cb);
+        src_E.on(Events_Events.SCROLLEND, cb);
+        return;
       }
 
       console.warn("ASScroll: \"".concat(eventName, "\" is not a valid event"));
     }
     /**
-        * Remove an event listener.
-        * @param {string} eventName Name of the event
-        * @param {function} cb Callback function
-        */
+    * Remove an event listener.
+    * @param {string} eventName Name of the event
+    * @param {function} cb Callback function
+    */
 
   }, {
     key: "off",
@@ -4155,24 +4170,27 @@ var src_ASScroll = /*#__PURE__*/function () {
       }
 
       if (eventName === 'scroll') {
-        src_E.off(store_default.a.eventNames.COMBOSCROLL, cb);
+        src_E.off(Events_Events.EXTERNALSCROLL, cb);
+        return;
       }
 
       if (eventName === 'raf') {
-        src_E.off('raf:external', cb);
+        src_E.off(Events_Events.EXTERNALRAF, cb);
+        return;
       }
 
       if (eventName === 'scrollEnd') {
-        src_E.off(store_default.a.eventNames.SCROLLEND, cb);
+        src_E.off(Events_Events.SCROLLEND, cb);
+        return;
       }
 
       console.warn("ASScroll: \"".concat(eventName, "\" is not a valid event"));
     }
     /**
-        * Scroll to a given position on the page
-        * @param {number} scrollPos Scroll position
-        * @param {boolean} [emitEvent=true] Whether to emit the scroll events or not
-        */
+    * Scroll to a given position on the page
+    * @param {number} scrollPos Scroll position
+    * @param {boolean} [emitEvent=true] Whether to emit the scroll events or not
+    */
 
   }, {
     key: "scrollTo",
@@ -4181,9 +4199,9 @@ var src_ASScroll = /*#__PURE__*/function () {
       this.Scroll.scrollTo(-scrollPos, emitEvent);
     }
     /**
-        * Returns the target scroll position
-        * @return {number}
-        */
+    * Returns the target scroll position
+    * @return {number}
+    */
 
   }, {
     key: "scrollPos",
@@ -4191,28 +4209,28 @@ var src_ASScroll = /*#__PURE__*/function () {
       return -this.Scroll.scrollPos;
     }
     /**
-        * Returns the current scroll position
-        * @return {number}
-        */
+    * Sets the scroll position without lerping to it
+    * @param {number} scrollPos The desired scroll position
+    */
     ,
-    set:
-    /**
-        * Sets the scroll position without lerping to it
-        * @param {number} scrollPos The desired scroll position
-        */
-    function set(scrollPos) {
+    set: function set(scrollPos) {
       this.Scroll.scrollPos = this.Scroll.smoothScrollPos = -scrollPos;
     }
     /**
-        * Returns the maximum scroll height of the page
-        * @return {number}
-        */
+    * Returns the current scroll position
+    * @return {number}
+    */
 
   }, {
     key: "smoothScrollPos",
     get: function get() {
       return -this.Scroll.smoothScrollPos;
     }
+    /**
+    * Returns the maximum scroll height of the page
+    * @return {number}
+    */
+
   }, {
     key: "maxScroll",
     get: function get() {
