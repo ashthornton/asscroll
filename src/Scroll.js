@@ -120,8 +120,6 @@ export default class Scroll {
 	onRAF = () => {
 		if (!this.render) return
 
-		if (!this.render) return
-
 		if (this.options.limitLerpRate) {
 			this.time = performance.now() * 0.001
 			this.delta = Math.min((this.time - this.startTime) * 60, 1)
@@ -150,7 +148,7 @@ export default class Scroll {
 
 		this.options.customScrollbar && this.scrollbar.transform()
 
-		E.emit('raf:external', { scrollPos: this.scrollPos, smoothScrollPos: this.smoothScrollPos })
+		E.emit(Events.EXTERNALRAF, { scrollPos: this.scrollPos, smoothScrollPos: this.smoothScrollPos })
 	}
 
 	applyTransform(x, y) {
@@ -249,6 +247,7 @@ export default class Scroll {
 
 		const windowSize = this.horizontalScroll ? store.windowSize.w : store.windowSize.h
 		this.maxScroll = this.scrollLength > windowSize ? -(this.scrollLength - windowSize) : 0
+		this.clamp()
 		if (!this.firstResize) {
 			this.preventResizeScroll = true
 		}
