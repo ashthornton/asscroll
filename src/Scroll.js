@@ -36,6 +36,10 @@ export default class Scroll {
 			E.on('scroll', this.scrollContainer, e => { E.emit(Events.INTERNALSCROLL, { event: e }) }, { passive: true })
 		}
 
+		this.addEvents()
+	}
+
+	addEvents() {
 		// enable smooth scroll if mouse is detected
 		E.on(Events.MOUSEDETECTED, () => {
 			if (!this.options.disableOnTouch) return
