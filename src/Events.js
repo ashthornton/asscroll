@@ -9,9 +9,9 @@ export default class Events {
 
         this.options = options
 
-        E.bindAll(this, ['onRaf'])
+        E.bindAll(this, ['onRaf', 'onScroll'])
 
-        Store.events = {
+        Store.eventNames = {
             RAF: 1,
             EXTERNALRAF: 2,
             SCROLL: 3,
@@ -19,6 +19,7 @@ export default class Events {
             COMBOSCROLL: 5,
             RESIZE: 6,
             TOUCHMOUSE: 7,
+            SCROLLEND: 8
         }
         
         this.addEvents()
@@ -46,21 +47,21 @@ export default class Events {
     }
 
     onRaf() {
-        E.emit(Store.events.RAF)
+        E.emit(Store.eventNames.RAF)
         if( this.options.disableRaf ) return
         requestAnimationFrame(this.onRaf)
     }
 
     onScroll() {
         this.wheelEvent = navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ? 'DOMMouseScroll' : 'wheel'
-        E.on(this.wheelEvent, window, e => { console.log(e); E.emit(Store.events.WHEEL, { event: e }) }, { passive: false })
-        E.on('scroll', window, e => { E.emit(Store.events.SCROLL, { event: e }) }, { passive: true })
+        E.on(this.wheelEvent, window, e => { E.emit(Store.eventNames.WHEEL, { event: e }) }, { passive: false })
+        E.on('scroll', window, e => { E.emit(Store.eventNames.SCROLL, { event: e }) }, { passive: true })
     }
 
     onResize( windowWidth, windowHeight ) {
         Store.windowSize.w = windowWidth || window.innerWidth
         Store.windowSize.h = windowHeight || window.innerHeight
-        E.emit(Store.events.RESIZE)
+        E.emit(Store.eventNames.RESIZE)
     }
 
     detectMouse() {
@@ -68,7 +69,7 @@ export default class Events {
             if( Math.abs(e.movementX) > 0 || Math.abs(e.movementY) > 0 ) {
                 // mouse has moved on touch screen, not just a tap firing mousemove
                 Store.isTouch = false
-                E.emit(Store.events.TOUCHMOUSE)
+                E.emit(Store.eventNames.TOUCHMOUSE)
                 window.removeEventListener('mousemove', detectMouse)
             }
         })

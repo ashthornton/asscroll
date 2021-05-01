@@ -44,6 +44,9 @@ export default class ASScroll {
             blockScrollClass
         })
 
+        Store.Events = this.Events
+        Store.Scroll = this.Scroll
+
     }
 
     enable(...args) {
@@ -65,11 +68,15 @@ export default class ASScroll {
     on( eventName, cb ) {
 
         if( eventName === 'scroll' ) {
-            E.on(Store.events.COMBOSCROLL, cb)
+            E.on(Store.eventNames.COMBOSCROLL, cb)
         }
 
         if( eventName === 'raf' ) {
-            E.on(Store.events.EXTERNALRAF, cb)
+            E.on(Store.eventNames.EXTERNALRAF, cb)
+        }
+
+        if( eventName === 'scrollEnd' ) {
+            E.on(Store.eventNames.SCROLLEND, cb)
         }
 
     }
@@ -77,11 +84,15 @@ export default class ASScroll {
     off( eventName, cb ) {
 
         if( eventName === 'scroll' ) {
-            E.off(Store.events.COMBOSCROLL, cb)
+            E.off(Store.eventNames.COMBOSCROLL, cb)
         }
 
         if( eventName === 'raf' ) {
-            E.off(Store.events.EXTERNALRAF, cb)
+            E.off(Store.eventNames.EXTERNALRAF, cb)
+        }
+
+        if( eventName === 'scrollEnd' ) {
+            E.off(Store.eventNames.SCROLLEND, cb)
         }
 
     }

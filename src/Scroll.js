@@ -38,11 +38,11 @@ export default class Scroll {
             this.touchScroll = true
             document.documentElement.classList.add('asscroll-touch')
             this.options.customScrollbar = false
-            E.on('scroll', this.scrollContainer, e => { E.emit(Store.events.SCROLL, { event: e }) }, { passive: true })
+            E.on('scroll', this.scrollContainer, e => { E.emit(Store.eventNames.SCROLL, { event: e }) }, { passive: true })
         }
 
         // enable smooth scroll if mouse is detected
-        E.on(Store.events.TOUCHMOUSE, () => {
+        E.on(Store.eventNames.TOUCHMOUSE, () => {
             if (!this.options.disableOnTouch) return
             this.touchScroll = false
             this.options.customScrollbar = this.scrollbarCheck
@@ -83,8 +83,8 @@ export default class Scroll {
             this.scrollbar = new Scrollbar(this)
         }
 
-        E.on(Store.events.RAF, this.onRAF)
-        E.on(Store.events.RESIZE, this.onResize)
+        E.on(Store.eventNames.RAF, this.onRAF)
+        E.on(Store.eventNames.RESIZE, this.onResize)
 
     }
 
@@ -96,7 +96,7 @@ export default class Scroll {
             this.scrolling = true
         }
 
-        if( !Store.isTouch && event.type === Store.events.wheelEvent ) {
+        if( !Store.isTouch && event.type === Store.Events.wheelEvent ) {
 
             event.preventDefault()
 
@@ -104,7 +104,7 @@ export default class Scroll {
             this.syncScroll = true
             this.scrollPos += this.deltaY * -1
             this.clamp()
-            E.emit(Store.events.COMBOSCROLL, this.scrollPos)
+            E.emit(Store.eventNames.COMBOSCROLL, this.scrollPos)
             
             return
 
@@ -126,7 +126,7 @@ export default class Scroll {
             }
 
             this.clamp()
-            E.emit(Store.events.COMBOSCROLL, this.scrollPos)
+            E.emit(Store.eventNames.COMBOSCROLL, this.scrollPos)
         }
 
     }
@@ -144,13 +144,14 @@ export default class Scroll {
         if( Math.abs( this.scrollPos - this.smoothScrollPos ) < 0.5 ) {
             this.smoothScrollPos = this.scrollPos
             if( this.syncScroll ) {
-                window.scrollTo(0, -this.scrollPos)
                 this.syncScroll = false
+                window.scrollTo(0, -this.scrollPos)
+                E.emit(Store.eventNames.SCROLLEND, this.scrollPos)
             }
             if( this.scrolling ) {
+                this.scrolling = false
                 this.options.customScrollbar && this.scrollbar.hide()
                 this.toggleIframes(true)
-                this.scrolling = false
             }
         } else {
             this.smoothScrollPos += (this.scrollPos - this.smoothScrollPos) * this.ease * this.delta
@@ -162,7 +163,7 @@ export default class Scroll {
 
         this.options.customScrollbar && this.scrollbar.transform()
 
-        E.emit(Store.events.EXTERNALRAF, { scrollPos: this.scrollPos, smoothScrollPos: this.smoothScrollPos })
+        E.emit(Store.eventNames.EXTERNALRAF, { scrollPos: this.scrollPos, smoothScrollPos: this.smoothScrollPos })
 
     }
 
@@ -207,8 +208,8 @@ export default class Scroll {
             this.scrollTo(this.prevScrollPos, false)
         }
         
-        E.on(Store.events.WHEEL, this.onScroll)
-        E.on(Store.events.SCROLL, this.onScroll)
+        E.on(Store.eventNames.WHEEL, this.onScroll)
+        E.on(Store.eventNames.SCROLL, this.onScroll)
 
     }
 
@@ -221,8 +222,8 @@ export default class Scroll {
             this.render = false
         }
 
-        E.off(Store.events.WHEEL, this.onScroll)
-        E.off(Store.events.SCROLL, this.onScroll)
+        E.off(Store.eventNames.WHEEL, this.onScroll)
+        E.off(Store.eventNames.SCROLL, this.onScroll)
 
         this.prevScrollPos = this.scrollPos
         Store.body.style.height = '0px'
@@ -244,7 +245,7 @@ export default class Scroll {
         }
         this.clamp()
         this.syncScroll = true
-        if (emitEvent) E.emit(Store.events.COMBOSCROLL, this.scrollPos)
+        if (emitEvent) E.emit(Store.eventNames.COMBOSCROLL, this.scrollPos)
     }
 
     onResize() {
