@@ -22,8 +22,6 @@ export default class Scroll {
         this.scrolling = false
         this.syncScroll = false
         this.deltaY = 0
-        this.wheeling = false
-        this.wheel = true
         this.horizontalScroll = false
         this.touchScroll = false
         this.firstResize = true
@@ -103,9 +101,10 @@ export default class Scroll {
             event.preventDefault()
 
             this.deltaY = normalizeWheel(event).pixelY
-            this.wheeling = true
             this.syncScroll = true
-            this.wheel = true
+            this.scrollPos += this.deltaY * -1
+            this.clamp()
+            E.emit(Store.events.COMBOSCROLL, this.scrollPos)
             
             return
 
@@ -122,10 +121,11 @@ export default class Scroll {
                 this.scrollPos = -window.scrollY
             }
             
-            this.wheel = false
             if( Store.isTouch && this.options.disableOnTouch ) {
                 this.smoothScrollPos = this.scrollPos
             }
+
+            this.clamp()
             E.emit(Store.events.COMBOSCROLL, this.scrollPos)
         }
 
@@ -134,14 +134,6 @@ export default class Scroll {
     onRAF() {
 
         if( !this.render ) return
-
-        if( this.wheeling ) {
-            this.scrollPos += this.deltaY * -1
-            this.wheeling = false
-            E.emit(Store.events.COMBOSCROLL, this.scrollPos)
-        }
-        
-        this.clamp()
 
         if (this.options.limitLerpRate) {
             this.time = performance.now() * 0.001
