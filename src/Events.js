@@ -9,7 +9,7 @@ export default class Events {
 
         E.bindAll(this, ['onRaf'])
 
-        Store.events = {
+        Store.eventNames = {
             RAF: 1,
             EXTERNALRAF: 2,
             SCROLL: 3,
@@ -17,6 +17,7 @@ export default class Events {
             COMBOSCROLL: 5,
             RESIZE: 6,
             TOUCHMOUSE: 7,
+            SCROLLEND: 8
         }
 
         this.addEvents()
@@ -41,20 +42,20 @@ export default class Events {
     }
 
     onRaf() {
-        E.emit(Store.events.RAF)
-        if (this.options.disableRaf) return
+        E.emit(Store.eventNames.RAF)
+        if( this.options.disableRaf ) return
         requestAnimationFrame(this.onRaf)
     }
 
     onScroll() {
-        E.on('wheel', window, e => { E.emit(Store.events.WHEEL, { event: e }) }, { passive: false })
-        E.on('scroll', window, e => { E.emit(Store.events.SCROLL, { event: e }) }, { passive: true })
+        E.on('wheel', window, e => { E.emit(Store.eventNames.WHEEL, { event: e }) }, { passive: false })
+        E.on('scroll', window, e => { E.emit(Store.eventNames.SCROLL, { event: e }) }, { passive: true })
     }
 
-    onResize({ width, height } = {}) {
-        Store.windowSize.w = width || window.innerWidth
-        Store.windowSize.h = height || window.innerHeight
-        E.emit(Store.events.RESIZE)
+    onResize( windowWidth, windowHeight ) {
+        Store.windowSize.w = windowWidth || window.innerWidth
+        Store.windowSize.h = windowHeight || window.innerHeight
+        E.emit(Store.eventNames.RESIZE)
     }
 
     detectMouse() {

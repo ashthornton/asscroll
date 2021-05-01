@@ -86,7 +86,7 @@ Passed as an object through to the ASScroll constructor. Defaults shown next to 
 | option | type | default | description |
 |-|-|-|-|
 | `element`                | `String`  | `'.asscroll-container'` | The parent element of the content to be smooth scrolled                                    |
-| `innerElement`           | `String`  | `'[data-scroll]'`       | The element that the `transform` translation will be applied to inside the parent element  |
+| `innerElement`           | `String`  | `'[data-asscroll]'`       | The element that the `transform` translation will be applied to inside the parent element  |
 | `ease`                   | `Float`   | `0.075`                 | Smooth scroll easing                                                                       |
 | `touchEase`              | `Float`   | `1`                     | Smooth scroll easing on touch devices. A value of `1` will match the native scroll inertia |
 | `customScrollbar`        | `Boolean` | `true`                  | Enable the use of a custom scrollbar                                                       |

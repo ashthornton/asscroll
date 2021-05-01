@@ -1,7 +1,5 @@
 /* eslint-disable */
 
-'use strict';
-
 /**
  * Copyright (c) 2015, Facebook, Inc.
  * All rights reserved.
@@ -19,7 +17,7 @@ var PIXEL_STEP  = 10;
 var LINE_HEIGHT = 40;
 var PAGE_HEIGHT = 800;
 
-function normalizeWheel(/*object*/ event) /*object*/ {
+function normalizeWheel(event) {
     var sX = 0, sY = 0,       // spinX, spinY
         pX = 0, pY = 0;       // pixelX, pixelY
 

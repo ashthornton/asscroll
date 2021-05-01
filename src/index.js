@@ -127,14 +127,16 @@ export default class ASScroll {
             return
         }
 
-        if (eventName === 'scroll') {
-            E.on(Store.events.COMBOSCROLL, cb)
-            return
+        if( eventName === 'scroll' ) {
+            E.on(Store.eventNames.COMBOSCROLL, cb)
         }
 
-        if (eventName === 'raf') {
-            E.on(Store.events.EXTERNALRAF, cb)
-            return
+        if( eventName === 'raf' ) {
+            E.on(Store.eventNames.EXTERNALRAF, cb)
+        }
+
+        if( eventName === 'scrollEnd' ) {
+            E.on(Store.eventNames.SCROLLEND, cb)
         }
 
         console.warn(`ASScroll: "${eventName}" is not a valid event`)
@@ -151,14 +153,16 @@ export default class ASScroll {
             return
         }
 
-        if (eventName === 'scroll') {
-            E.off(Store.events.COMBOSCROLL, cb)
-            return
+        if( eventName === 'scroll' ) {
+            E.off(Store.eventNames.COMBOSCROLL, cb)
         }
 
-        if (eventName === 'raf') {
-            E.off(Store.events.EXTERNALRAF, cb)
-            return
+        if( eventName === 'raf' ) {
+            E.off(Store.eventNames.EXTERNALRAF, cb)
+        }
+
+        if( eventName === 'scrollEnd' ) {
+            E.off(Store.eventNames.SCROLLEND, cb)
         }
 
         console.warn(`ASScroll: "${eventName}" is not a valid event`)
