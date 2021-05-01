@@ -182,7 +182,7 @@ export default class ASScroll {
      * @return {number}
      */
     get scrollPos() {
-        return this.Scroll.scrollPos
+        return -this.Scroll.scrollPos
     }
 
     /**
@@ -190,7 +190,7 @@ export default class ASScroll {
      * @return {number}
      */
     get smoothScrollPos() {
-        return this.Scroll.smoothScrollPos
+        return -this.Scroll.smoothScrollPos
     }
 
     /**
@@ -206,6 +206,6 @@ export default class ASScroll {
      * @return {number}
      */
     get maxScroll() {
-        return this.Scroll.maxScroll
+        return -this.Scroll.maxScroll
     }
 }
