@@ -2061,14 +2061,15 @@ var Events_Events = /*#__PURE__*/function () {
 
     this.options = options;
     src_E.bindAll(this, ['onRaf']);
-    Store_default.a.events = {
+    Store_default.a.eventNames = {
       RAF: 1,
       EXTERNALRAF: 2,
       SCROLL: 3,
       WHEEL: 4,
       COMBOSCROLL: 5,
       RESIZE: 6,
-      TOUCHMOUSE: 7
+      TOUCHMOUSE: 7,
+      SCROLLEND: 8
     };
     this.addEvents();
   }
@@ -2099,7 +2100,7 @@ var Events_Events = /*#__PURE__*/function () {
   }, {
     key: "onRaf",
     value: function onRaf() {
-      src_E.emit(Store_default.a.events.RAF);
+      src_E.emit(Store_default.a.eventNames.RAF);
       if (this.options.disableRaf) return;
       requestAnimationFrame(this.onRaf);
     }
@@ -2107,14 +2108,14 @@ var Events_Events = /*#__PURE__*/function () {
     key: "onScroll",
     value: function onScroll() {
       src_E.on('wheel', window, function (e) {
-        src_E.emit(Store_default.a.events.WHEEL, {
+        src_E.emit(Store_default.a.eventNames.WHEEL, {
           event: e
         });
       }, {
         passive: false
       });
       src_E.on('scroll', window, function (e) {
-        src_E.emit(Store_default.a.events.SCROLL, {
+        src_E.emit(Store_default.a.eventNames.SCROLL, {
           event: e
         });
       }, {
@@ -2126,7 +2127,7 @@ var Events_Events = /*#__PURE__*/function () {
     value: function onResize(windowWidth, windowHeight) {
       Store_default.a.windowSize.w = windowWidth || window.innerWidth;
       Store_default.a.windowSize.h = windowHeight || window.innerHeight;
-      src_E.emit(Store_default.a.events.RESIZE);
+      src_E.emit(Store_default.a.eventNames.RESIZE);
     }
   }, {
     key: "detectMouse",
@@ -2221,7 +2222,7 @@ var Scrollbar_Scrollbar = /*#__PURE__*/function () {
       var totalHeight = Store_default.a.windowSize.h + (this.trueSize - this.handleHeight);
       this.smoothScroll.scrollPos = e.clientY / totalHeight * this.smoothScroll.maxScroll;
       this.smoothScroll.syncScroll = true;
-      src_E.emit(Store_default.a.events.COMBOSCROLL, this.smoothScroll.scrollPos);
+      src_E.emit(Store_default.a.eventNames.COMBOSCROLL, this.smoothScroll.scrollPos);
     }
   }, {
     key: "onMouseDown",
@@ -2280,101 +2281,6 @@ var Scrollbar_Scrollbar = /*#__PURE__*/function () {
 }();
 
 
-// CONCATENATED MODULE: ./src/utils/normalizeWheel.js
-/* eslint-disable */
-
-/**
- * Copyright (c) 2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @providesModule normalizeWheel
- * @typechecks
- */
-// Reasonable defaults
-
-var PIXEL_STEP = 10;
-var LINE_HEIGHT = 40;
-var PAGE_HEIGHT = 800;
-
-function normalizeWheel(
-/*object*/
-event)
-/*object*/
-{
-  var sX = 0,
-      sY = 0,
-      // spinX, spinY
-  pX = 0,
-      pY = 0; // pixelX, pixelY
-  // Legacy
-
-  if ('detail' in event) {
-    sY = event.detail;
-  }
-
-  if ('wheelDelta' in event) {
-    sY = -event.wheelDelta / 120;
-  }
-
-  if ('wheelDeltaY' in event) {
-    sY = -event.wheelDeltaY / 120;
-  }
-
-  if ('wheelDeltaX' in event) {
-    sX = -event.wheelDeltaX / 120;
-  } // side scrolling on FF with DOMMouseScroll
-
-
-  if ('axis' in event && event.axis === event.HORIZONTAL_AXIS) {
-    sX = sY;
-    sY = 0;
-  }
-
-  pX = sX * PIXEL_STEP;
-  pY = sY * PIXEL_STEP;
-
-  if ('deltaY' in event) {
-    pY = event.deltaY;
-  }
-
-  if ('deltaX' in event) {
-    pX = event.deltaX;
-  }
-
-  if ((pX || pY) && event.deltaMode) {
-    if (event.deltaMode == 1) {
-      // delta in LINE units
-      pX *= LINE_HEIGHT;
-      pY *= LINE_HEIGHT;
-    } else {
-      // delta in PAGE units
-      pX *= PAGE_HEIGHT;
-      pY *= PAGE_HEIGHT;
-    }
-  } // Fall-back if spin cannot be determined
-
-
-  if (pX && !sX) {
-    sX = pX < 1 ? -1 : 1;
-  }
-
-  if (pY && !sY) {
-    sY = pY < 1 ? -1 : 1;
-  }
-
-  return {
-    spinX: sX,
-    spinY: sY,
-    pixelX: pX,
-    pixelY: pY
-  };
-}
-
-/* harmony default export */ var utils_normalizeWheel = (normalizeWheel);
 // CONCATENATED MODULE: ./src/Scroll.js
 
 
@@ -2384,7 +2290,6 @@ function Scroll_classCallCheck(instance, Constructor) { if (!(instance instanceo
 function Scroll_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function Scroll_createClass(Constructor, protoProps, staticProps) { if (protoProps) Scroll_defineProperties(Constructor.prototype, protoProps); if (staticProps) Scroll_defineProperties(Constructor, staticProps); return Constructor; }
-
 
 
 
@@ -2411,8 +2316,6 @@ var Scroll_Scroll = /*#__PURE__*/function () {
     this.scrolling = false;
     this.syncScroll = false;
     this.deltaY = 0;
-    this.wheeling = false;
-    this.wheel = true;
     this.horizontalScroll = false;
     this.touchScroll = false;
     this.firstResize = true;
@@ -2429,7 +2332,7 @@ var Scroll_Scroll = /*#__PURE__*/function () {
       document.documentElement.classList.add('asscroll-touch');
       this.options.customScrollbar = false;
       src_E.on('scroll', this.scrollContainer, function (e) {
-        src_E.emit(Store_default.a.events.SCROLL, {
+        src_E.emit(Store_default.a.eventNames.SCROLL, {
           event: e
         });
       }, {
@@ -2438,7 +2341,7 @@ var Scroll_Scroll = /*#__PURE__*/function () {
     } // enable smooth scroll if mouse is detected
 
 
-    src_E.on(Store_default.a.events.TOUCHMOUSE, function () {
+    src_E.on(Store_default.a.eventNames.TOUCHMOUSE, function () {
       if (!_this.options.disableOnTouch) return;
       _this.touchScroll = false;
       _this.options.customScrollbar = _this.scrollbarCheck;
@@ -2479,8 +2382,8 @@ var Scroll_Scroll = /*#__PURE__*/function () {
         this.scrollbar = new Scrollbar_Scrollbar(this);
       }
 
-      src_E.on(Store_default.a.events.RAF, this.onRAF);
-      src_E.on(Store_default.a.events.RESIZE, this.onResize);
+      src_E.on(Store_default.a.eventNames.RAF, this.onRAF);
+      src_E.on(Store_default.a.eventNames.RESIZE, this.onResize);
     }
   }, {
     key: "onScroll",
@@ -2495,10 +2398,11 @@ var Scroll_Scroll = /*#__PURE__*/function () {
 
       if (!Store_default.a.isTouch && event.type === 'wheel') {
         event.preventDefault();
-        this.deltaY = utils_normalizeWheel(event).pixelY;
-        this.wheeling = true;
+        this.deltaY = event.deltaY;
         this.syncScroll = true;
-        this.wheel = true;
+        this.scrollPos += this.deltaY * -1;
+        this.clamp();
+        src_E.emit(Store_default.a.eventNames.COMBOSCROLL, this.scrollPos);
         return;
       } else {
         if (this.preventResizeScroll) {
@@ -2512,27 +2416,18 @@ var Scroll_Scroll = /*#__PURE__*/function () {
           this.scrollPos = -window.scrollY;
         }
 
-        this.wheel = false;
-
         if (Store_default.a.isTouch && this.options.disableOnTouch) {
           this.smoothScrollPos = this.scrollPos;
         }
 
-        src_E.emit(Store_default.a.events.COMBOSCROLL, this.scrollPos);
+        this.clamp();
+        src_E.emit(Store_default.a.eventNames.COMBOSCROLL, this.scrollPos);
       }
     }
   }, {
     key: "onRAF",
     value: function onRAF() {
       if (!this.render) return;
-
-      if (this.wheeling) {
-        this.scrollPos += this.deltaY * -1;
-        this.wheeling = false;
-        src_E.emit(Store_default.a.events.COMBOSCROLL, this.scrollPos);
-      }
-
-      this.clamp();
 
       if (this.options.limitLerpRate) {
         this.time = performance.now() * 0.001;
@@ -2544,14 +2439,15 @@ var Scroll_Scroll = /*#__PURE__*/function () {
         this.smoothScrollPos = this.scrollPos;
 
         if (this.syncScroll) {
-          window.scrollTo(0, -this.scrollPos);
           this.syncScroll = false;
+          window.scrollTo(0, -this.scrollPos);
+          src_E.emit(Store_default.a.eventNames.SCROLLEND, this.scrollPos);
         }
 
         if (this.scrolling) {
+          this.scrolling = false;
           this.options.customScrollbar && this.scrollbar.hide();
           this.toggleIframes(true);
-          this.scrolling = false;
         }
       } else {
         this.smoothScrollPos += (this.scrollPos - this.smoothScrollPos) * this.ease * this.delta;
@@ -2561,7 +2457,7 @@ var Scroll_Scroll = /*#__PURE__*/function () {
       var y = this.horizontalScroll ? 0 : this.smoothScrollPos;
       this.applyTransform(x, y);
       this.options.customScrollbar && this.scrollbar.transform();
-      src_E.emit(Store_default.a.events.EXTERNALRAF, {
+      src_E.emit(Store_default.a.eventNames.EXTERNALRAF, {
         scrollPos: this.scrollPos,
         smoothScrollPos: this.smoothScrollPos
       });
@@ -2614,8 +2510,8 @@ var Scroll_Scroll = /*#__PURE__*/function () {
         this.scrollTo(this.prevScrollPos, false);
       }
 
-      src_E.on(Store_default.a.events.WHEEL, this.onScroll);
-      src_E.on(Store_default.a.events.SCROLL, this.onScroll);
+      src_E.on(Store_default.a.eventNames.WHEEL, this.onScroll);
+      src_E.on(Store_default.a.eventNames.SCROLL, this.onScroll);
     }
   }, {
     key: "disable",
@@ -2628,8 +2524,8 @@ var Scroll_Scroll = /*#__PURE__*/function () {
         this.render = false;
       }
 
-      src_E.off(Store_default.a.events.WHEEL, this.onScroll);
-      src_E.off(Store_default.a.events.SCROLL, this.onScroll);
+      src_E.off(Store_default.a.eventNames.WHEEL, this.onScroll);
+      src_E.off(Store_default.a.eventNames.SCROLL, this.onScroll);
       this.prevScrollPos = this.scrollPos;
       Store_default.a.body.style.height = '0px';
     }
@@ -2654,7 +2550,7 @@ var Scroll_Scroll = /*#__PURE__*/function () {
 
       this.clamp();
       this.syncScroll = true;
-      if (emitEvent) src_E.emit(Store_default.a.events.COMBOSCROLL, this.scrollPos);
+      if (emitEvent) src_E.emit(Store_default.a.eventNames.COMBOSCROLL, this.scrollPos);
     }
   }, {
     key: "onResize",
@@ -2813,22 +2709,30 @@ var src_ASScroll = /*#__PURE__*/function () {
     key: "on",
     value: function on(eventName, cb) {
       if (eventName === 'scroll') {
-        src_E.on(Store_default.a.events.COMBOSCROLL, cb);
+        src_E.on(Store_default.a.eventNames.COMBOSCROLL, cb);
       }
 
       if (eventName === 'raf') {
-        src_E.on(Store_default.a.events.EXTERNALRAF, cb);
+        src_E.on(Store_default.a.eventNames.EXTERNALRAF, cb);
+      }
+
+      if (eventName === 'scrollEnd') {
+        src_E.on(Store_default.a.eventNames.SCROLLEND, cb);
       }
     }
   }, {
     key: "off",
     value: function off(eventName, cb) {
       if (eventName === 'scroll') {
-        src_E.off(Store_default.a.events.COMBOSCROLL, cb);
+        src_E.off(Store_default.a.eventNames.COMBOSCROLL, cb);
       }
 
       if (eventName === 'raf') {
-        src_E.off(Store_default.a.events.EXTERNALRAF, cb);
+        src_E.off(Store_default.a.eventNames.EXTERNALRAF, cb);
+      }
+
+      if (eventName === 'scrollEnd') {
+        src_E.off(Store_default.a.eventNames.SCROLLEND, cb);
       }
     }
   }, {
