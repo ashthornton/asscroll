@@ -18,7 +18,6 @@ export default class Scroll {
 		this.scrolling = false
 		this.syncScroll = false
 		this.horizontalScroll = false
-		this.touchScroll = false
 		this.firstResize = true
 		this.preventResizeScroll = false
 		this.ease = store.isTouch ? this.options.touchEase : this.options.ease
@@ -27,47 +26,22 @@ export default class Scroll {
 		this.delta = 1
 		this.time = this.startTime = performance.now()
 
-		if (!store.isTouch || !this.options.disableOnTouch) {
-			if (store.isTouch) this.options.customScrollbar = false
-			this.setupSmoothScroll()
-		} else {
-			this.touchScroll = true
-			document.documentElement.classList.add('asscroll-touch')
+		if (store.isTouch) {
 			this.options.customScrollbar = false
-			E.on('scroll', this.scrollContainer, e => { E.emit(Events.INTERNALSCROLL, { event: e }) }, { passive: true })
+
+			if (this.options.touchScrollType === 'none') {
+				console.log('no touch scroll')
+			} else if (this.options.touchScrollType === 'transform') {
+				this.setupSmoothScroll()
+			} else if (this.options.touchScrollType === 'scrollTop') {
+				document.documentElement.classList.add('asscroll-touch')
+				E.on('scroll', this.scrollContainer, e => { E.emit(Events.INTERNALSCROLL, { event: e }) }, { passive: true })
+			}
+		} else {
+			this.setupSmoothScroll()
 		}
 
 		this.addEvents()
-	}
-
-	addEvents() {
-		// enable smooth scroll if mouse is detected
-		E.on(Events.MOUSEDETECTED, () => {
-			if (!this.options.disableOnTouch) return
-			this.touchScroll = false
-			this.options.customScrollbar = this.scrollbarCheck
-			this.ease = this.options.ease
-			this.setupSmoothScroll()
-			this.onResize()
-		})
-
-		if (!store.isTouch) {
-			E.on('mouseleave', document, () => {
-				window.scrollTo(0, -this.scrollPos)
-			})
-
-			E.on('keydown', window, e => {
-				if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'PageUp' || e.key === 'PageDown' || e.key === 'Home' || e.key === 'End' || e.key === 'Tab') {
-					window.scrollTo(0, -this.scrollPos)
-				}
-				if (e.key === 'Tab') {
-					this.toggleFixedContainer()
-				}
-			})
-
-			E.delegate('click', 'a[href^="#"]', this.toggleFixedContainer)
-			E.delegate('wheel', this.options.blockScrollClass, this.blockScrollEvent)
-		}
 	}
 
 	setupSmoothScroll() {
@@ -111,14 +85,13 @@ export default class Scroll {
 				return
 			}
 
-			if (this.touchScroll) {
+			if (store.isTouch && this.options.touchScrollType === 'scrollTop') {
 				this.scrollPos = this.horizontalScroll ? -this.scrollContainer.scrollLeft : -this.scrollContainer.scrollTop
-				console.log(this.scrollPos)
 			} else {
 				this.scrollPos = -window.scrollY
 			}
 
-			if (store.isTouch && this.options.disableOnTouch) {
+			if (store.isTouch && this.options.touchScrollType !== 'transform') {
 				this.smoothScrollPos = this.scrollPos
 			}
 		}
@@ -187,7 +160,7 @@ export default class Scroll {
 
 		this.iframes = this.scrollContainer.querySelectorAll('iframe')
 
-		if (store.isTouch && this.options.disableOnTouch) {
+		if (store.isTouch && this.options.touchScrollType !== 'transform') {
 			store.body.style.removeProperty('height')
 			this.maxScroll = -this.scrollContainer.scrollHeight
 			if (reset) {
@@ -232,7 +205,7 @@ export default class Scroll {
 
 	scrollTo(y, emitEvent = true) {
 		this.scrollPos = y
-		if (store.isTouch && this.options.disableOnTouch) {
+		if (store.isTouch && this.options.touchScrollType !== 'transform') {
 			if (this.horizontalScroll) {
 				this.scrollContainer.scrollTo(-this.scrollPos, 0)
 			} else {
@@ -287,5 +260,34 @@ export default class Scroll {
 			const y = this.horizontalScroll ? 0 : scrollPos
 			this.applyTransform(x, y)
 		})
+	}
+
+	addEvents() {
+		// enable smooth scroll if mouse is detected
+		E.on(Events.MOUSEDETECTED, () => {
+			if (this.options.touchScrollType === 'transform') return
+			this.options.customScrollbar = this.scrollbarCheck
+			this.ease = this.options.ease
+			this.setupSmoothScroll()
+			this.onResize()
+		})
+
+		if (!store.isTouch) {
+			E.on('mouseleave', document, () => {
+				window.scrollTo(0, -this.scrollPos)
+			})
+
+			E.on('keydown', window, e => {
+				if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'PageUp' || e.key === 'PageDown' || e.key === 'Home' || e.key === 'End' || e.key === 'Tab') {
+					window.scrollTo(0, -this.scrollPos)
+				}
+				if (e.key === 'Tab') {
+					this.toggleFixedContainer()
+				}
+			})
+
+			E.delegate('click', 'a[href^="#"]', this.toggleFixedContainer)
+			E.delegate('wheel', this.options.blockScrollClass, this.blockScrollEvent)
+		}
 	}
 }

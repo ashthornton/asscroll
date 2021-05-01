@@ -15,12 +15,12 @@ export default class ASScroll {
 	* @param {string} [parameters.innerElement='[data-asscroll'] The selector string for the inner element(s)
 	* @param {number} [parameters.ease=0.075] The ease amount for the transform lerp
 	* @param {number} [parameters.touchEase=1] The ease amount for the transform lerp on touch devices
-	* @param {boolean} [parameters.customScrollbar=true] Toggle the custom scrollbar
+	* @param {string} [parameters.touchScrollType='none'] Disable the transform on touch devices
 	* @param {string} [parameters.scrollbarEl='.asscrollbar'] The selector string for the custom scrollbar element
 	* @param {string} [parameters.scrollbarHandleEl='.asscrollbar__handle'] The selector string for the custom scrollbar handle element
+	* @param {boolean} [parameters.customScrollbar=true] Toggle the custom scrollbar
 	* @param {boolean} [parameters.scrollbarStyles=true] Include the scrollbar CSS via Javascript
 	* @param {boolean} [parameters.disableNativeScrollbar=true] Disable the native browser scrollbar
-	* @param {boolean} [parameters.disableOnTouch=true] Disable the transform on touch devices
 	* @param {boolean} [parameters.disableRaf=false] Disable internal requestAnimationFrame loop in order to use an external one
 	* @param {boolean} [parameters.disableResize=false] Disable internal resize event on the window in order to use an external one
 	* @param {boolean} [parameters.limitLerpRate=true] Match lerp speed on >60Hz displays to that of a 60Hz display
@@ -31,12 +31,12 @@ export default class ASScroll {
 		innerElement = '[data-asscroll]',
 		ease = 0.075,
 		touchEase = 1,
-		customScrollbar = true,
+		touchScrollType = 'none',
 		scrollbarEl = '.asscrollbar',
 		scrollbarHandleEl = '.asscrollbar__handle',
+		customScrollbar = true,
 		scrollbarStyles = true,
 		disableNativeScrollbar = true,
-		disableOnTouch = true,
 		disableRaf = false,
 		disableResize = false,
 		limitLerpRate = true,
@@ -57,7 +57,7 @@ export default class ASScroll {
 			scrollbarHandleEl,
 			scrollbarStyles,
 			disableNativeScrollbar,
-			disableOnTouch,
+			touchScrollType,
 			limitLerpRate,
 			blockScrollClass
 		})
