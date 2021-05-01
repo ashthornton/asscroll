@@ -42,8 +42,6 @@ export default class ASScroll {
 		limitLerpRate = true,
 		blockScrollClass = '.asscroll-block'
 	} = {}) {
-		E.bindAll(this, ['enable', 'disable', 'on', 'scrollTo', 'onRaf', 'onResize'])
-
 		this.Events = new Events({
 			disableRaf,
 			disableResize
@@ -78,7 +76,7 @@ export default class ASScroll {
 	* @param {boolean} [parameters.restore = false] Restore the scroll position to where it was when disable() was called
 	* @param {boolean} [parameters.horizontalScroll = false] Toggle horizontal scrolling
 	*/
-	enable(parameters) {
+	enable = (parameters) => {
 		if (parameters !== undefined && typeof parameters !== 'object') {
 			console.warn('ASScroll: Please pass an object with your parameters. Since 2.0')
 		}
@@ -90,7 +88,7 @@ export default class ASScroll {
 	* @param {Object} parameters
 	* @param {boolean} [parameters.inputOnly = false] Only disable the ability to manually scroll (still allow transforms)
 	*/
-	disable(parameters) {
+	disable = (parameters) => {
 		if (parameters !== undefined && typeof parameters !== 'object') {
 			console.warn('ASScroll: Please pass an object with your parameters. Since 2.0')
 		}
@@ -100,7 +98,7 @@ export default class ASScroll {
 	/**
 	* Call the internal animation frame request callback.
 	*/
-	onRaf() {
+	onRaf = () => {
 		this.Events.onRaf()
 	}
 
@@ -110,7 +108,7 @@ export default class ASScroll {
 	* @param {number} parameters.width Window width
 	* @param {number} parameters.height Window height
 	*/
-	onResize(parameters) {
+	onResize = (parameters) => {
 		this.Events.onResize(parameters)
 	}
 
@@ -119,7 +117,7 @@ export default class ASScroll {
 	* @param {string} eventName Name of the event you wish to listen for
 	* @param {function} cb Callback function that should be executed when the event fires
 	*/
-	on(eventName, cb) {
+	on = (eventName, cb) => {
 		if (typeof cb !== 'function') {
 			console.error('ASScroll: Function not provided as second parameter')
 			return
@@ -148,7 +146,7 @@ export default class ASScroll {
 	* @param {string} eventName Name of the event
 	* @param {function} cb Callback function
 	*/
-	off(eventName, cb) {
+	off = (eventName, cb) => {
 		if (typeof cb !== 'function') {
 			console.error('ASScroll: Function not provided as second parameter')
 			return
@@ -177,7 +175,7 @@ export default class ASScroll {
 	* @param {number} scrollPos Scroll position
 	* @param {boolean} [emitEvent=true] Whether to emit the scroll events or not
 	*/
-	scrollTo(scrollPos, emitEvent = true) {
+	scrollTo = (scrollPos, emitEvent = true) => {
 		this.Scroll.scrollTo(-scrollPos, emitEvent)
 	}
 

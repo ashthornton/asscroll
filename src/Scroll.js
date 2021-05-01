@@ -17,7 +17,6 @@ export default class Scroll {
 		this.render = false
 		this.scrolling = false
 		this.syncScroll = false
-		this.deltaY = 0
 		this.horizontalScroll = false
 		this.touchScroll = false
 		this.firstResize = true
@@ -91,9 +90,8 @@ export default class Scroll {
 		if (!store.isTouch && event.type === 'wheel') {
 			event.preventDefault()
 
-			this.deltaY = event.deltaY
 			this.syncScroll = true
-			this.scrollPos += this.deltaY * -1
+			this.scrollPos += event.deltaY * -1
 		} else {
 			if (this.preventResizeScroll) {
 				this.preventResizeScroll = false
