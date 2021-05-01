@@ -44,7 +44,7 @@ export default class Events {
 
 	onScroll() {
 		E.on('wheel', window, e => { E.emit(Events.WHEEL, { event: e }) }, { passive: false })
-		E.on('scroll', window, e => { E.emit(Events.SCROLL, { event: e }) }, { passive: true })
+		E.on('scroll', window, e => { E.emit(Events.INTERNALSCROLL, { event: e }) }, { passive: true })
 	}
 
 	onResize(windowWidth, windowHeight) {

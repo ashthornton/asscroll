@@ -46,6 +46,7 @@ export default class Scroll {
 			if (!this.options.disableOnTouch) return
 			this.touchScroll = false
 			this.options.customScrollbar = this.scrollbarCheck
+			this.ease = this.options.ease
 			this.smoothSetup()
 			this.onResize()
 		})
