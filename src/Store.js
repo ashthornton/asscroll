@@ -1,4 +1,4 @@
-const Store = {
+const store = {
     html: document.documentElement,
     body: document.body,
     windowSize: {
@@ -7,4 +7,4 @@ const Store = {
     }
 }
 
-module.exports = Store
+module.exports = store

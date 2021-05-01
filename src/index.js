@@ -1,4 +1,4 @@
-import Store from './Store'
+import store from './store'
 import Events from './Events'
 import Scroll from './Scroll'
 import E from './E'
@@ -128,15 +128,15 @@ export default class ASScroll {
         }
 
         if( eventName === 'scroll' ) {
-            E.on(Store.eventNames.COMBOSCROLL, cb)
+            E.on(store.eventNames.COMBOSCROLL, cb)
         }
 
         if( eventName === 'raf' ) {
-            E.on(Store.eventNames.EXTERNALRAF, cb)
+            E.on(store.eventNames.EXTERNALRAF, cb)
         }
 
         if( eventName === 'scrollEnd' ) {
-            E.on(Store.eventNames.SCROLLEND, cb)
+            E.on(store.eventNames.SCROLLEND, cb)
         }
 
         console.warn(`ASScroll: "${eventName}" is not a valid event`)
@@ -154,15 +154,15 @@ export default class ASScroll {
         }
 
         if( eventName === 'scroll' ) {
-            E.off(Store.eventNames.COMBOSCROLL, cb)
+            E.off(store.eventNames.COMBOSCROLL, cb)
         }
 
         if( eventName === 'raf' ) {
-            E.off(Store.eventNames.EXTERNALRAF, cb)
+            E.off(store.eventNames.EXTERNALRAF, cb)
         }
 
         if( eventName === 'scrollEnd' ) {
-            E.off(Store.eventNames.SCROLLEND, cb)
+            E.off(store.eventNames.SCROLLEND, cb)
         }
 
         console.warn(`ASScroll: "${eventName}" is not a valid event`)

@@ -1,4 +1,4 @@
-import Store from './Store'
+import store from './store'
 import E from './E'
 import Scrollbar from './Scrollbar'
 
@@ -23,23 +23,23 @@ export default class Scroll {
         this.touchScroll = false
         this.firstResize = true
         this.preventResizeScroll = false
-        this.ease = Store.isTouch ? this.options.touchEase : this.options.ease
+        this.ease = store.isTouch ? this.options.touchEase : this.options.ease
 
         this.delta = 1
         this.time = this.startTime = performance.now()
 
-        if (!Store.isTouch || !this.options.disableOnTouch) {
-            if (Store.isTouch) this.options.customScrollbar = false
+        if (!store.isTouch || !this.options.disableOnTouch) {
+            if (store.isTouch) this.options.customScrollbar = false
             this.smoothSetup()
         } else {
             this.touchScroll = true
             document.documentElement.classList.add('asscroll-touch')
             this.options.customScrollbar = false
-            E.on('scroll', this.scrollContainer, e => { E.emit(Store.eventNames.SCROLL, { event: e }) }, { passive: true })
+            E.on('scroll', this.scrollContainer, e => { E.emit(store.eventNames.SCROLL, { event: e }) }, { passive: true })
         }
 
         // enable smooth scroll if mouse is detected
-        E.on(Store.eventNames.TOUCHMOUSE, () => {
+        E.on(store.eventNames.TOUCHMOUSE, () => {
             if (!this.options.disableOnTouch) return
             this.touchScroll = false
             this.options.customScrollbar = this.scrollbarCheck
@@ -78,8 +78,8 @@ export default class Scroll {
             this.scrollbar = new Scrollbar(this)
         }
 
-        E.on(Store.eventNames.RAF, this.onRAF)
-        E.on(Store.eventNames.RESIZE, this.onResize)
+        E.on(store.eventNames.RAF, this.onRAF)
+        E.on(store.eventNames.RESIZE, this.onResize)
 
     }
 
@@ -90,7 +90,7 @@ export default class Scroll {
             this.scrolling = true
         }
 
-        if (!Store.isTouch && event.type === 'wheel') {
+        if (!store.isTouch && event.type === 'wheel') {
 
             event.preventDefault()
 
@@ -98,7 +98,7 @@ export default class Scroll {
             this.syncScroll = true
             this.scrollPos += this.deltaY * -1
             this.clamp()
-            E.emit(Store.eventNames.COMBOSCROLL, this.scrollPos)
+            E.emit(store.eventNames.COMBOSCROLL, this.scrollPos)
             
             return
 
@@ -115,12 +115,12 @@ export default class Scroll {
                 this.scrollPos = -window.scrollY
             }
             
-            if( Store.isTouch && this.options.disableOnTouch ) {
+            if( store.isTouch && this.options.disableOnTouch ) {
                 this.smoothScrollPos = this.scrollPos
             }
 
             this.clamp()
-            E.emit(Store.eventNames.COMBOSCROLL, this.scrollPos)
+            E.emit(store.eventNames.COMBOSCROLL, this.scrollPos)
         }
     }
 
@@ -140,7 +140,7 @@ export default class Scroll {
             if( this.syncScroll ) {
                 this.syncScroll = false
                 window.scrollTo(0, -this.scrollPos)
-                E.emit(Store.eventNames.SCROLLEND, this.scrollPos)
+                E.emit(store.eventNames.SCROLLEND, this.scrollPos)
             }
             if( this.scrolling ) {
                 this.scrolling = false
@@ -157,7 +157,7 @@ export default class Scroll {
 
         this.options.customScrollbar && this.scrollbar.transform()
 
-        E.emit(Store.eventNames.EXTERNALRAF, { scrollPos: this.scrollPos, smoothScrollPos: this.smoothScrollPos })
+        E.emit(store.eventNames.EXTERNALRAF, { scrollPos: this.scrollPos, smoothScrollPos: this.smoothScrollPos })
 
     }
 
@@ -187,8 +187,8 @@ export default class Scroll {
 
         this.iframes = this.scrollContainer.querySelectorAll('iframe')
 
-        if (Store.isTouch && this.options.disableOnTouch) {
-            Store.body.style.removeProperty('height')
+        if (store.isTouch && this.options.disableOnTouch) {
+            store.body.style.removeProperty('height')
             if (reset) {
                 this.scrollPos = this.smoothScrollPos = 0
                 this.scrollTo(0, false)
@@ -206,8 +206,8 @@ export default class Scroll {
             this.scrollTo(this.prevScrollPos, false)
         }
         
-        E.on(Store.eventNames.WHEEL, this.onScroll)
-        E.on(Store.eventNames.SCROLL, this.onScroll)
+        E.on(store.eventNames.WHEEL, this.onScroll)
+        E.on(store.eventNames.SCROLL, this.onScroll)
 
     }
 
@@ -219,11 +219,11 @@ export default class Scroll {
             this.render = false
         }
 
-        E.off(Store.eventNames.WHEEL, this.onScroll)
-        E.off(Store.eventNames.SCROLL, this.onScroll)
+        E.off(store.eventNames.WHEEL, this.onScroll)
+        E.off(store.eventNames.SCROLL, this.onScroll)
 
         this.prevScrollPos = this.scrollPos
-        Store.body.style.height = '0px'
+        store.body.style.height = '0px'
     }
 
     clamp() {
@@ -232,7 +232,7 @@ export default class Scroll {
 
     scrollTo(y, emitEvent = true) {
         this.scrollPos = y
-        if (Store.isTouch && this.options.disableOnTouch) {
+        if (store.isTouch && this.options.disableOnTouch) {
             if (this.horizontalScroll) {
                 this.scrollContainer.scrollTo(-this.scrollPos, 0)
             } else {
@@ -241,7 +241,7 @@ export default class Scroll {
         }
         this.clamp()
         this.syncScroll = true
-        if (emitEvent) E.emit(Store.eventNames.COMBOSCROLL, this.scrollPos)
+        if (emitEvent) E.emit(store.eventNames.COMBOSCROLL, this.scrollPos)
     }
 
     onResize() {
@@ -256,12 +256,12 @@ export default class Scroll {
             this.scrollLength = this.horizontalScroll ? this.scrollTargets[0].scrollWidth : this.scrollTargets[0].scrollHeight
         }
 
-        const windowSize = this.horizontalScroll ? Store.windowSize.w : Store.windowSize.h
+        const windowSize = this.horizontalScroll ? store.windowSize.w : store.windowSize.h
         this.maxScroll = this.scrollLength > windowSize ? -(this.scrollLength - windowSize) : 0
         if (!this.firstResize) {
             this.preventResizeScroll = true
         }
-        Store.body.style.height = this.scrollLength + 'px'
+        store.body.style.height = this.scrollLength + 'px'
         this.options.customScrollbar && this.scrollbar.onResize()
         this.firstResize = false
     }

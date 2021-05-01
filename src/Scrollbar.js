@@ -1,4 +1,4 @@
-import Store from './Store'
+import store from './store'
 import E from './E'
 
 export default class Scrollbar {
@@ -21,18 +21,18 @@ export default class Scrollbar {
     }
 
     onResize() {
-        this.scale = (-this.smoothScroll.maxScroll + Store.windowSize.h) / Store.windowSize.h
+        this.scale = (-this.smoothScroll.maxScroll + store.windowSize.h) / store.windowSize.h
         if (this.scale <= 1) {
             this.handle.style.height = 0
             return
         }
-        this.trueSize = Store.windowSize.h / this.scale
+        this.trueSize = store.windowSize.h / this.scale
         this.handleHeight = Math.max(this.trueSize, 40)
         this.handle.style.height = `${this.handleHeight}px`
     }
 
     transform() {
-        const y = -this.smoothScroll.scrollPos / -this.smoothScroll.maxScroll * (Store.windowSize.h - this.handleHeight)
+        const y = -this.smoothScroll.scrollPos / -this.smoothScroll.maxScroll * (store.windowSize.h - this.handleHeight)
         this.handle.style.transform = `translate3d(0, ${y}px, 0)`
     }
 
@@ -46,23 +46,23 @@ export default class Scrollbar {
 
     onMouseMove(e) {
         if (!this.mouseDown) return
-        const totalHeight = Store.windowSize.h + (this.trueSize - this.handleHeight)
+        const totalHeight = store.windowSize.h + (this.trueSize - this.handleHeight)
         this.smoothScroll.scrollPos = (e.clientY / totalHeight * this.smoothScroll.maxScroll)
         this.smoothScroll.syncScroll = true
-        E.emit(Store.eventNames.COMBOSCROLL, this.smoothScroll.scrollPos)
+        E.emit(store.eventNames.COMBOSCROLL, this.smoothScroll.scrollPos)
     }
 
     onMouseDown() {
         this.mouseDown = true
-        Store.body.style.userSelect = 'none'
-        Store.body.style['-ms-user-select'] = 'none'
+        store.body.style.userSelect = 'none'
+        store.body.style['-ms-user-select'] = 'none'
         this.el.classList.add('active')
     }
 
     onMouseUp() {
         this.mouseDown = false
-        Store.body.style.removeProperty('user-select')
-        Store.body.style.removeProperty('-ms-user-select')
+        store.body.style.removeProperty('user-select')
+        store.body.style.removeProperty('-ms-user-select')
         this.el.classList.remove('active')
     }
 
