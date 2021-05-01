@@ -24,6 +24,8 @@ export default class Scroll {
         this.wheel = true
         this.horizontalScroll = false
         this.touchScroll = false
+        this.firstResize = true
+        this.preventResizeScroll = false
         this.ease = Store.isTouch ? this.options.touchEase : this.options.ease
 
         this.delta = 1
@@ -102,6 +104,11 @@ export default class Scroll {
             return
 
         } else {
+
+            if (this.preventResizeScroll) {
+                this.preventResizeScroll = false
+                return
+            }
 
             if (this.touchScroll) {
                 this.scrollPos = this.horizontalScroll ? -this.scrollContainer.scrollLeft : -this.scrollContainer.scrollTop
@@ -187,7 +194,8 @@ export default class Scroll {
                 this.scrollTo(0, false)
             }
         } else {
-            if (reset) {
+            this.firstResize = true
+            if( reset ) {
                 this.scrollPos = this.smoothScrollPos = 0
                 this.applyTransform(0, 0)
             }
@@ -249,8 +257,12 @@ export default class Scroll {
 
         const windowSize = this.horizontalScroll ? Store.windowSize.w : Store.windowSize.h
         this.maxScroll = this.scrollLength > windowSize ? -(this.scrollLength - windowSize) : 0
+        if (!this.firstResize) {
+            this.preventResizeScroll = true
+        }
         Store.body.style.height = this.scrollLength + 'px'
         this.options.customScrollbar && this.scrollbar.onResize()
+        this.firstResize = false
     }
 
     toggleIframes(enable) {

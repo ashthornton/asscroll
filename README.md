@@ -11,7 +11,7 @@
 - No special cases to cater for when handling manual key detection (i.e. pressing space in a form input)
 - Doesn't stop working when hovering over an iframe
 - Handles hardware that doesn't fire the 'wheel' event i.e. Windows trackpads in Edge + IE
-- No lag between DOM and WebGL elements on mobile, whilst retaining native interia scroll
+- No lag between DOM and WebGL elements on mobile, whilst retaining native inertia scroll
 
 #### Other Features:
 - Horizontal scroll
@@ -28,12 +28,14 @@ Demos
 - [Using GSAP's ScrollTrigger with ASScroll](https://codepen.io/ashthornton/pen/PoZRwPW)
 
 ### Sites using ASScroll
-- [Shape Studio](https://shapestudio.co.uk/)
-- [Wray and Nephew](https://straightfromyard.co.uk/)
-- [Havoc](https://www.havoc.co/)
-- [FanFan](https://fanfan.fan/)
-- [Eder Anaya](https://ederanaya.me/)
+- [Superlist](https://superlist.com/)
 - [Lewa House](https://lewahouse.com/)
+- [Eder Anaya](https://ederanaya.me/)
+- [FanFan](https://fanfan.fan/)
+- [Havoc](https://www.havoc.co/)
+- [Wray and Nephew](https://straightfromyard.co.uk/)
+- [Shape Studio](https://shapestudio.co.uk/)
+
 
 Table of contents
 =================
