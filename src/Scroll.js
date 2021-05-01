@@ -29,7 +29,7 @@ export default class Scroll {
 
 		if (!store.isTouch || !this.options.disableOnTouch) {
 			if (store.isTouch) this.options.customScrollbar = false
-			this.smoothSetup()
+			this.setupSmoothScroll()
 		} else {
 			this.touchScroll = true
 			document.documentElement.classList.add('asscroll-touch')
@@ -47,28 +47,30 @@ export default class Scroll {
 			this.touchScroll = false
 			this.options.customScrollbar = this.scrollbarCheck
 			this.ease = this.options.ease
-			this.smoothSetup()
+			this.setupSmoothScroll()
 			this.onResize()
 		})
 
-		E.on('mouseleave', document, () => {
-			window.scrollTo(0, -this.scrollPos)
-		})
-
-		E.on('keydown', window, e => {
-			if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'PageUp' || e.key === 'PageDown' || e.key === 'Home' || e.key === 'End' || e.key === 'Tab') {
+		if (!store.isTouch) {
+			E.on('mouseleave', document, () => {
 				window.scrollTo(0, -this.scrollPos)
-			}
-			if (e.key === 'Tab') {
-				this.toggleFixedContainer()
-			}
-		})
+			})
 
-		E.delegate('click', 'a[href^="#"]', this.toggleFixedContainer)
-		E.delegate('wheel', this.options.blockScrollClass, this.blockScrollEvent)
+			E.on('keydown', window, e => {
+				if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'PageUp' || e.key === 'PageDown' || e.key === 'Home' || e.key === 'End' || e.key === 'Tab') {
+					window.scrollTo(0, -this.scrollPos)
+				}
+				if (e.key === 'Tab') {
+					this.toggleFixedContainer()
+				}
+			})
+
+			E.delegate('click', 'a[href^="#"]', this.toggleFixedContainer)
+			E.delegate('wheel', this.options.blockScrollClass, this.blockScrollEvent)
+		}
 	}
 
-	smoothSetup() {
+	setupSmoothScroll() {
 		Object.assign(this.scrollContainer.style, {
 			position: 'fixed',
 			top: '0px',
@@ -111,6 +113,7 @@ export default class Scroll {
 
 			if (this.touchScroll) {
 				this.scrollPos = this.horizontalScroll ? -this.scrollContainer.scrollLeft : -this.scrollContainer.scrollTop
+				console.log(this.scrollPos)
 			} else {
 				this.scrollPos = -window.scrollY
 			}
@@ -186,6 +189,7 @@ export default class Scroll {
 
 		if (store.isTouch && this.options.disableOnTouch) {
 			store.body.style.removeProperty('height')
+			this.maxScroll = -this.scrollContainer.scrollHeight
 			if (reset) {
 				this.scrollPos = this.smoothScrollPos = 0
 				this.scrollTo(0, false)

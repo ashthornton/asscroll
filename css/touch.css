@@ -1,0 +1,15 @@
+.asscroll-touch .asscroll-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+.asscroll-touch .asscroll-wrapper {
+    overflow: hidden !important;
+    margin-bottom: 1px;
+}
