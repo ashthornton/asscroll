@@ -67,10 +67,12 @@ export default class Scroll {
 		E.on(Events.INTERNALRAF, this.onRAF)
 		E.on(Events.RESIZE, this.onResize)
 
-		setTimeout(() => {
-			this.testFps = false
-			this.delta = Math.round(this.delta * 10) * 0.1
-		}, 2000)
+		if (this.options.limitLerpRate) {
+			setTimeout(() => {
+				this.testFps = false
+				this.delta = Math.round(this.delta * 10) * 0.1
+			}, 2000)
+		}
 	}
 
 	onScroll = ({ event }) => {
