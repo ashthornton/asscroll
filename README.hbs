@@ -38,4 +38,32 @@ Demos
 
 ---
 
+
+# Install
+`npm i @ashthornton/asscroll` or `yarn add @ashthornton/asscroll`
+
+# Zero Config Setup
+
+1. Add a class of `.asscroll-container` to the parent element of the content to be smooth scrolled. By default, the first child found within will be scrolled. These can both be changed in the options.
+
+```HTML
+<body>
+    <div class="asscroll-container">
+        <div><!-- The Y translation will be applied to this element --></div>
+    </div>
+</body>
+```
+
+2. Import and initialise in Javascript
+
+```Javascript
+import ASScroll from '@ashthornton/asscroll'
+
+const smoothScroll = new ASScroll( options = {} )
+
+smoothScroll.enable()
+```
+
+---
+
 {{>main}}
