@@ -91,8 +91,8 @@ Ash's Smooth Scroll 🍑
     * [.disable(parameters)](#ASScroll+disable)
     * [.update()](#ASScroll+update)
     * [.resize([parameters])](#ASScroll+resize)
-    * [.on(eventName, cb)](#ASScroll+on)
-    * [.off(eventName, cb)](#ASScroll+off)
+    * [.on(eventName, callback)](#ASScroll+on)
+    * [.off(eventName, callback)](#ASScroll+off)
     * [.scrollTo(targetScrollPos, [emitEvent])](#ASScroll+scrollTo)
 
 <a name="new_ASScroll_new"></a>
@@ -120,7 +120,7 @@ Creates an ASScroll instance
 | [parameters.blockScrollClass] | <code>string</code> | <code>&quot;.asscroll-block&quot;</code> | The class to add to elements that should block ASScroll when hovered |
 
 **Example**  
-```jsconst asscroll = new ASScroll({    containerElement: '.page-container',    scrollElements: '.my-page'})```
+```jsconst asscroll = new ASScroll({containerElement: '.page-container',scrollElements: '.my-page'})```
 <a name="ASScroll+targetScrollPos"></a>
 
 ## asscroll.targetScrollPos ⇒ <code>number</code>
@@ -216,14 +216,14 @@ Call the internal resize callback.
 
 <a name="ASScroll+on"></a>
 
-## asscroll.on(eventName, cb)
+## asscroll.on(eventName, callback)
 Add an event listener.
 
 
 | Param | Type | Description |
 | --- | --- | --- |
 | eventName | <code>string</code> | Name of the event you wish to listen for |
-| cb | <code>function</code> | Callback function that should be executed when the event fires |
+| callback | <code>function</code> | Callback function that should be executed when the event fires |
 
 **Example** *(Logs out the scroll position when the &#x27;scroll&#x27; event is fired)*  
 ```js
@@ -239,14 +239,14 @@ asscroll.on('scrollEnd', scrollPos => console.log(scrollPos))
 ```
 <a name="ASScroll+off"></a>
 
-## asscroll.off(eventName, cb)
+## asscroll.off(eventName, callback)
 Remove an event listener.
 
 
 | Param | Type | Description |
 | --- | --- | --- |
 | eventName | <code>string</code> | Name of the event |
-| cb | <code>function</code> | Callback function |
+| callback | <code>function</code> | Callback function |
 
 <a name="ASScroll+scrollTo"></a>
 
