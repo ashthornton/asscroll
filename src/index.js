@@ -10,7 +10,7 @@ import E from './E'
 export default class ASScroll {
 	/**
 	* Creates an ASScroll instance
-	* @param {Object} parameters
+	* @param {object} parameters
 	* @param {string} [parameters.element='.asscroll-container'] The selector string for the outer container element
 	* @param {string} [parameters.innerElement='[data-asscroll'] The selector string for the inner element(s)
 	* @param {number} [parameters.ease=0.075] The ease amount for the transform lerp
@@ -66,16 +66,16 @@ export default class ASScroll {
 	/**
 	* Enable ASScroll.
 	*
-	* @example <caption>Enables ASScroll on the '.page' element and resets the scroll position to 0.</caption>
+	* @example <caption>Enables ASScroll on the '.page' element and resets the scroll position to 0</caption>
 	* asscroll.enable({ scrollTargets: document.querySelector('.page'), reset: true })
 	*
-	* @param {Object} parameters
+	* @param {object} parameters
 	* @param {boolean|NodeList|HTMLElement} [parameters.scrollTargets = false] Specify the new element(s) that should be transformed
 	* @param {boolean} [parameters.reset = false] Reset the scroll position to 0
 	* @param {boolean} [parameters.restore = false] Restore the scroll position to where it was when disable() was called
 	* @param {boolean} [parameters.horizontalScroll = false] Toggle horizontal scrolling
 	*/
-	enable = (parameters) => {
+	enable(parameters) {
 		if (parameters !== undefined && typeof parameters !== 'object') {
 			console.warn('ASScroll: Please pass an object with your parameters. Since 2.0')
 		}
@@ -85,13 +85,13 @@ export default class ASScroll {
 	/**
 	* Disable ASScroll.
 	*
-	* @example <caption>Disables the ability to manually scroll whilst still allowing position updates to be made via ASScroll.smoothScrollPos, for example.</caption>
+	* @example <caption>Disables the ability to manually scroll whilst still allowing position updates to be made via ASScroll.smoothScrollPos, for example</caption>
 	* asscroll.disable({ inputOnly: true })
 	*
-	* @param {Object} parameters
+	* @param {object} parameters
 	* @param {boolean} [parameters.inputOnly = false] Only disable the ability to manually scroll (still allow transforms)
 	*/
-	disable = (parameters) => {
+	disable(parameters) {
 		if (parameters !== undefined && typeof parameters !== 'object') {
 			console.warn('ASScroll: Please pass an object with your parameters. Since 2.0')
 		}
@@ -101,30 +101,30 @@ export default class ASScroll {
 	/**
 	* Call the internal animation frame request callback.
 	*/
-	onRaf = () => {
+	onRaf() {
 		this.Events.onRaf()
 	}
 
 	/**
 	* Call the internal resize callback.
-	* @param {Object} parameters
+	* @param {object} parameters
 	* @param {number} parameters.width Window width
 	* @param {number} parameters.height Window height
 	*/
-	onResize = (parameters) => {
+	onResize(parameters) {
 		this.Events.onResize(parameters)
 	}
 
 	/**
 	* Add an event listener.
 	*
-	* @example <caption>Logs out the scroll position when the 'scroll' event is fired.</caption>
+	* @example <caption>Logs out the scroll position when the 'scroll' event is fired</caption>
 	* asscroll.on('scroll', scrollPos => console.log(scrollPos))
 	*
 	* @param {string} eventName Name of the event you wish to listen for
 	* @param {function} cb Callback function that should be executed when the event fires
 	*/
-	on = (eventName, cb) => {
+	on(eventName, cb) {
 		if (typeof cb !== 'function') {
 			console.error('ASScroll: Function not provided as second parameter')
 			return
@@ -153,7 +153,7 @@ export default class ASScroll {
 	* @param {string} eventName Name of the event
 	* @param {function} cb Callback function
 	*/
-	off = (eventName, cb) => {
+	off(eventName, cb) {
 		if (typeof cb !== 'function') {
 			console.error('ASScroll: Function not provided as second parameter')
 			return
@@ -182,17 +182,17 @@ export default class ASScroll {
 	* @param {number} scrollPos Scroll position
 	* @param {boolean} [emitEvent=true] Whether to emit the external scroll events or not
 	*/
-	scrollTo = (scrollPos, emitEvent = true) => {
+	scrollTo(scrollPos, emitEvent = true) {
 		this.Scroll.scrollTo(-scrollPos, emitEvent)
 	}
 
 	/**
 	* Gets or sets the scroll position.
 	*
-	* @example <caption>Gets the target scroll position.</caption>
+	* @example <caption>Gets the target scroll position</caption>
 	* console.log(asscroll.scrollPos)
 	* // 200
-	* @example <caption>Sets the scroll position to 200.</caption>
+	* @example <caption>Sets the scroll position to 200</caption>
 	* asscroll.scrollPos = 200
 	*
 	* @param {number} scrollPos The desired scroll position
