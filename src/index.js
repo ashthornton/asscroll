@@ -66,9 +66,8 @@ export default class ASScroll {
 	/**
 	* Enable ASScroll.
 	*
-	* ```js
-	* asscroll.enable({ scrollTargets: document.querySelector('.scroll-element'), reset: true  })
-	* ```
+	* @example <caption>Enables ASScroll on the '.page' element and resets the scroll position to 0.</caption>
+	* asscroll.enable({ scrollTargets: document.querySelector('.page'), reset: true })
 	*
 	* @param {Object} parameters
 	* @param {boolean|NodeList|HTMLElement} [parameters.scrollTargets = false] Specify the new element(s) that should be transformed
@@ -85,6 +84,10 @@ export default class ASScroll {
 
 	/**
 	* Disable ASScroll.
+	*
+	* @example <caption>Disables the ability to manually scroll whilst still allowing position updates to be made via ASScroll.smoothScrollPos, for example.</caption>
+	* asscroll.disable({ inputOnly: true })
+	*
 	* @param {Object} parameters
 	* @param {boolean} [parameters.inputOnly = false] Only disable the ability to manually scroll (still allow transforms)
 	*/
@@ -114,6 +117,10 @@ export default class ASScroll {
 
 	/**
 	* Add an event listener.
+	*
+	* @example <caption>Logs out the scroll position when the 'scroll' event is fired.</caption>
+	* asscroll.on('scroll', scrollPos => console.log(scrollPos))
+	*
 	* @param {string} eventName Name of the event you wish to listen for
 	* @param {function} cb Callback function that should be executed when the event fires
 	*/
@@ -171,41 +178,45 @@ export default class ASScroll {
 	}
 
 	/**
-	* Scroll to a given position on the page
+	* Scroll to a given position on the page.
 	* @param {number} scrollPos Scroll position
-	* @param {boolean} [emitEvent=true] Whether to emit the scroll events or not
+	* @param {boolean} [emitEvent=true] Whether to emit the external scroll events or not
 	*/
 	scrollTo = (scrollPos, emitEvent = true) => {
 		this.Scroll.scrollTo(-scrollPos, emitEvent)
 	}
 
 	/**
-	* Returns the target scroll position
-	* @return {number}
+	* Gets or sets the scroll position.
+	*
+	* @example <caption>Gets the target scroll position.</caption>
+	* console.log(asscroll.scrollPos)
+	* // 200
+	* @example <caption>Sets the scroll position to 200.</caption>
+	* asscroll.scrollPos = 200
+	*
+	* @param {number} scrollPos The desired scroll position
+	* @return {number} Target scroll position
 	*/
 	get scrollPos() {
 		return -this.Scroll.scrollPos
 	}
 
-	/**
-	* Sets the scroll position without lerping to it
-	* @param {number} scrollPos The desired scroll position
-	*/
 	set scrollPos(scrollPos) {
 		this.Scroll.scrollPos = this.Scroll.smoothScrollPos = -scrollPos
 	}
 
 	/**
-	* Returns the current scroll position
-	* @return {number}
+	* Returns the current scroll position.
+	* @return {number} Current scroll position
 	*/
 	get smoothScrollPos() {
 		return -this.Scroll.smoothScrollPos
 	}
 
 	/**
-	* Returns the maximum scroll height of the page
-	* @return {number}
+	* Returns the maximum scroll height of the page.
+	* @return {number} Maxmium scroll height
 	*/
 	get maxScroll() {
 		return -this.Scroll.maxScroll
