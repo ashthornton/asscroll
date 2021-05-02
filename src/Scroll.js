@@ -12,7 +12,7 @@ export default class Scroll {
 		const possibleScrollTargets = this.scrollContainer.querySelectorAll(this.options.innerElement)
 		this.scrollTargets = possibleScrollTargets.length ? possibleScrollTargets : [this.scrollContainer.firstElementChild]
 		this.scrollTargetsLength = this.scrollTargets.length
-		this.scrollPos = this.smoothScrollPos = this.prevScrollPos = this.maxScroll = 0
+		this.targetScrollPos = this.currentScrollPos = this.prevScrollPos = this.maxScroll = 0
 		this.enabled = false
 		this.render = false
 		this.scrolling = false
@@ -78,7 +78,7 @@ export default class Scroll {
 			event.preventDefault()
 
 			this.syncScroll = true
-			this.scrollPos += event.deltaY * -1
+			this.targetScrollPos += event.deltaY * -1
 		} else {
 			if (this.preventResizeScroll) {
 				this.preventResizeScroll = false
@@ -86,18 +86,18 @@ export default class Scroll {
 			}
 
 			if (store.isTouch && this.options.touchScrollType === 'scrollTop') {
-				this.scrollPos = this.horizontalScroll ? -this.scrollContainer.scrollLeft : -this.scrollContainer.scrollTop
+				this.targetScrollPos = this.horizontalScroll ? -this.scrollContainer.scrollLeft : -this.scrollContainer.scrollTop
 			} else {
-				this.scrollPos = -window.scrollY
+				this.targetScrollPos = -window.scrollY
 			}
 
 			if (store.isTouch && this.options.touchScrollType !== 'transform') {
-				this.smoothScrollPos = this.scrollPos
+				this.currentScrollPos = this.targetScrollPos
 			}
 		}
 
 		this.clamp()
-		E.emit(Events.EXTERNALSCROLL, this.scrollPos)
+		E.emit(Events.EXTERNALSCROLL, -this.targetScrollPos)
 	}
 
 	onRAF = () => {
@@ -109,12 +109,12 @@ export default class Scroll {
 
 		if (!this.render) return
 
-		if (Math.abs(this.scrollPos - this.smoothScrollPos) < 0.5) {
-			this.smoothScrollPos = this.scrollPos
+		if (Math.abs(this.targetScrollPos - this.currentScrollPos) < 0.5) {
+			this.currentScrollPos = this.targetScrollPos
 			if (this.syncScroll) {
 				this.syncScroll = false
-				window.scrollTo(0, -this.scrollPos)
-				E.emit(Events.SCROLLEND, this.scrollPos)
+				window.scrollTo(0, -this.targetScrollPos)
+				E.emit(Events.SCROLLEND, -this.targetScrollPos)
 			}
 			if (this.scrolling) {
 				this.scrolling = false
@@ -122,16 +122,16 @@ export default class Scroll {
 				this.toggleIframes(true)
 			}
 		} else {
-			this.smoothScrollPos += (this.scrollPos - this.smoothScrollPos) * this.ease * this.delta
+			this.currentScrollPos += (this.targetScrollPos - this.currentScrollPos) * this.ease * this.delta
 		}
 
-		const x = this.horizontalScroll ? this.smoothScrollPos : 0
-		const y = this.horizontalScroll ? 0 : this.smoothScrollPos
+		const x = this.horizontalScroll ? this.currentScrollPos : 0
+		const y = this.horizontalScroll ? 0 : this.currentScrollPos
 		this.applyTransform(x, y)
 
 		this.options.customScrollbar && this.scrollbar.transform()
 
-		E.emit(Events.EXTERNALRAF, { scrollPos: this.scrollPos, smoothScrollPos: this.smoothScrollPos })
+		E.emit(Events.EXTERNALRAF, { targetScrollPos: -this.targetScrollPos, currentScrollPos: -this.currentScrollPos })
 	}
 
 	applyTransform(x, y) {
@@ -164,13 +164,13 @@ export default class Scroll {
 			store.body.style.removeProperty('height')
 			this.maxScroll = -this.scrollContainer.scrollHeight
 			if (reset) {
-				this.scrollPos = this.smoothScrollPos = 0
+				this.targetScrollPos = this.currentScrollPos = 0
 				this.scrollTo(0, false)
 			}
 		} else {
 			this.firstResize = true
 			if (reset) {
-				this.scrollPos = this.smoothScrollPos = 0
+				this.targetScrollPos = this.currentScrollPos = 0
 				this.applyTransform(0, 0)
 			}
 			this.onResize()
@@ -195,26 +195,26 @@ export default class Scroll {
 		E.off(Events.WHEEL, this.onScroll)
 		E.off(Events.SCROLL, this.onScroll)
 
-		this.prevScrollPos = this.scrollPos
+		this.prevScrollPos = this.targetScrollPos
 		store.body.style.height = '0px'
 	}
 
 	clamp() {
-		this.scrollPos = Math.max(Math.min(this.scrollPos, 0), this.maxScroll)
+		this.targetScrollPos = Math.max(Math.min(this.targetScrollPos, 0), this.maxScroll)
 	}
 
 	scrollTo(y, emitEvent = true) {
-		this.scrollPos = y
+		this.targetScrollPos = y
 		if (store.isTouch && this.options.touchScrollType !== 'transform') {
 			if (this.horizontalScroll) {
-				this.scrollContainer.scrollTo(-this.scrollPos, 0)
+				this.scrollContainer.scrollTo(-this.targetScrollPos, 0)
 			} else {
-				this.scrollContainer.scrollTo(0, -this.scrollPos)
+				this.scrollContainer.scrollTo(0, -this.targetScrollPos)
 			}
 		}
 		this.clamp()
 		this.syncScroll = true
-		if (emitEvent) E.emit(Events.EXTERNALSCROLL, this.scrollPos)
+		if (emitEvent) E.emit(Events.EXTERNALSCROLL, -this.targetScrollPos)
 	}
 
 	onResize = () => {
@@ -224,7 +224,7 @@ export default class Scroll {
 			const marginOffset = parseFloat(this.horizontalScroll ? compStyle.marginRight : compStyle.marginBottom)
 			const bcr = lastTarget.getBoundingClientRect()
 			const endPosition = this.horizontalScroll ? bcr.right : bcr.bottom
-			this.scrollLength = endPosition + marginOffset - this.smoothScrollPos
+			this.scrollLength = endPosition + marginOffset - this.currentScrollPos
 		} else {
 			this.scrollLength = this.horizontalScroll ? this.scrollTargets[0].scrollWidth : this.scrollTargets[0].scrollHeight
 		}
@@ -252,7 +252,7 @@ export default class Scroll {
 
 	toggleFixedContainer = () => {
 		this.scrollContainer.style.position = 'static'
-		const scrollPos = this.smoothScrollPos
+		const scrollPos = this.currentScrollPos
 		this.applyTransform(0, 0)
 		requestAnimationFrame(() => {
 			this.scrollContainer.style.position = 'fixed'
@@ -274,12 +274,12 @@ export default class Scroll {
 
 		if (!store.isTouch) {
 			E.on('mouseleave', document, () => {
-				window.scrollTo(0, -this.scrollPos)
+				window.scrollTo(0, -this.targetScrollPos)
 			})
 
 			E.on('keydown', window, e => {
 				if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'PageUp' || e.key === 'PageDown' || e.key === 'Home' || e.key === 'End' || e.key === 'Tab') {
-					window.scrollTo(0, -this.scrollPos)
+					window.scrollTo(0, -this.targetScrollPos)
 				}
 				if (e.key === 'Tab') {
 					this.toggleFixedContainer()
