@@ -86,7 +86,7 @@ Ash's Smooth Scroll 🍑
     * [.currentScrollPos](#ASScroll+currentScrollPos) ⇒ <code>number</code>
     * [.maxScroll](#ASScroll+maxScroll) ⇒ <code>number</code>
     * [.containerElement](#ASScroll+containerElement) ⇒ <code>HTMLElement</code>
-    * [.scrollTargets](#ASScroll+scrollTargets) ⇒ <code>Array</code> \| <code>NodeList</code>
+    * [.scrollElements](#ASScroll+scrollElements) ⇒ <code>Array</code>
     * [.enable(parameters)](#ASScroll+enable)
     * [.disable(parameters)](#ASScroll+disable)
     * [.update()](#ASScroll+update)
@@ -104,8 +104,8 @@ Creates an ASScroll instance
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | parameters | <code>object</code> |  |  |
-| [parameters.element] | <code>string</code> | <code>&quot;.asscroll-container&quot;</code> | The selector string for the outer container element |
-| [parameters.innerElement] | <code>string</code> | <code>&quot;[data-asscroll]&quot;</code> | The selector string for the inner element(s) |
+| [parameters.containerElement] | <code>string</code> \| <code>HTMLElement</code> | <code>&quot;.asscroll-container&quot;</code> | The selector string for the outer container element, or the element itself |
+| [parameters.scrollElements] | <code>string</code> \| <code>HTMLElement</code> \| <code>NodeList</code> | <code>&quot;[data-asscroll]&quot;</code> | The selector string for the elements to scroll, or the elements themselves |
 | [parameters.ease] | <code>number</code> | <code>0.075</code> | The ease amount for the transform lerp |
 | [parameters.touchEase] | <code>number</code> | <code>1</code> | The ease amount for the transform lerp on touch devices |
 | [parameters.touchScrollType] | <code>string</code> | <code>&quot;none&quot;</code> | Set the scrolling method on touch devices. Other options are 'transform' and 'scrollTop' |
@@ -120,18 +120,13 @@ Creates an ASScroll instance
 | [parameters.blockScrollClass] | <code>string</code> | <code>&quot;.asscroll-block&quot;</code> | The class to add to elements that should block ASScroll when hovered |
 
 **Example**  
-```jsconst asscroll = new ASScroll({	element: '.page-container',	innerElement: '.my-page'})```
+```jsconst asscroll = new ASScroll({	containerElement: '.page-container',	scrollElements: '.my-page'})```
 <a name="ASScroll+targetScrollPos"></a>
 
 ## asscroll.targetScrollPos ⇒ <code>number</code>
 Returns the target scroll position.
 
 **Returns**: <code>number</code> - Target scroll position  
-**Example** *(Returns the target scroll position)*  
-```js
-console.log(asscroll.targetScrollPos)
-// 200
-```
 <a name="ASScroll+currentScrollPos"></a>
 
 ## asscroll.currentScrollPos ⇒ <code>number</code>
@@ -143,11 +138,6 @@ Gets or sets the current scroll position.
 | --- | --- | --- |
 | scrollPos | <code>number</code> | The desired scroll position |
 
-**Example** *(Returns the current scroll position)*  
-```js
-console.log(asscroll.currentScrollPos)
-// 157.245
-```
 **Example** *(Sets the scroll position to 200, bypassing any lerps)*  
 ```js
 asscroll.currentScrollPos = 200
@@ -161,15 +151,15 @@ Returns the maximum scroll height of the page.
 <a name="ASScroll+containerElement"></a>
 
 ## asscroll.containerElement ⇒ <code>HTMLElement</code>
-Returns the outer element that ASScroll is attached to
+Returns the outer element that ASScroll is attached to.
 
 **Returns**: <code>HTMLElement</code> - The outer element  
-<a name="ASScroll+scrollTargets"></a>
+<a name="ASScroll+scrollElements"></a>
 
-## asscroll.scrollTargets ⇒ <code>Array</code> \| <code>NodeList</code>
-Returns the the element(s) that ASScroll is scrolling
+## asscroll.scrollElements ⇒ <code>Array</code>
+Returns the the element(s) that ASScroll is scrolling.
 
-**Returns**: <code>Array</code> \| <code>NodeList</code> - An array or NodeList of elements  
+**Returns**: <code>Array</code> - An array of elements ASScroll is scrolling  
 <a name="ASScroll+enable"></a>
 
 ## asscroll.enable(parameters)
@@ -179,14 +169,14 @@ Enable ASScroll.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | parameters | <code>object</code> |  |  |
-| [parameters.scrollTargets] | <code>boolean</code> \| <code>NodeList</code> \| <code>HTMLElement</code> | <code>false</code> | Specify the new element(s) that should be transformed |
+| [parameters.newScrollElements] | <code>boolean</code> \| <code>NodeList</code> \| <code>HTMLElement</code> | <code>false</code> | Specify the new element(s) that should be scrolled |
 | [parameters.reset] | <code>boolean</code> | <code>false</code> | Reset the scroll position to 0 |
 | [parameters.restore] | <code>boolean</code> | <code>false</code> | Restore the scroll position to where it was when disable() was called |
 | [parameters.horizontalScroll] | <code>boolean</code> | <code>false</code> | Toggle horizontal scrolling |
 
 **Example** *(Enables ASScroll on the &#x27;.page&#x27; element and resets the scroll position to 0)*  
 ```js
-asscroll.enable({ scrollTargets: document.querySelector('.page'), reset: true })
+asscroll.enable({ newScrollElements: document.querySelector('.page'), reset: true })
 ```
 <a name="ASScroll+disable"></a>
 

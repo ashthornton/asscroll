@@ -205,10 +205,6 @@ class ASScroll {
 	/**
 	* Returns the target scroll position.
 	*
-	* @example <caption>Returns the target scroll position</caption>
-	* console.log(asscroll.targetScrollPos)
-	* // 200
-	*
 	* @return {number} Target scroll position
 	*/
 	get targetScrollPos() {
@@ -217,10 +213,6 @@ class ASScroll {
 
 	/**
 	* Gets or sets the current scroll position.
-	*
-	* @example <caption>Returns the current scroll position</caption>
-	* console.log(asscroll.currentScrollPos)
-	* // 157.245
 	*
 	* @example <caption>Sets the scroll position to 200, bypassing any lerps</caption>
 	* asscroll.currentScrollPos = 200
