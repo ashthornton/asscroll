@@ -6,12 +6,17 @@ import Events from './Events'
 export default class Scroll {
 	constructor(options = {}) {
 		this.options = options
-		this.scrollbarCheck = this.options.customScrollbar
 
-		this.scrollContainer = document.querySelector(this.options.element)
-		const possibleScrollTargets = this.scrollContainer.querySelectorAll(this.options.innerElement)
-		this.scrollTargets = possibleScrollTargets.length ? possibleScrollTargets : [this.scrollContainer.firstElementChild]
-		this.scrollTargetsLength = this.scrollTargets.length
+		this.containerElement = typeof this.options.containerElement === 'string' ? document.querySelector(this.options.containerElement) : this.options.containerElement
+		if (this.containerElement === null) {
+			console.error('ASScroll: could not find container element')
+		}
+
+		this.scrollElements = typeof this.options.scrollElements === 'string' ? document.querySelectorAll(this.options.scrollElements) : this.options.scrollElements
+		if (this.scrollElements.length) this.scrollElements = [...this.scrollElements]
+		this.scrollElements = this.scrollElements.length ? this.scrollElements : [this.containerElement.firstElementChild]
+		this.scrollElementsLength = this.scrollElements.length
+
 		this.targetScrollPos = this.currentScrollPos = this.prevScrollPos = this.maxScroll = 0
 		this.enabled = false
 		this.render = false
@@ -21,6 +26,7 @@ export default class Scroll {
 		this.firstResize = true
 		this.preventResizeScroll = false
 		this.ease = store.isTouch ? this.options.touchEase : this.options.ease
+		this.originalScrollbarSetting = this.options.customScrollbar
 
 		this.testFps = true
 		this.delta = 1
@@ -35,7 +41,7 @@ export default class Scroll {
 				this.setupSmoothScroll()
 			} else if (this.options.touchScrollType === 'scrollTop') {
 				document.documentElement.classList.add('asscroll-touch')
-				E.on('scroll', this.scrollContainer, e => { E.emit(Events.INTERNALSCROLL, { event: e }) }, { passive: true })
+				E.on('scroll', this.containerElement, e => { E.emit(Events.INTERNALSCROLL, { event: e }) }, { passive: true })
 			}
 		} else {
 			this.setupSmoothScroll()
@@ -45,7 +51,7 @@ export default class Scroll {
 	}
 
 	setupSmoothScroll() {
-		Object.assign(this.scrollContainer.style, {
+		Object.assign(this.containerElement.style, {
 			position: 'fixed',
 			top: '0px',
 			left: '0px',
@@ -86,7 +92,7 @@ export default class Scroll {
 			}
 
 			if (store.isTouch && this.options.touchScrollType === 'scrollTop') {
-				this.targetScrollPos = this.horizontalScroll ? -this.scrollContainer.scrollLeft : -this.scrollContainer.scrollTop
+				this.targetScrollPos = this.horizontalScroll ? -this.containerElement.scrollLeft : -this.containerElement.scrollTop
 			} else {
 				this.targetScrollPos = -window.scrollY
 			}
@@ -135,13 +141,13 @@ export default class Scroll {
 	}
 
 	applyTransform(x, y) {
-		for (let i = 0; i < this.scrollTargetsLength; i++) {
-			this.scrollTargets[i].style.transform = `translate3d(${x}px, ${y}px, 0px)`
+		for (let i = 0; i < this.scrollElementsLength; i++) {
+			this.scrollElements[i].style.transform = `translate3d(${x}px, ${y}px, 0px)`
 		}
 	}
 
 	enable({
-		scrollTargets = false,
+		newScrollElements = false,
 		reset = false,
 		restore = false,
 		horizontalScroll = false
@@ -153,16 +159,16 @@ export default class Scroll {
 
 		this.horizontalScroll = horizontalScroll
 
-		if (scrollTargets) {
-			this.scrollTargets = scrollTargets.length ? scrollTargets : [scrollTargets]
-			this.scrollTargetsLength = this.scrollTargets.length
+		if (newScrollElements) {
+			this.scrollElements = newScrollElements.length ? [...newScrollElements] : [newScrollElements]
+			this.scrollElementsLength = this.scrollElements.length
 		}
 
-		this.iframes = this.scrollContainer.querySelectorAll('iframe')
+		this.iframes = this.containerElement.querySelectorAll('iframe')
 
 		if (store.isTouch && this.options.touchScrollType !== 'transform') {
 			store.body.style.removeProperty('height')
-			this.maxScroll = -this.scrollContainer.scrollHeight
+			this.maxScroll = -this.containerElement.scrollHeight
 			if (reset) {
 				this.targetScrollPos = this.currentScrollPos = 0
 				this.scrollTo(0, false)
@@ -207,9 +213,9 @@ export default class Scroll {
 		this.targetScrollPos = y
 		if (store.isTouch && this.options.touchScrollType !== 'transform') {
 			if (this.horizontalScroll) {
-				this.scrollContainer.scrollTo(-this.targetScrollPos, 0)
+				this.containerElement.scrollTo(-this.targetScrollPos, 0)
 			} else {
-				this.scrollContainer.scrollTo(0, -this.targetScrollPos)
+				this.containerElement.scrollTo(0, -this.targetScrollPos)
 			}
 		}
 		this.clamp()
@@ -218,15 +224,15 @@ export default class Scroll {
 	}
 
 	onResize = () => {
-		if (this.scrollTargetsLength > 1) {
-			const lastTarget = this.scrollTargets[this.scrollTargetsLength - 1]
+		if (this.scrollElementsLength > 1) {
+			const lastTarget = this.scrollElements[this.scrollElementsLength - 1]
 			const compStyle = window.getComputedStyle(lastTarget)
 			const marginOffset = parseFloat(this.horizontalScroll ? compStyle.marginRight : compStyle.marginBottom)
 			const bcr = lastTarget.getBoundingClientRect()
 			const endPosition = this.horizontalScroll ? bcr.right : bcr.bottom
 			this.scrollLength = endPosition + marginOffset - this.currentScrollPos
 		} else {
-			this.scrollLength = this.horizontalScroll ? this.scrollTargets[0].scrollWidth : this.scrollTargets[0].scrollHeight
+			this.scrollLength = this.horizontalScroll ? this.scrollElements[0].scrollWidth : this.scrollElements[0].scrollHeight
 		}
 
 		const windowSize = this.horizontalScroll ? store.windowSize.w : store.windowSize.h
@@ -251,11 +257,11 @@ export default class Scroll {
 	}
 
 	toggleFixedContainer = () => {
-		this.scrollContainer.style.position = 'static'
+		this.containerElement.style.position = 'static'
 		const scrollPos = this.currentScrollPos
 		this.applyTransform(0, 0)
 		requestAnimationFrame(() => {
-			this.scrollContainer.style.position = 'fixed'
+			this.containerElement.style.position = 'fixed'
 			const x = this.horizontalScroll ? scrollPos : 0
 			const y = this.horizontalScroll ? 0 : scrollPos
 			this.applyTransform(x, y)
@@ -266,7 +272,7 @@ export default class Scroll {
 		// enable smooth scroll if mouse is detected
 		E.on(Events.MOUSEDETECTED, () => {
 			if (this.options.touchScrollType === 'transform') return
-			this.options.customScrollbar = this.scrollbarCheck
+			this.options.customScrollbar = this.originalScrollbarSetting
 			this.ease = this.options.ease
 			this.setupSmoothScroll()
 			this.onResize()

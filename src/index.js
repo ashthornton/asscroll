@@ -12,15 +12,15 @@ class ASScroll {
 	* @example
 	* ```js
 	* const asscroll = new ASScroll({
-	* 	element: '.page-container',
-	* 	innerElement: '.my-page'
+	* 	containerElement: '.page-container',
+	* 	scrollElements: '.my-page'
 	* })
 	* ```
 	*
 	* @typicalname asscroll
 	* @param {object} parameters
-	* @param {string} [parameters.element=.asscroll-container] The selector string for the outer container element
-	* @param {string} [parameters.innerElement=[data-asscroll]] The selector string for the inner element(s)
+	* @param {string|HTMLElement} [parameters.containerElement=.asscroll-container] The selector string for the outer container element, or the element itself
+	* @param {string|HTMLElement|NodeList} [parameters.scrollElements=[data-asscroll]] The selector string for the elements to scroll, or the elements themselves
 	* @param {number} [parameters.ease=0.075] The ease amount for the transform lerp
 	* @param {number} [parameters.touchEase=1] The ease amount for the transform lerp on touch devices
 	* @param {string} [parameters.touchScrollType=none] Set the scrolling method on touch devices. Other options are 'transform' and 'scrollTop'
@@ -35,8 +35,8 @@ class ASScroll {
 	* @param {string} [parameters.blockScrollClass=.asscroll-block] The class to add to elements that should block ASScroll when hovered
 	*/
 	constructor({
-		element = '.asscroll-container',
-		innerElement = '[data-asscroll]',
+		containerElement = '.asscroll-container',
+		scrollElements = '[data-asscroll]',
 		ease = 0.075,
 		touchEase = 1,
 		touchScrollType = 'none',
@@ -56,8 +56,8 @@ class ASScroll {
 		})
 
 		this.Scroll = new Scroll({
-			element,
-			innerElement,
+			containerElement,
+			scrollElements,
 			ease,
 			touchEase,
 			customScrollbar,
@@ -75,10 +75,10 @@ class ASScroll {
 	* Enable ASScroll.
 	*
 	* @example <caption>Enables ASScroll on the '.page' element and resets the scroll position to 0</caption>
-	* asscroll.enable({ scrollTargets: document.querySelector('.page'), reset: true })
+	* asscroll.enable({ newScrollElements: document.querySelector('.page'), reset: true })
 	*
 	* @param {object} parameters
-	* @param {boolean|NodeList|HTMLElement} [parameters.scrollTargets = false] Specify the new element(s) that should be transformed
+	* @param {boolean|NodeList|HTMLElement} [parameters.newScrollElements = false] Specify the new element(s) that should be scrolled
 	* @param {boolean} [parameters.reset = false] Reset the scroll position to 0
 	* @param {boolean} [parameters.restore = false] Restore the scroll position to where it was when disable() was called
 	* @param {boolean} [parameters.horizontalScroll = false] Toggle horizontal scrolling
@@ -249,15 +249,15 @@ class ASScroll {
 	 * @return {HTMLElement} The outer element
 	 */
 	get containerElement() {
-		return this.Scroll.scrollContainer
+		return this.Scroll.containerElement
 	}
 
 	/**
 	 * Returns the the element(s) that ASScroll is scrolling.
-	 * @return {Array|NodeList} An array or NodeList of elements ASScroll is scrolling
+	 * @return {Array} An array of elements ASScroll is scrolling
 	 */
-	get scrollTargets() {
-		return this.Scroll.scrollTargets
+	get scrollElements() {
+		return this.Scroll.scrollElements
 	}
 }
 
