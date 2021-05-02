@@ -76,7 +76,6 @@ smoothScroll.enable()
 # ASScroll
 Ash's Smooth Scroll 🍑
 
-**Kind**: global class  
 
 * [ASScroll](#ASScroll)
     * [new ASScroll(parameters)](#new_ASScroll_new)
@@ -120,7 +119,6 @@ Creates an ASScroll instance
 ## asscroll.scrollPos ⇒ <code>number</code>
 Gets or sets the scroll position.
 
-**Kind**: instance property of [<code>ASScroll</code>](#ASScroll)  
 **Returns**: <code>number</code> - Target scroll position  
 
 | Param | Type | Description |
@@ -141,21 +139,18 @@ asscroll.scrollPos = 200
 ## asscroll.smoothScrollPos ⇒ <code>number</code>
 Returns the current scroll position.
 
-**Kind**: instance property of [<code>ASScroll</code>](#ASScroll)  
 **Returns**: <code>number</code> - Current scroll position  
 <a name="ASScroll+maxScroll"></a>
 
 ## asscroll.maxScroll ⇒ <code>number</code>
 Returns the maximum scroll height of the page.
 
-**Kind**: instance property of [<code>ASScroll</code>](#ASScroll)  
 **Returns**: <code>number</code> - Maxmium scroll height  
 <a name="ASScroll+enable"></a>
 
 ## asscroll.enable(parameters)
 Enable ASScroll.
 
-**Kind**: instance method of [<code>ASScroll</code>](#ASScroll)  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -174,7 +169,6 @@ asscroll.enable({ scrollTargets: document.querySelector('.page'), reset: true })
 ## asscroll.disable(parameters)
 Disable ASScroll.
 
-**Kind**: instance method of [<code>ASScroll</code>](#ASScroll)  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -190,13 +184,11 @@ asscroll.disable({ inputOnly: true })
 ## asscroll.onRaf()
 Call the internal animation frame request callback.
 
-**Kind**: instance method of [<code>ASScroll</code>](#ASScroll)  
 <a name="ASScroll+onResize"></a>
 
 ## asscroll.onResize(parameters)
 Call the internal resize callback.
 
-**Kind**: instance method of [<code>ASScroll</code>](#ASScroll)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -209,7 +201,6 @@ Call the internal resize callback.
 ## asscroll.on(eventName, cb)
 Add an event listener.
 
-**Kind**: instance method of [<code>ASScroll</code>](#ASScroll)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -225,7 +216,6 @@ asscroll.on('scroll', scrollPos => console.log(scrollPos))
 ## asscroll.off(eventName, cb)
 Remove an event listener.
 
-**Kind**: instance method of [<code>ASScroll</code>](#ASScroll)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -237,7 +227,6 @@ Remove an event listener.
 ## asscroll.scrollTo(scrollPos, [emitEvent])
 Scroll to a given position on the page.
 
-**Kind**: instance method of [<code>ASScroll</code>](#ASScroll)  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
