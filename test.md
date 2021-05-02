@@ -1,5 +1,10 @@
 <p align="center"><img src="https://raw.githubusercontent.com/ashthornton-gc/asscroll/master/asscroll.png"></p>
 
+<p align="center">
+    <a href="https://www.npmjs.com/package/@ashthornton/asscroll"><img src="https://img.shields.io/npm/v/@ashthornton/asscroll?color=%23F7894A" alt="NPM Version"></a>
+    <a href="https://www.jsdelivr.com/package/npm/@ashthornton/asscroll"><img alt="jsDelivr hits (npm)" src="https://img.shields.io/jsdelivr/npm/hm/@ashthornton/asscroll?color=%23F7894A"></a>
+</p>
+
 <h3 align="center"><strong>ASScroll is a hybrid smooth scroll setup that combines the<br>performance gains of virtual scroll with the reliability of native scroll.</strong></h3>
 
 <p align="center" style="padding: 0 15%">This setup aims to be a lightweight solution that provides a consistent smooth scrolling experience across all platforms, devices and hardware.</p>
@@ -40,7 +45,7 @@ Demos
 
 
 # Install
-`npm i @ashthornton/asscroll` or `yarn add @ashthornton/asscroll`
+`npm i --save @ashthornton/asscroll` or `yarn add @ashthornton/asscroll`
 
 # Zero Config Setup
 
@@ -95,20 +100,20 @@ Creates an ASScroll instance
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | parameters | <code>object</code> |  |  |
-| [parameters.element] | <code>string</code> | <code>&quot;&#x27;.asscroll-container&#x27;&quot;</code> | The selector string for the outer container element |
-| [parameters.innerElement] | <code>string</code> | <code>&quot;&#x27;[data-asscroll&#x27;&quot;</code> | The selector string for the inner element(s) |
+| [parameters.element] | <code>string</code> | <code>&quot;.asscroll-container&quot;</code> | The selector string for the outer container element |
+| [parameters.innerElement] | <code>string</code> | <code>&quot;[data-asscroll]&quot;</code> | The selector string for the inner element(s) |
 | [parameters.ease] | <code>number</code> | <code>0.075</code> | The ease amount for the transform lerp |
 | [parameters.touchEase] | <code>number</code> | <code>1</code> | The ease amount for the transform lerp on touch devices |
-| [parameters.touchScrollType] | <code>string</code> | <code>&quot;&#x27;none&#x27;&quot;</code> | Disable the transform on touch devices |
-| [parameters.scrollbarEl] | <code>string</code> | <code>&quot;&#x27;.asscrollbar&#x27;&quot;</code> | The selector string for the custom scrollbar element |
-| [parameters.scrollbarHandleEl] | <code>string</code> | <code>&quot;&#x27;.asscrollbar__handle&#x27;&quot;</code> | The selector string for the custom scrollbar handle element |
+| [parameters.touchScrollType] | <code>string</code> | <code>&quot;none&quot;</code> | Set the scrolling method on touch devices. Other options are 'transform' and 'scrollTop' |
+| [parameters.scrollbarEl] | <code>string</code> | <code>&quot;.asscrollbar&quot;</code> | The selector string for the custom scrollbar element |
+| [parameters.scrollbarHandleEl] | <code>string</code> | <code>&quot;.asscrollbar__handle&quot;</code> | The selector string for the custom scrollbar handle element |
 | [parameters.customScrollbar] | <code>boolean</code> | <code>true</code> | Toggle the custom scrollbar |
 | [parameters.scrollbarStyles] | <code>boolean</code> | <code>true</code> | Include the scrollbar CSS via Javascript |
 | [parameters.disableNativeScrollbar] | <code>boolean</code> | <code>true</code> | Disable the native browser scrollbar |
 | [parameters.disableRaf] | <code>boolean</code> | <code>false</code> | Disable internal requestAnimationFrame loop in order to use an external one |
 | [parameters.disableResize] | <code>boolean</code> | <code>false</code> | Disable internal resize event on the window in order to use an external one |
 | [parameters.limitLerpRate] | <code>boolean</code> | <code>true</code> | Match lerp speed on >60Hz displays to that of a 60Hz display |
-| [parameters.blockScrollClass] | <code>string</code> | <code>&quot;&#x27;.asscroll-block&#x27;&quot;</code> | The class to add to elements that should block ASScroll when hovered |
+| [parameters.blockScrollClass] | <code>string</code> | <code>&quot;.asscroll-block&quot;</code> | The class to add to elements that should block ASScroll when hovered |
 
 <a name="ASScroll+scrollPos"></a>
 

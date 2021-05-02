@@ -10,20 +10,20 @@ class ASScroll {
 	* Creates an ASScroll instance
 	* @typicalname asscroll
 	* @param {object} parameters
-	* @param {string} [parameters.element='.asscroll-container'] The selector string for the outer container element
-	* @param {string} [parameters.innerElement='[data-asscroll'] The selector string for the inner element(s)
+	* @param {string} [parameters.element=.asscroll-container] The selector string for the outer container element
+	* @param {string} [parameters.innerElement=[data-asscroll]] The selector string for the inner element(s)
 	* @param {number} [parameters.ease=0.075] The ease amount for the transform lerp
 	* @param {number} [parameters.touchEase=1] The ease amount for the transform lerp on touch devices
-	* @param {string} [parameters.touchScrollType='none'] Disable the transform on touch devices
-	* @param {string} [parameters.scrollbarEl='.asscrollbar'] The selector string for the custom scrollbar element
-	* @param {string} [parameters.scrollbarHandleEl='.asscrollbar__handle'] The selector string for the custom scrollbar handle element
+	* @param {string} [parameters.touchScrollType=none] Set the scrolling method on touch devices. Other options are 'transform' and 'scrollTop'
+	* @param {string} [parameters.scrollbarEl=.asscrollbar] The selector string for the custom scrollbar element
+	* @param {string} [parameters.scrollbarHandleEl=.asscrollbar__handle] The selector string for the custom scrollbar handle element
 	* @param {boolean} [parameters.customScrollbar=true] Toggle the custom scrollbar
 	* @param {boolean} [parameters.scrollbarStyles=true] Include the scrollbar CSS via Javascript
 	* @param {boolean} [parameters.disableNativeScrollbar=true] Disable the native browser scrollbar
 	* @param {boolean} [parameters.disableRaf=false] Disable internal requestAnimationFrame loop in order to use an external one
 	* @param {boolean} [parameters.disableResize=false] Disable internal resize event on the window in order to use an external one
 	* @param {boolean} [parameters.limitLerpRate=true] Match lerp speed on >60Hz displays to that of a 60Hz display
-	* @param {string} [parameters.blockScrollClass='.asscroll-block'] The class to add to elements that should block ASScroll when hovered
+	* @param {string} [parameters.blockScrollClass=.asscroll-block] The class to add to elements that should block ASScroll when hovered
 	*/
 	constructor({
 		element = '.asscroll-container',
