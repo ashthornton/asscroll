@@ -12,13 +12,13 @@ class ASScroll {
 	* @example
 	* ```js
 	* const asscroll = new ASScroll({
-	* 	containerElement: '.page-container',
-	* 	scrollElements: '.my-page'
+	*     containerElement: '.page-container',
+	*     scrollElements: '.my-page'
 	* })
 	* ```
 	*
 	* @typicalname asscroll
-	* @param {object} parameters
+	* @param {object} [parameters]
 	* @param {string|HTMLElement} [parameters.containerElement=.asscroll-container] The selector string for the outer container element, or the element itself
 	* @param {string|HTMLElement|NodeList} [parameters.scrollElements=[data-asscroll]] The selector string for the elements to scroll, or the elements themselves
 	* @param {number} [parameters.ease=0.075] The ease amount for the transform lerp
@@ -77,11 +77,14 @@ class ASScroll {
 	* @example <caption>Enables ASScroll on the '.page' element and resets the scroll position to 0</caption>
 	* asscroll.enable({ newScrollElements: document.querySelector('.page'), reset: true })
 	*
-	* @param {object} parameters
-	* @param {boolean|NodeList|HTMLElement} [parameters.newScrollElements = false] Specify the new element(s) that should be scrolled
-	* @param {boolean} [parameters.reset = false] Reset the scroll position to 0
-	* @param {boolean} [parameters.restore = false] Restore the scroll position to where it was when disable() was called
-	* @param {boolean} [parameters.horizontalScroll = false] Toggle horizontal scrolling
+	* @example <caption>Enables ASScroll and restores to the previous position before ASScroll.disable() was called</caption>
+	* asscroll.enable({ restore: true })
+	*
+	* @param {object} [parameters]
+	* @param {boolean|NodeList|HTMLElement} [parameters.newScrollElements=false] Specify the new element(s) that should be scrolled
+	* @param {boolean} [parameters.reset=false] Reset the scroll position to 0
+	* @param {boolean} [parameters.restore=false] Restore the scroll position to where it was when disable() was called
+	* @param {boolean} [parameters.horizontalScroll=false] Toggle horizontal scrolling
 	*/
 	enable(parameters) {
 		if (parameters !== undefined && typeof parameters !== 'object') {
@@ -97,7 +100,7 @@ class ASScroll {
 	* asscroll.disable({ inputOnly: true })
 	*
 	* @param {object} parameters
-	* @param {boolean} [parameters.inputOnly = false] Only disable the ability to manually scroll (still allow transforms)
+	* @param {boolean} [parameters.inputOnly=false] Only disable the ability to manually scroll (still allow transforms)
 	*/
 	disable(parameters) {
 		if (parameters !== undefined && typeof parameters !== 'object') {
@@ -117,9 +120,9 @@ class ASScroll {
 	/**
 	* Call the internal resize callback.
 	* @function
-	* @param {object} parameters
-	* @param {number} parameters.width Window width
-	* @param {number} parameters.height Window height
+	* @param {object} [parameters]
+	* @param {number} [parameters.width] Window width
+	* @param {number} [parameters.height] Window height
 	*/
 	resize = (parameters) => {
 		this.events.onResize(parameters)
@@ -138,26 +141,26 @@ class ASScroll {
 	* asscroll.on('scrollEnd', scrollPos => console.log(scrollPos))
 	*
 	* @param {string} eventName Name of the event you wish to listen for
-	* @param {function} cb Callback function that should be executed when the event fires
+	* @param {function} callback Callback function that should be executed when the event fires
 	*/
-	on(eventName, cb) {
-		if (typeof cb !== 'function') {
+	on(eventName, callback) {
+		if (typeof callback !== 'function') {
 			console.error('ASScroll: Function not provided as second parameter')
 			return
 		}
 
 		if (eventName === 'scroll') {
-			E.on(Events.EXTERNALSCROLL, cb)
+			E.on(Events.EXTERNALSCROLL, callback)
 			return
 		}
 
 		if (eventName === 'update') {
-			E.on(Events.EXTERNALRAF, cb)
+			E.on(Events.EXTERNALRAF, callback)
 			return
 		}
 
 		if (eventName === 'scrollEnd') {
-			E.on(Events.SCROLLEND, cb)
+			E.on(Events.SCROLLEND, callback)
 			return
 		}
 
@@ -167,26 +170,26 @@ class ASScroll {
 	/**
 	* Remove an event listener.
 	* @param {string} eventName Name of the event
-	* @param {function} cb Callback function
+	* @param {function} callback Callback function
 	*/
-	off(eventName, cb) {
-		if (typeof cb !== 'function') {
+	off(eventName, callback) {
+		if (typeof callback !== 'function') {
 			console.error('ASScroll: Function not provided as second parameter')
 			return
 		}
 
 		if (eventName === 'scroll') {
-			E.off(Events.EXTERNALSCROLL, cb)
+			E.off(Events.EXTERNALSCROLL, callback)
 			return
 		}
 
 		if (eventName === 'update') {
-			E.off(Events.EXTERNALRAF, cb)
+			E.off(Events.EXTERNALRAF, callback)
 			return
 		}
 
 		if (eventName === 'scrollEnd') {
-			E.off(Events.SCROLLEND, cb)
+			E.off(Events.SCROLLEND, callback)
 			return
 		}
 

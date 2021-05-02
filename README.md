@@ -81,29 +81,29 @@ Ash's Smooth Scroll 🍑
 
 
 * [ASScroll](#ASScroll)
-    * [new ASScroll(parameters)](#new_ASScroll_new)
+    * [new ASScroll([parameters])](#new_ASScroll_new)
     * [.targetScrollPos](#ASScroll+targetScrollPos) ⇒ <code>number</code>
     * [.currentScrollPos](#ASScroll+currentScrollPos) ⇒ <code>number</code>
     * [.maxScroll](#ASScroll+maxScroll) ⇒ <code>number</code>
     * [.containerElement](#ASScroll+containerElement) ⇒ <code>HTMLElement</code>
     * [.scrollElements](#ASScroll+scrollElements) ⇒ <code>Array</code>
-    * [.enable(parameters)](#ASScroll+enable)
+    * [.enable([parameters])](#ASScroll+enable)
     * [.disable(parameters)](#ASScroll+disable)
     * [.update()](#ASScroll+update)
-    * [.resize(parameters)](#ASScroll+resize)
+    * [.resize([parameters])](#ASScroll+resize)
     * [.on(eventName, cb)](#ASScroll+on)
     * [.off(eventName, cb)](#ASScroll+off)
     * [.scrollTo(targetScrollPos, [emitEvent])](#ASScroll+scrollTo)
 
 <a name="new_ASScroll_new"></a>
 
-## new ASScroll(parameters)
+## new ASScroll([parameters])
 Creates an ASScroll instance
 
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| parameters | <code>object</code> |  |  |
+| [parameters] | <code>object</code> |  |  |
 | [parameters.containerElement] | <code>string</code> \| <code>HTMLElement</code> | <code>&quot;.asscroll-container&quot;</code> | The selector string for the outer container element, or the element itself |
 | [parameters.scrollElements] | <code>string</code> \| <code>HTMLElement</code> \| <code>NodeList</code> | <code>&quot;[data-asscroll]&quot;</code> | The selector string for the elements to scroll, or the elements themselves |
 | [parameters.ease] | <code>number</code> | <code>0.075</code> | The ease amount for the transform lerp |
@@ -120,7 +120,7 @@ Creates an ASScroll instance
 | [parameters.blockScrollClass] | <code>string</code> | <code>&quot;.asscroll-block&quot;</code> | The class to add to elements that should block ASScroll when hovered |
 
 **Example**  
-```jsconst asscroll = new ASScroll({	containerElement: '.page-container',	scrollElements: '.my-page'})```
+```jsconst asscroll = new ASScroll({    containerElement: '.page-container',    scrollElements: '.my-page'})```
 <a name="ASScroll+targetScrollPos"></a>
 
 ## asscroll.targetScrollPos ⇒ <code>number</code>
@@ -162,13 +162,13 @@ Returns the the element(s) that ASScroll is scrolling.
 **Returns**: <code>Array</code> - An array of elements ASScroll is scrolling  
 <a name="ASScroll+enable"></a>
 
-## asscroll.enable(parameters)
+## asscroll.enable([parameters])
 Enable ASScroll.
 
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| parameters | <code>object</code> |  |  |
+| [parameters] | <code>object</code> |  |  |
 | [parameters.newScrollElements] | <code>boolean</code> \| <code>NodeList</code> \| <code>HTMLElement</code> | <code>false</code> | Specify the new element(s) that should be scrolled |
 | [parameters.reset] | <code>boolean</code> | <code>false</code> | Reset the scroll position to 0 |
 | [parameters.restore] | <code>boolean</code> | <code>false</code> | Restore the scroll position to where it was when disable() was called |
@@ -177,6 +177,10 @@ Enable ASScroll.
 **Example** *(Enables ASScroll on the &#x27;.page&#x27; element and resets the scroll position to 0)*  
 ```js
 asscroll.enable({ newScrollElements: document.querySelector('.page'), reset: true })
+```
+**Example** *(Enables ASScroll and restores to the previous position before ASScroll.disable() was called)*  
+```js
+asscroll.enable({ restore: true })
 ```
 <a name="ASScroll+disable"></a>
 
@@ -200,15 +204,15 @@ Call the internal animation frame request callback.
 
 <a name="ASScroll+resize"></a>
 
-## asscroll.resize(parameters)
+## asscroll.resize([parameters])
 Call the internal resize callback.
 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| parameters | <code>object</code> |  |
-| parameters.width | <code>number</code> | Window width |
-| parameters.height | <code>number</code> | Window height |
+| [parameters] | <code>object</code> |  |
+| [parameters.width] | <code>number</code> | Window width |
+| [parameters.height] | <code>number</code> | Window height |
 
 <a name="ASScroll+on"></a>
 
