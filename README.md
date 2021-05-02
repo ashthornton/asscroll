@@ -85,6 +85,8 @@ Ash's Smooth Scroll 🍑
     * [.targetScrollPos](#ASScroll+targetScrollPos) ⇒ <code>number</code>
     * [.currentScrollPos](#ASScroll+currentScrollPos) ⇒ <code>number</code>
     * [.maxScroll](#ASScroll+maxScroll) ⇒ <code>number</code>
+    * [.containerElement](#ASScroll+containerElement) ⇒ <code>HTMLElement</code>
+    * [.scrollTargets](#ASScroll+scrollTargets) ⇒ <code>Array</code> \| <code>NodeList</code>
     * [.enable(parameters)](#ASScroll+enable)
     * [.disable(parameters)](#ASScroll+disable)
     * [.update()](#ASScroll+update)
@@ -117,6 +119,8 @@ Creates an ASScroll instance
 | [parameters.limitLerpRate] | <code>boolean</code> | <code>true</code> | Match lerp speed on >60Hz displays to that of a 60Hz display |
 | [parameters.blockScrollClass] | <code>string</code> | <code>&quot;.asscroll-block&quot;</code> | The class to add to elements that should block ASScroll when hovered |
 
+**Example**  
+```jsconst asscroll = new ASScroll({	element: '.page-container',	innerElement: '.my-page'})```
 <a name="ASScroll+targetScrollPos"></a>
 
 ## asscroll.targetScrollPos ⇒ <code>number</code>
@@ -154,6 +158,18 @@ asscroll.currentScrollPos = 200
 Returns the maximum scroll height of the page.
 
 **Returns**: <code>number</code> - Maxmium scroll height  
+<a name="ASScroll+containerElement"></a>
+
+## asscroll.containerElement ⇒ <code>HTMLElement</code>
+Returns the outer element that ASScroll is attached to
+
+**Returns**: <code>HTMLElement</code> - The outer element  
+<a name="ASScroll+scrollTargets"></a>
+
+## asscroll.scrollTargets ⇒ <code>Array</code> \| <code>NodeList</code>
+Returns the the element(s) that ASScroll is scrolling
+
+**Returns**: <code>Array</code> \| <code>NodeList</code> - An array or NodeList of elements  
 <a name="ASScroll+enable"></a>
 
 ## asscroll.enable(parameters)

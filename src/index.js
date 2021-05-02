@@ -8,6 +8,15 @@ import E from './E'
 class ASScroll {
 	/**
 	* Creates an ASScroll instance
+	*
+	* @example
+	* ```js
+	* const asscroll = new ASScroll({
+	* 	element: '.page-container',
+	* 	innerElement: '.my-page'
+	* })
+	* ```
+	*
 	* @typicalname asscroll
 	* @param {object} parameters
 	* @param {string} [parameters.element=.asscroll-container] The selector string for the outer container element
@@ -99,7 +108,7 @@ class ASScroll {
 
 	/**
 	* Call the internal animation frame request callback.
-	* @method
+	* @function
 	*/
 	update = () => {
 		this.Events.onRaf()
@@ -107,7 +116,7 @@ class ASScroll {
 
 	/**
 	* Call the internal resize callback.
-	* @method
+	* @function
 	* @param {object} parameters
 	* @param {number} parameters.width Window width
 	* @param {number} parameters.height Window height
@@ -233,6 +242,22 @@ class ASScroll {
 	*/
 	get maxScroll() {
 		return -this.Scroll.maxScroll
+	}
+
+	/**
+	 * Returns the outer element that ASScroll is attached to.
+	 * @return {HTMLElement} The outer element
+	 */
+	get containerElement() {
+		return this.Scroll.scrollContainer
+	}
+
+	/**
+	 * Returns the the element(s) that ASScroll is scrolling.
+	 * @return {Array|NodeList} An array or NodeList of elements ASScroll is scrolling
+	 */
+	get scrollTargets() {
+		return this.Scroll.scrollTargets
 	}
 }
 
