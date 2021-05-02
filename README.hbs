@@ -29,7 +29,6 @@ _No animation features are included as there are other libraries that can be use
 Demos
 ================
 - [Zero Config Demo](https://codepen.io/ashthornton/pen/pobJRQX?editors=1010)
-- [Options Demo](https://codepen.io/ashthornton/pen/YzWXZqL?editors=1010)
 - [Using GSAP's ScrollTrigger with ASScroll](https://codepen.io/ashthornton/pen/PoZRwPW)
 
 ### Sites using ASScroll
@@ -47,11 +46,13 @@ Demos
 # Install
 `npm i --save @ashthornton/asscroll` or `yarn add @ashthornton/asscroll`
 
+Also available via [JSDelivr CDN](https://www.jsdelivr.com/package/npm/@ashthornton/asscroll) which you can then include with a `<script>` tag.
+
 # Zero Config Setup
 
 1. Add a class of `.asscroll-container` to the parent element of the content to be smooth scrolled. By default, the first child found within will be scrolled. These can both be changed in the options.
 
-```HTML
+```html
 <body>
     <div class="asscroll-container">
         <div><!-- The Y translation will be applied to this element --></div>
@@ -61,14 +62,77 @@ Demos
 
 2. Import and initialise in Javascript
 
-```Javascript
+```js
 import ASScroll from '@ashthornton/asscroll'
 
-const smoothScroll = new ASScroll( options = {} )
+const asscroll = new ASScroll()
 
-smoothScroll.enable()
+window.addEventListener('load', () => {
+    asscroll.enable()
+})
 ```
 
 ---
 
 {{>main}}
+
+---
+
+## Custom Scrollbar
+
+When `customScrollbar` is enabled in the options, a default set of styles will get added to the page that match the following HTML:
+
+```HTML
+<div class="asscrollbar"><div class="asscrollbar__handle"><div></div></div></div>
+```
+
+This HTML will get added to your page automatically if you don't add it yourself.
+
+You can change the classes that are used by changing the `scrollbarEl` and `scrollbarHandleEl` options.
+
+You can use your own styles by setting the `scrollbarStyles` option to false.
+
+---
+
+⚠ **Note**: These styles are added via JS so will only be applied after JS has loaded. This may cause the native scrollbar to show for a moment before the styles are added resulting in a jump of the page.
+
+You can include the styles necessary to hide the native scrollbar in your CSS by copy and pasting the contents of `/css/index.css` or simply by importing them into your CSS setup. For example:
+
+```css
+@import '~@ashthornton/asscroll/css'
+```
+
+## Usage with external requestAnimationFrame
+
+```Javascript
+const asscroll = new ASScroll({
+    disableRaf: true
+})
+
+// Regular RAF setup
+requestAnimationFrame(onRaf)
+function onRaf() {
+    asscroll.update()
+    requestAnimationFrame(onRaf)
+}
+
+// Use with GSAP's internal RAF
+gsap.ticker.add(asscroll.update)
+
+asscroll.enable()
+```
+
+## Usage with external window resize
+
+```Javascript
+const asscroll = new ASScroll({
+    disableResize: true
+})
+
+window.addEventListener('resize', () => {
+    // trigger other resize logic
+    asscroll.resize({ width: window.innerWidth, height: window.innerHeight })
+})
+
+asscroll.enable()
+```

@@ -84,7 +84,7 @@ class ASScroll {
 	/**
 	* Disable ASScroll.
 	*
-	* @example <caption>Disables the ability to manually scroll whilst still allowing position updates to be made via ASScroll.smoothScrollPos, for example</caption>
+	* @example <caption>Disables the ability to manually scroll whilst still allowing position updates to be made via asscroll.smoothScrollPos, for example</caption>
 	* asscroll.disable({ inputOnly: true })
 	*
 	* @param {object} parameters
@@ -100,7 +100,7 @@ class ASScroll {
 	/**
 	* Call the internal animation frame request callback.
 	*/
-	onRaf() {
+	update() {
 		this.Events.onRaf()
 	}
 
@@ -110,7 +110,7 @@ class ASScroll {
 	* @param {number} parameters.width Window width
 	* @param {number} parameters.height Window height
 	*/
-	onResize(parameters) {
+	resize(parameters) {
 		this.Events.onResize(parameters)
 	}
 
@@ -119,6 +119,12 @@ class ASScroll {
 	*
 	* @example <caption>Logs out the scroll position when the 'scroll' event is fired</caption>
 	* asscroll.on('scroll', scrollPos => console.log(scrollPos))
+	*
+	* @example <caption>Returns the target scroll position and current scroll position during the internal update loop</caption>
+	* asscroll.on('update', ({ scrollPos, smoothScrollPos }) => console.log(scrollPos, smoothScrollPos))
+	*
+	* @example <caption>Fires when the lerped scroll position has reached the target position</caption>
+	* asscroll.on('scrollEnd', scrollPos => console.log(scrollPos))
 	*
 	* @param {string} eventName Name of the event you wish to listen for
 	* @param {function} cb Callback function that should be executed when the event fires
@@ -134,7 +140,7 @@ class ASScroll {
 			return
 		}
 
-		if (eventName === 'raf') {
+		if (eventName === 'update') {
 			E.on(Events.EXTERNALRAF, cb)
 			return
 		}
@@ -163,7 +169,7 @@ class ASScroll {
 			return
 		}
 
-		if (eventName === 'raf') {
+		if (eventName === 'update') {
 			E.off(Events.EXTERNALRAF, cb)
 			return
 		}
