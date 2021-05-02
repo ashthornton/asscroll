@@ -99,18 +99,20 @@ class ASScroll {
 
 	/**
 	* Call the internal animation frame request callback.
+	* @method
 	*/
-	update() {
+	update = () => {
 		this.Events.onRaf()
 	}
 
 	/**
 	* Call the internal resize callback.
+	* @method
 	* @param {object} parameters
 	* @param {number} parameters.width Window width
 	* @param {number} parameters.height Window height
 	*/
-	resize(parameters) {
+	resize = (parameters) => {
 		this.Events.onResize(parameters)
 	}
 
