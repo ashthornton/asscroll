@@ -16,7 +16,7 @@
     "postversion": "npm publish --access public",
     "preversion": "npm run production && git add -A && git commit -m build",
     "fix": "eslint --fix \"src/**\"",
-    "docs": "jsdoc2md src/index.js > README.md --template README.hbs --heading-depth 1 --partial scope.hbs"
+    "docs": "jsdoc2md src/index.js > README.md --template docs/README.hbs --heading-depth 1 --partial docs/scope.hbs"
   },
   "repository": {
     "type": "git",
