@@ -1,100 +1,128 @@
-## Classes
+<p align="center"><img src="https://raw.githubusercontent.com/ashthornton-gc/asscroll/master/asscroll.png"></p>
 
-<dl>
-<dt><a href="#ASScroll">ASScroll</a></dt>
-<dd></dd>
-</dl>
+<h3 align="center"><strong>ASScroll is a hybrid smooth scroll setup that combines the<br>performance gains of virtual scroll with the reliability of native scroll.</strong></h3>
 
-## Members
+<p align="center" style="padding: 0 15%">This setup aims to be a lightweight solution that provides a consistent smooth scrolling experience across all platforms, devices and hardware.</p>
 
-<dl>
-<dt><a href="#scrollPos">scrollPos</a> ⇒ <code>number</code></dt>
-<dd><p>Gets or sets the scroll position.</p>
-</dd>
-<dt><a href="#smoothScrollPos">smoothScrollPos</a> ⇒ <code>number</code></dt>
-<dd><p>Returns the current scroll position.</p>
-</dd>
-<dt><a href="#maxScroll">maxScroll</a> ⇒ <code>number</code></dt>
-<dd><p>Returns the maximum scroll height of the page.</p>
-</dd>
-</dl>
+---
 
-## Functions
+#### Advantages over pure virtual scroll:
+- Accessibility / keyboard friendly (without overriding the browser's native scroll)
+- No special cases to cater for when handling manual key detection (i.e. pressing space in a form input)
+- Doesn't stop working when hovering over an iframe
+- Handles hardware that doesn't fire the 'wheel' event i.e. Windows trackpads in Edge + IE
+- No lag between DOM and WebGL elements on mobile, whilst retaining native inertia scroll
 
-<dl>
-<dt><a href="#enable">enable(parameters)</a></dt>
-<dd><p>Enable ASScroll.</p>
-</dd>
-<dt><a href="#disable">disable(parameters)</a></dt>
-<dd><p>Disable ASScroll.</p>
-</dd>
-<dt><a href="#onRaf">onRaf()</a></dt>
-<dd><p>Call the internal animation frame request callback.</p>
-</dd>
-<dt><a href="#onResize">onResize(parameters)</a></dt>
-<dd><p>Call the internal resize callback.</p>
-</dd>
-<dt><a href="#on">on(eventName, cb)</a></dt>
-<dd><p>Add an event listener.</p>
-</dd>
-<dt><a href="#off">off(eventName, cb)</a></dt>
-<dd><p>Remove an event listener.</p>
-</dd>
-<dt><a href="#scrollTo">scrollTo(scrollPos, [emitEvent])</a></dt>
-<dd><p>Scroll to a given position on the page.</p>
-</dd>
-</dl>
+#### Other Features:
+- Horizontal scroll
+- Custom scroll bar
+- Use your own external RAF loop and resize events
+- Consistent lerp speeds on high refresh rate displays
+
+_No animation features are included as there are other libraries that can be used with ASScroll. GreenSock's [ScrollTrigger](https://greensock.com/scrolltrigger/) is a great example and a demo is included below_
+
+Demos
+================
+- [Zero Config Demo](https://codepen.io/ashthornton/pen/pobJRQX?editors=1010)
+- [Options Demo](https://codepen.io/ashthornton/pen/YzWXZqL?editors=1010)
+- [Using GSAP's ScrollTrigger with ASScroll](https://codepen.io/ashthornton/pen/PoZRwPW)
+
+### Sites using ASScroll
+- [Superlist](https://superlist.com/)
+- [Lewa House](https://lewahouse.com/)
+- [Eder Anaya](https://ederanaya.me/)
+- [FanFan](https://fanfan.fan/)
+- [Havoc](https://www.havoc.co/)
+- [Wray and Nephew](https://straightfromyard.co.uk/)
+- [Shape Studio](https://shapestudio.co.uk/)
+
+---
 
 <a name="ASScroll"></a>
 
-## ASScroll
-**Kind**: global class
+# ASScroll
+Ash's Smooth Scroll 🍑
+
+**Kind**: global class  
+
+* [ASScroll](#ASScroll)
+    * [new ASScroll(parameters)](#new_ASScroll_new)
+    * [.scrollPos](#ASScroll+scrollPos) ⇒ <code>number</code>
+    * [.smoothScrollPos](#ASScroll+smoothScrollPos) ⇒ <code>number</code>
+    * [.maxScroll](#ASScroll+maxScroll) ⇒ <code>number</code>
+    * [.enable(parameters)](#ASScroll+enable)
+    * [.disable(parameters)](#ASScroll+disable)
+    * [.onRaf()](#ASScroll+onRaf)
+    * [.onResize(parameters)](#ASScroll+onResize)
+    * [.on(eventName, cb)](#ASScroll+on)
+    * [.off(eventName, cb)](#ASScroll+off)
+    * [.scrollTo(scrollPos, [emitEvent])](#ASScroll+scrollTo)
+
 <a name="new_ASScroll_new"></a>
 
-### new ASScroll()
-Ash's Smooth Scroll �
+## new ASScroll(parameters)
+Creates an ASScroll instance
 
-<a name="scrollPos"></a>
 
-## scrollPos ⇒ <code>number</code>
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| parameters | <code>object</code> |  |  |
+| [parameters.element] | <code>string</code> | <code>&quot;&#x27;.asscroll-container&#x27;&quot;</code> | The selector string for the outer container element |
+| [parameters.innerElement] | <code>string</code> | <code>&quot;&#x27;[data-asscroll&#x27;&quot;</code> | The selector string for the inner element(s) |
+| [parameters.ease] | <code>number</code> | <code>0.075</code> | The ease amount for the transform lerp |
+| [parameters.touchEase] | <code>number</code> | <code>1</code> | The ease amount for the transform lerp on touch devices |
+| [parameters.touchScrollType] | <code>string</code> | <code>&quot;&#x27;none&#x27;&quot;</code> | Disable the transform on touch devices |
+| [parameters.scrollbarEl] | <code>string</code> | <code>&quot;&#x27;.asscrollbar&#x27;&quot;</code> | The selector string for the custom scrollbar element |
+| [parameters.scrollbarHandleEl] | <code>string</code> | <code>&quot;&#x27;.asscrollbar__handle&#x27;&quot;</code> | The selector string for the custom scrollbar handle element |
+| [parameters.customScrollbar] | <code>boolean</code> | <code>true</code> | Toggle the custom scrollbar |
+| [parameters.scrollbarStyles] | <code>boolean</code> | <code>true</code> | Include the scrollbar CSS via Javascript |
+| [parameters.disableNativeScrollbar] | <code>boolean</code> | <code>true</code> | Disable the native browser scrollbar |
+| [parameters.disableRaf] | <code>boolean</code> | <code>false</code> | Disable internal requestAnimationFrame loop in order to use an external one |
+| [parameters.disableResize] | <code>boolean</code> | <code>false</code> | Disable internal resize event on the window in order to use an external one |
+| [parameters.limitLerpRate] | <code>boolean</code> | <code>true</code> | Match lerp speed on >60Hz displays to that of a 60Hz display |
+| [parameters.blockScrollClass] | <code>string</code> | <code>&quot;&#x27;.asscroll-block&#x27;&quot;</code> | The class to add to elements that should block ASScroll when hovered |
+
+<a name="ASScroll+scrollPos"></a>
+
+## asscroll.scrollPos ⇒ <code>number</code>
 Gets or sets the scroll position.
 
-**Kind**: global variable
-**Returns**: <code>number</code> - Target scroll position
+**Kind**: instance property of [<code>ASScroll</code>](#ASScroll)  
+**Returns**: <code>number</code> - Target scroll position  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | scrollPos | <code>number</code> | The desired scroll position |
 
-**Example** *(Gets the target scroll position.)*
+**Example** *(Gets the target scroll position)*  
 ```js
 console.log(asscroll.scrollPos)
 // 200
 ```
-**Example** *(Sets the scroll position to 200.)*
+**Example** *(Sets the scroll position to 200)*  
 ```js
 asscroll.scrollPos = 200
 ```
-<a name="smoothScrollPos"></a>
+<a name="ASScroll+smoothScrollPos"></a>
 
-## smoothScrollPos ⇒ <code>number</code>
+## asscroll.smoothScrollPos ⇒ <code>number</code>
 Returns the current scroll position.
 
-**Kind**: global variable
-**Returns**: <code>number</code> - Current scroll position
-<a name="maxScroll"></a>
+**Kind**: instance property of [<code>ASScroll</code>](#ASScroll)  
+**Returns**: <code>number</code> - Current scroll position  
+<a name="ASScroll+maxScroll"></a>
 
-## maxScroll ⇒ <code>number</code>
+## asscroll.maxScroll ⇒ <code>number</code>
 Returns the maximum scroll height of the page.
 
-**Kind**: global variable
-**Returns**: <code>number</code> - Maxmium scroll height
-<a name="enable"></a>
+**Kind**: instance property of [<code>ASScroll</code>](#ASScroll)  
+**Returns**: <code>number</code> - Maxmium scroll height  
+<a name="ASScroll+enable"></a>
 
-## enable(parameters)
+## asscroll.enable(parameters)
 Enable ASScroll.
 
-**Kind**: global function
+**Kind**: instance method of [<code>ASScroll</code>](#ASScroll)  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -104,38 +132,38 @@ Enable ASScroll.
 | [parameters.restore] | <code>boolean</code> | <code>false</code> | Restore the scroll position to where it was when disable() was called |
 | [parameters.horizontalScroll] | <code>boolean</code> | <code>false</code> | Toggle horizontal scrolling |
 
-**Example** *(Enables ASScroll on the &#x27;.page&#x27; element and resets the scroll position to 0.)*
+**Example** *(Enables ASScroll on the &#x27;.page&#x27; element and resets the scroll position to 0)*  
 ```js
 asscroll.enable({ scrollTargets: document.querySelector('.page'), reset: true })
 ```
-<a name="disable"></a>
+<a name="ASScroll+disable"></a>
 
-## disable(parameters)
+## asscroll.disable(parameters)
 Disable ASScroll.
 
-**Kind**: global function
+**Kind**: instance method of [<code>ASScroll</code>](#ASScroll)  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | parameters | <code>object</code> |  |  |
 | [parameters.inputOnly] | <code>boolean</code> | <code>false</code> | Only disable the ability to manually scroll (still allow transforms) |
 
-**Example** *(Disables the ability to manually scroll whilst still allowing position updates to be made via ASScroll.smoothScrollPos, for example.)*
+**Example** *(Disables the ability to manually scroll whilst still allowing position updates to be made via ASScroll.smoothScrollPos, for example)*  
 ```js
 asscroll.disable({ inputOnly: true })
 ```
-<a name="onRaf"></a>
+<a name="ASScroll+onRaf"></a>
 
-## onRaf()
+## asscroll.onRaf()
 Call the internal animation frame request callback.
 
-**Kind**: global function
-<a name="onResize"></a>
+**Kind**: instance method of [<code>ASScroll</code>](#ASScroll)  
+<a name="ASScroll+onResize"></a>
 
-## onResize(parameters)
+## asscroll.onResize(parameters)
 Call the internal resize callback.
 
-**Kind**: global function
+**Kind**: instance method of [<code>ASScroll</code>](#ASScroll)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -143,42 +171,43 @@ Call the internal resize callback.
 | parameters.width | <code>number</code> | Window width |
 | parameters.height | <code>number</code> | Window height |
 
-<a name="on"></a>
+<a name="ASScroll+on"></a>
 
-## on(eventName, cb)
+## asscroll.on(eventName, cb)
 Add an event listener.
 
-**Kind**: global function
+**Kind**: instance method of [<code>ASScroll</code>](#ASScroll)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | eventName | <code>string</code> | Name of the event you wish to listen for |
 | cb | <code>function</code> | Callback function that should be executed when the event fires |
 
-**Example** *(Logs out the scroll position when the &#x27;scroll&#x27; event is fired.)*
+**Example** *(Logs out the scroll position when the &#x27;scroll&#x27; event is fired)*  
 ```js
 asscroll.on('scroll', scrollPos => console.log(scrollPos))
 ```
-<a name="off"></a>
+<a name="ASScroll+off"></a>
 
-## off(eventName, cb)
+## asscroll.off(eventName, cb)
 Remove an event listener.
 
-**Kind**: global function
+**Kind**: instance method of [<code>ASScroll</code>](#ASScroll)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | eventName | <code>string</code> | Name of the event |
 | cb | <code>function</code> | Callback function |
 
-<a name="scrollTo"></a>
+<a name="ASScroll+scrollTo"></a>
 
-## scrollTo(scrollPos, [emitEvent])
+## asscroll.scrollTo(scrollPos, [emitEvent])
 Scroll to a given position on the page.
 
-**Kind**: global function
+**Kind**: instance method of [<code>ASScroll</code>](#ASScroll)  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | scrollPos | <code>number</code> |  | Scroll position |
 | [emitEvent] | <code>boolean</code> | <code>true</code> | Whether to emit the external scroll events or not |
+

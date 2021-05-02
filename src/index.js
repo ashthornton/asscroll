@@ -4,12 +4,11 @@ import E from './E'
 
 /**
 * Ash's Smooth Scroll 🍑
-* @export
-* @class ASScroll
 */
-export default class ASScroll {
+class ASScroll {
 	/**
 	* Creates an ASScroll instance
+	* @typicalname asscroll
 	* @param {object} parameters
 	* @param {string} [parameters.element='.asscroll-container'] The selector string for the outer container element
 	* @param {string} [parameters.innerElement='[data-asscroll'] The selector string for the inner element(s)
@@ -222,3 +221,5 @@ export default class ASScroll {
 		return -this.Scroll.maxScroll
 	}
 }
+
+export default ASScroll
