@@ -3,7 +3,7 @@ import E from './E'
 import Scrollbar from './Scrollbar'
 import Events from './Events'
 
-export default class Scroll {
+export default class Controller {
 	constructor(options = {}) {
 		this.options = options
 

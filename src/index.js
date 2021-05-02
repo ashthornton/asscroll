@@ -1,5 +1,5 @@
 import Events from './Events'
-import Scroll from './Scroll'
+import Controller from './Controller'
 import E from './E'
 
 /**
@@ -50,12 +50,12 @@ class ASScroll {
 		limitLerpRate = true,
 		blockScrollClass = '.asscroll-block'
 	} = {}) {
-		this.Events = new Events({
+		this.events = new Events({
 			disableRaf,
 			disableResize
 		})
 
-		this.Scroll = new Scroll({
+		this.controller = new Controller({
 			containerElement,
 			scrollElements,
 			ease,
@@ -87,7 +87,7 @@ class ASScroll {
 		if (parameters !== undefined && typeof parameters !== 'object') {
 			console.warn('ASScroll: Please pass an object with your parameters. Since 2.0')
 		}
-		this.Scroll.enable(parameters)
+		this.controller.enable(parameters)
 	}
 
 	/**
@@ -103,7 +103,7 @@ class ASScroll {
 		if (parameters !== undefined && typeof parameters !== 'object') {
 			console.warn('ASScroll: Please pass an object with your parameters. Since 2.0')
 		}
-		this.Scroll.disable(parameters)
+		this.controller.disable(parameters)
 	}
 
 	/**
@@ -111,7 +111,7 @@ class ASScroll {
 	* @function
 	*/
 	update = () => {
-		this.Events.onRaf()
+		this.events.onRaf()
 	}
 
 	/**
@@ -122,7 +122,7 @@ class ASScroll {
 	* @param {number} parameters.height Window height
 	*/
 	resize = (parameters) => {
-		this.Events.onResize(parameters)
+		this.events.onResize(parameters)
 	}
 
 	/**
@@ -199,7 +199,7 @@ class ASScroll {
 	* @param {boolean} [emitEvent=true] Whether to emit the external scroll events or not
 	*/
 	scrollTo(targetScrollPos, emitEvent = true) {
-		this.Scroll.scrollTo(-targetScrollPos, emitEvent)
+		this.controller.scrollTo(-targetScrollPos, emitEvent)
 	}
 
 	/**
@@ -208,7 +208,7 @@ class ASScroll {
 	* @return {number} Target scroll position
 	*/
 	get targetScrollPos() {
-		return -this.Scroll.targetScrollPos
+		return -this.controller.targetScrollPos
 	}
 
 	/**
@@ -221,11 +221,11 @@ class ASScroll {
 	* @return {number} Current scroll position
 	*/
 	get currentScrollPos() {
-		return -this.Scroll.currentScrollPos
+		return -this.controller.currentScrollPos
 	}
 
 	set currentScrollPos(scrollPos) {
-		this.Scroll.targetScrollPos = this.Scroll.currentScrollPos = -scrollPos
+		this.controller.targetScrollPos = this.controller.currentScrollPos = -scrollPos
 	}
 
 	/**
@@ -233,7 +233,7 @@ class ASScroll {
 	* @return {number} Maxmium scroll height
 	*/
 	get maxScroll() {
-		return -this.Scroll.maxScroll
+		return -this.controller.maxScroll
 	}
 
 	/**
@@ -241,7 +241,7 @@ class ASScroll {
 	 * @return {HTMLElement} The outer element
 	 */
 	get containerElement() {
-		return this.Scroll.containerElement
+		return this.controller.containerElement
 	}
 
 	/**
@@ -249,7 +249,7 @@ class ASScroll {
 	 * @return {Array} An array of elements ASScroll is scrolling
 	 */
 	get scrollElements() {
-		return this.Scroll.scrollElements
+		return this.controller.scrollElements
 	}
 }
 
