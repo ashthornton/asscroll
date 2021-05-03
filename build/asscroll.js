@@ -2559,11 +2559,11 @@ class Scrollbar {
       this.position -= this.prevMousePos - this.mousePos;
       this.position = Math.min(Math.max(this.position, 0), this.maxY);
       this.prevMousePos = this.mousePos;
-      this.controller.targetScrollPos = this.position / this.maxY * this.controller.maxScroll;
+      this.controller.targetPos = this.position / this.maxY * this.controller.maxScroll;
       this.controller.clamp();
       this.controller.syncScroll = true;
       this.transform();
-      src_E.emit(Events.EXTERNALSCROLL, this.controller.targetScrollPos);
+      src_E.emit(Events.EXTERNALSCROLL, -this.controller.targetPos);
     });
 
     Scrollbar_defineProperty(this, "onMouseDown", e => {
@@ -2596,7 +2596,7 @@ class Scrollbar {
     if (this.mouseDown) {
       y = this.position;
     } else {
-      y = -this.controller.targetScrollPos / -this.controller.maxScroll * ((store_default()).window.h - this.handleHeight);
+      y = -this.controller.targetPos / -this.controller.maxScroll * ((store_default()).window.h - this.handleHeight);
       this.position = y;
     }
 
@@ -2686,7 +2686,7 @@ class Controller {
       if (!(store_default()).isTouch && event.type === 'wheel') {
         event.preventDefault();
         this.syncScroll = true;
-        this.targetScrollPos += event.deltaY * -1;
+        this.targetPos += event.deltaY * -1;
       } else {
         if (this.preventResizeScroll) {
           this.preventResizeScroll = false;
@@ -2694,19 +2694,19 @@ class Controller {
         }
 
         if ((store_default()).isTouch && this.options.touchScrollType === 'scrollTop') {
-          this.targetScrollPos = this.horizontalScroll ? -this.containerElement.scrollLeft : -this.containerElement.scrollTop;
+          this.targetPos = this.horizontalScroll ? -this.containerElement.scrollLeft : -this.containerElement.scrollTop;
         } else {
-          this.targetScrollPos = -window.scrollY;
+          this.targetPos = -window.scrollY;
         }
 
         if ((store_default()).isTouch && this.options.touchScrollType !== 'transform') {
-          this.currentScrollPos = this.targetScrollPos;
+          this.currentPos = this.targetPos;
         }
       }
 
       this.clamp();
       this.options.customScrollbar && this.scrollbar.transform();
-      src_E.emit(Events.EXTERNALSCROLL, -this.targetScrollPos);
+      src_E.emit(Events.EXTERNALSCROLL, -this.targetPos);
     });
 
     Controller_defineProperty(this, "onRAF", () => {
@@ -2718,13 +2718,13 @@ class Controller {
 
       if (!this.render) return;
 
-      if (Math.abs(this.targetScrollPos - this.currentScrollPos) < 0.5) {
-        this.currentScrollPos = this.targetScrollPos;
+      if (Math.abs(this.targetPos - this.currentPos) < 0.5) {
+        this.currentPos = this.targetPos;
 
         if (this.syncScroll) {
           this.syncScroll = false;
-          window.scrollTo(0, -this.targetScrollPos);
-          src_E.emit(Events.SCROLLEND, -this.targetScrollPos);
+          window.scrollTo(0, -this.targetPos);
+          src_E.emit(Events.SCROLLEND, -this.targetPos);
         }
 
         if (this.scrolling) {
@@ -2733,15 +2733,15 @@ class Controller {
           this.toggleIframes(true);
         }
       } else {
-        this.currentScrollPos += (this.targetScrollPos - this.currentScrollPos) * this.ease * this.delta;
+        this.currentPos += (this.targetPos - this.currentPos) * this.ease * this.delta;
       }
 
-      const x = this.horizontalScroll ? this.currentScrollPos : 0;
-      const y = this.horizontalScroll ? 0 : this.currentScrollPos;
+      const x = this.horizontalScroll ? this.currentPos : 0;
+      const y = this.horizontalScroll ? 0 : this.currentPos;
       this.applyTransform(x, y);
       src_E.emit(Events.EXTERNALRAF, {
-        targetScrollPos: -this.targetScrollPos,
-        currentScrollPos: -this.currentScrollPos
+        targetPos: -this.targetPos,
+        currentPos: -this.currentPos
       });
     });
 
@@ -2752,7 +2752,7 @@ class Controller {
         const marginOffset = parseFloat(this.horizontalScroll ? compStyle.marginRight : compStyle.marginBottom);
         const bcr = lastTarget.getBoundingClientRect();
         const endPosition = this.horizontalScroll ? bcr.right : bcr.bottom;
-        this.scrollLength = endPosition + marginOffset - this.currentScrollPos;
+        this.scrollLength = endPosition + marginOffset - this.currentPos;
       } else {
         this.scrollLength = this.horizontalScroll ? this.scrollElements[0].scrollWidth : this.scrollElements[0].scrollHeight;
       }
@@ -2772,7 +2772,7 @@ class Controller {
 
     Controller_defineProperty(this, "toggleFixedContainer", () => {
       this.containerElement.style.position = 'static';
-      const scrollPos = this.currentScrollPos;
+      const scrollPos = this.currentPos;
       this.applyTransform(0, 0);
       requestAnimationFrame(() => {
         this.containerElement.style.position = 'fixed';
@@ -2783,7 +2783,7 @@ class Controller {
     });
 
     this.options = options;
-    this.targetScrollPos = this.currentScrollPos = this.prevScrollPos = this.maxScroll = 0;
+    this.targetPos = this.currentPos = this.prevScrollPos = this.maxScroll = 0;
     this.enabled = false;
     this.render = false;
     this.scrolling = false;
@@ -2887,14 +2887,14 @@ class Controller {
       this.maxScroll = -this.containerElement.scrollHeight;
 
       if (reset) {
-        this.targetScrollPos = this.currentScrollPos = 0;
+        this.targetPos = this.currentPos = 0;
         this.scrollTo(0, false);
       }
     } else {
       this.firstResize = true;
 
       if (reset) {
-        this.targetScrollPos = this.currentScrollPos = 0;
+        this.targetPos = this.currentPos = 0;
         this.applyTransform(0, 0);
       }
 
@@ -2921,28 +2921,28 @@ class Controller {
 
     src_E.off(Events.WHEEL, this.onScroll);
     src_E.off(Events.SCROLL, this.onScroll);
-    this.prevScrollPos = this.targetScrollPos;
+    this.prevScrollPos = this.targetPos;
     (store_default()).body.style.height = '0px';
   }
 
   clamp() {
-    this.targetScrollPos = Math.max(Math.min(this.targetScrollPos, 0), this.maxScroll);
+    this.targetPos = Math.max(Math.min(this.targetPos, 0), this.maxScroll);
   }
 
   scrollTo(y, emitEvent = true) {
-    this.targetScrollPos = y;
+    this.targetPos = y;
 
     if ((store_default()).isTouch && this.options.touchScrollType !== 'transform') {
       if (this.horizontalScroll) {
-        this.containerElement.scrollTo(-this.targetScrollPos, 0);
+        this.containerElement.scrollTo(-this.targetPos, 0);
       } else {
-        this.containerElement.scrollTo(0, -this.targetScrollPos);
+        this.containerElement.scrollTo(0, -this.targetPos);
       }
     }
 
     this.clamp();
     this.syncScroll = true;
-    if (emitEvent) src_E.emit(Events.EXTERNALSCROLL, -this.targetScrollPos);
+    if (emitEvent) src_E.emit(Events.EXTERNALSCROLL, -this.targetPos);
   }
 
   toggleIframes(enable) {
@@ -2967,11 +2967,11 @@ class Controller {
 
     if (!(store_default()).isTouch) {
       src_E.on('mouseleave', document, () => {
-        window.scrollTo(0, -this.targetScrollPos);
+        window.scrollTo(0, -this.targetPos);
       });
       src_E.on('keydown', window, e => {
         if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'PageUp' || e.key === 'PageDown' || e.key === 'Home' || e.key === 'End' || e.key === 'Tab') {
-          window.scrollTo(0, -this.targetScrollPos);
+          window.scrollTo(0, -this.targetPos);
         }
 
         if (e.key === 'Tab') {
@@ -2997,14 +2997,6 @@ function src_defineProperty(obj, key, value) { if (key in obj) { Object.definePr
 class ASScroll {
   /**
   * Creates an ASScroll instance
-  *
-  * @example
-  * ```js
-  * const asscroll = new ASScroll({
-  * 	containerElement: '.page-container',
-  * 	scrollElements: '.my-page'
-  * })
-  * ```
   *
   * @typicalname asscroll
   * @param {object} [parameters]
@@ -3093,7 +3085,7 @@ class ASScroll {
   /**
   * Disable ASScroll.
   *
-  * @example <caption>Disables the ability to manually scroll whilst still allowing position updates to be made via asscroll.currentScrollPos, for example</caption>
+  * @example <caption>Disables the ability to manually scroll whilst still allowing position updates to be made via asscroll.currentPos, for example</caption>
   * asscroll.disable({ inputOnly: true })
   *
   * @param {object} parameters
@@ -3121,7 +3113,7 @@ class ASScroll {
   * asscroll.on('scroll', scrollPos => console.log(scrollPos))
   *
   * @example <caption>Returns the target scroll position and current scroll position during the internal update loop</caption>
-  * asscroll.on('update', ({ targetScrollPos, currentScrollPos }) => console.log(targetScrollPos, currentScrollPos))
+  * asscroll.on('update', ({ targetPos, currentPos }) => console.log(targetPos, currentPos))
   *
   * @example <caption>Fires when the lerped scroll position has reached the target position</caption>
   * asscroll.on('scrollEnd', scrollPos => console.log(scrollPos))
@@ -3184,13 +3176,13 @@ class ASScroll {
   }
   /**
   * Scroll to a given position on the page.
-  * @param {number} targetScrollPos Scroll position
+  * @param {number} targetPos Target scroll position
   * @param {boolean} [emitEvent=true] Whether to emit the external scroll events or not
   */
 
 
-  scrollTo(targetScrollPos, emitEvent = true) {
-    this.controller.scrollTo(-targetScrollPos, emitEvent);
+  scrollTo(targetPos, emitEvent = true) {
+    this.controller.scrollTo(-targetPos, emitEvent);
   }
   /**
   * Returns the target scroll position.
@@ -3199,26 +3191,26 @@ class ASScroll {
   */
 
 
-  get targetScrollPos() {
-    return -this.controller.targetScrollPos;
+  get targetPos() {
+    return -this.controller.targetPos;
   }
   /**
   * Gets or sets the current scroll position.
   *
   * @example <caption>Sets the scroll position to 200, bypassing any lerps</caption>
-  * asscroll.currentScrollPos = 200
+  * asscroll.currentPos = 200
   *
   * @param {number} scrollPos The desired scroll position
   * @return {number} Current scroll position
   */
 
 
-  get currentScrollPos() {
-    return -this.controller.currentScrollPos;
+  get currentPos() {
+    return -this.controller.currentPos;
   }
 
-  set currentScrollPos(scrollPos) {
-    this.controller.targetScrollPos = this.controller.currentScrollPos = -scrollPos;
+  set currentPos(scrollPos) {
+    this.controller.targetPos = this.controller.currentPos = -scrollPos;
   }
   /**
   * Returns the maximum scroll height of the page.
