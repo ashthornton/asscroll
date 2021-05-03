@@ -64,7 +64,7 @@ export default class Scrollbar {
 		this.controller.clamp()
 		this.controller.syncScroll = true
 		this.transform()
-		E.emit(Events.EXTERNALSCROLL, this.controller.targetScrollPos)
+		E.emit(Events.EXTERNALSCROLL, -this.controller.targetScrollPos)
 	}
 
 	onMouseDown = (e) => {
