@@ -50,6 +50,7 @@ export default class Scrollbar {
         if( !this.mouseDown ) return
         const totalHeight = Store.windowSize.h + (this.trueSize - this.handleHeight)
         this.smoothScroll.scrollPos = (e.clientY / totalHeight * this.smoothScroll.maxScroll)
+		this.smoothScroll.clamp()
         this.smoothScroll.syncScroll = true
         E.emit(Store.eventNames.COMBOSCROLL, this.smoothScroll.scrollPos)
     }
