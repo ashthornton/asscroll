@@ -120,10 +120,10 @@ Creates an ASScroll instance
 | --- | --- | --- | --- |
 | [parameters] | <code>object</code> |  |  |
 | [parameters.containerElement] | <code>string</code> \| <code>HTMLElement</code> | <code>&quot;.asscroll-container&quot;</code> | The selector string for the outer container element, or the element itself |
-| [parameters.scrollElements] | <code>string</code> \| <code>HTMLElement</code> \| <code>NodeList</code> | <code>&quot;[data-asscroll]&quot;</code> | The selector string for the elements to scroll, or the elements themselves |
+| [parameters.scrollElements] | <code>string</code> \| <code>HTMLElement</code> \| <code>NodeList</code> | <code>&quot;[asscroll]&quot;</code> | The selector string for the elements to scroll, or the elements themselves |
 | [parameters.ease] | <code>number</code> | <code>0.075</code> | The ease amount for the transform lerp |
 | [parameters.touchEase] | <code>number</code> | <code>1</code> | The ease amount for the transform lerp on touch devices |
-| [parameters.touchScrollType] | <code>string</code> | <code>&quot;none&quot;</code> | Set the scrolling method on touch devices. Other options are 'transform' and 'scrollTop' |
+| [parameters.touchScrollType] | <code>string</code> | <code>&quot;none&quot;</code> | Set the scrolling method on touch devices. Other options are 'transform' and 'scrollTop'. See the [Touch Devices](#touch-devices) section for more info |
 | [parameters.scrollbarEl] | <code>string</code> | <code>&quot;.asscrollbar&quot;</code> | The selector string for the custom scrollbar element |
 | [parameters.scrollbarHandleEl] | <code>string</code> | <code>&quot;.asscrollbar__handle&quot;</code> | The selector string for the custom scrollbar handle element |
 | [parameters.customScrollbar] | <code>boolean</code> | <code>true</code> | Toggle the custom scrollbar |
@@ -337,25 +337,9 @@ asscroll.enable()
 Touch Devices
 ===
 
-ASScroll provides three options for handling itself on touch devices:
+ASScroll provides three options for handling itself on touch devices via the `touchScrollType` option:
 - `'none'`: Disabled completely, falling back to native scroll whilst still providing scroll position properties
 - `'transform'`: Continue to transform the scroll elements with an ease setting specifically to touch devices
 - `'scrollTop'`: Utilise the `scrollTop` value of the container element when used in conjunction with CSS that prevents resizes and browser UI from toggling
 
-The `scrollTop` option is primarily used for syncing WebGL content to the scroll position on mobile, without overriding the native inertia scroll.
-
-When using the `'scrollTop'` option, you must include the following CSS in your project and replace `.asscroll-container` and `[data-scroll]` with the elements you are using, if you have changed from the defaults:
-```css
-.asscroll-touch .asscroll-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: -0.1px;
-    overflow-y: auto;
-}
-
-.asscroll-touch [data-scroll] {
-    margin-bottom: 0.1px;
-}
-```
+The `scrollTop` option is primarily used for syncing WebGL content to the scroll position on mobile, without overriding the native inertia scroll. Some CSS will be injected automatically when this option is enabled. This CSS can be found [here](https://github.com/ashthornton/asscroll/blob/master/css/scrollTop.css).

@@ -1,4 +1,4 @@
-.asscroll-touch .asscroll-container {
+.asscroll-touch [asscroll-container] {
     position: absolute;
     top: 0;
     left: 0;
@@ -7,6 +7,6 @@
     overflow-y: auto;
 }
 
-.asscroll-touch [data-scroll] {
+.asscroll-touch [asscroll] {
     margin-bottom: 0.1px;
 }

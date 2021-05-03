@@ -30,6 +30,7 @@ export default class Controller {
 				this.setupSmoothScroll()
 			} else if (this.options.touchScrollType === 'scrollTop') {
 				document.documentElement.classList.add('asscroll-touch')
+				this.addTouchStyles()
 				E.on('scroll', this.containerElement, e => { E.emit(Events.INTERNALSCROLL, { event: e }) }, { passive: true })
 			}
 		} else {
@@ -41,6 +42,7 @@ export default class Controller {
 
 	setElements() {
 		this.containerElement = typeof this.options.containerElement === 'string' ? document.querySelector(this.options.containerElement) : this.options.containerElement
+		this.containerElement.setAttribute('asscroll-container', '')
 		if (this.containerElement === null) {
 			console.error('ASScroll: could not find container element')
 		}
@@ -49,6 +51,7 @@ export default class Controller {
 		if (this.scrollElements.length) this.scrollElements = [...this.scrollElements]
 		this.scrollElements = this.scrollElements.length ? this.scrollElements : [this.containerElement.firstElementChild]
 		this.scrollElementsLength = this.scrollElements.length
+		this.scrollElements.forEach(el => el.setAttribute('asscroll', ''))
 	}
 
 	setupSmoothScroll() {
@@ -297,5 +300,15 @@ export default class Controller {
 			E.delegate('click', 'a[href^="#"]', this.toggleFixedContainer)
 			E.delegate('wheel', this.options.blockScrollClass, this.blockScrollEvent)
 		}
+	}
+
+	addTouchStyles() {
+		const styles = `.asscroll-touch [asscroll-container] {position:absolute;top:0;left:0;right:0;bottom:-0.1px;overflow-y: auto;} .asscroll-touch [asscroll] {margin-bottom:0.1px;}`
+
+		const css = document.createElement('style')
+
+		if (css.styleSheet) css.styleSheet.cssText = styles
+		else css.appendChild(document.createTextNode(styles))
+		document.getElementsByTagName("head")[0].appendChild(css)
 	}
 }

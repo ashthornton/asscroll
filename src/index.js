@@ -12,10 +12,10 @@ class ASScroll {
 	* @typicalname asscroll
 	* @param {object} [parameters]
 	* @param {string|HTMLElement} [parameters.containerElement=.asscroll-container] The selector string for the outer container element, or the element itself
-	* @param {string|HTMLElement|NodeList} [parameters.scrollElements=[data-asscroll]] The selector string for the elements to scroll, or the elements themselves
+	* @param {string|HTMLElement|NodeList} [parameters.scrollElements=[asscroll]] The selector string for the elements to scroll, or the elements themselves
 	* @param {number} [parameters.ease=0.075] The ease amount for the transform lerp
 	* @param {number} [parameters.touchEase=1] The ease amount for the transform lerp on touch devices
-	* @param {string} [parameters.touchScrollType=none] Set the scrolling method on touch devices. Other options are 'transform' and 'scrollTop'
+	* @param {string} [parameters.touchScrollType=none] Set the scrolling method on touch devices. Other options are 'transform' and 'scrollTop'. See the [Touch Devices](#touch-devices) section for more info
 	* @param {string} [parameters.scrollbarEl=.asscrollbar] The selector string for the custom scrollbar element
 	* @param {string} [parameters.scrollbarHandleEl=.asscrollbar__handle] The selector string for the custom scrollbar handle element
 	* @param {boolean} [parameters.customScrollbar=true] Toggle the custom scrollbar
@@ -28,7 +28,7 @@ class ASScroll {
 	*/
 	constructor({
 		containerElement = '.asscroll-container',
-		scrollElements = '[data-asscroll]',
+		scrollElements = '[asscroll]',
 		ease = 0.075,
 		touchEase = 1,
 		touchScrollType = 'none',

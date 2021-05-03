@@ -2805,6 +2805,7 @@ class Controller {
         this.setupSmoothScroll();
       } else if (this.options.touchScrollType === 'scrollTop') {
         document.documentElement.classList.add('asscroll-touch');
+        this.addTouchStyles();
         src_E.on('scroll', this.containerElement, e => {
           src_E.emit(Events.INTERNALSCROLL, {
             event: e
@@ -2822,6 +2823,7 @@ class Controller {
 
   setElements() {
     this.containerElement = typeof this.options.containerElement === 'string' ? document.querySelector(this.options.containerElement) : this.options.containerElement;
+    this.containerElement.setAttribute('asscroll-container', '');
 
     if (this.containerElement === null) {
       console.error('ASScroll: could not find container element');
@@ -2831,6 +2833,7 @@ class Controller {
     if (this.scrollElements.length) this.scrollElements = [...this.scrollElements];
     this.scrollElements = this.scrollElements.length ? this.scrollElements : [this.containerElement.firstElementChild];
     this.scrollElementsLength = this.scrollElements.length;
+    this.scrollElements.forEach(el => el.setAttribute('asscroll', ''));
   }
 
   setupSmoothScroll() {
@@ -2983,6 +2986,13 @@ class Controller {
     }
   }
 
+  addTouchStyles() {
+    const styles = ".asscroll-touch [asscroll-container] {position:absolute;top:0;left:0;right:0;bottom:-0.1px;overflow-y: auto;} .asscroll-touch [asscroll] {margin-bottom:0.1px;}";
+    const css = document.createElement('style');
+    if (css.styleSheet) css.styleSheet.cssText = styles;else css.appendChild(document.createTextNode(styles));
+    document.getElementsByTagName("head")[0].appendChild(css);
+  }
+
 }
 ;// CONCATENATED MODULE: ./src/index.js
 function src_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -3001,10 +3011,10 @@ class ASScroll {
   * @typicalname asscroll
   * @param {object} [parameters]
   * @param {string|HTMLElement} [parameters.containerElement=.asscroll-container] The selector string for the outer container element, or the element itself
-  * @param {string|HTMLElement|NodeList} [parameters.scrollElements=[data-asscroll]] The selector string for the elements to scroll, or the elements themselves
+  * @param {string|HTMLElement|NodeList} [parameters.scrollElements=[asscroll]] The selector string for the elements to scroll, or the elements themselves
   * @param {number} [parameters.ease=0.075] The ease amount for the transform lerp
   * @param {number} [parameters.touchEase=1] The ease amount for the transform lerp on touch devices
-  * @param {string} [parameters.touchScrollType=none] Set the scrolling method on touch devices. Other options are 'transform' and 'scrollTop'
+  * @param {string} [parameters.touchScrollType=none] Set the scrolling method on touch devices. Other options are 'transform' and 'scrollTop'. See the [Touch Devices](#touch-devices) section for more info
   * @param {string} [parameters.scrollbarEl=.asscrollbar] The selector string for the custom scrollbar element
   * @param {string} [parameters.scrollbarHandleEl=.asscrollbar__handle] The selector string for the custom scrollbar handle element
   * @param {boolean} [parameters.customScrollbar=true] Toggle the custom scrollbar
@@ -3017,7 +3027,7 @@ class ASScroll {
   */
   constructor({
     containerElement = '.asscroll-container',
-    scrollElements = '[data-asscroll]',
+    scrollElements = '[asscroll]',
     ease = 0.075,
     touchEase = 1,
     touchScrollType = 'none',
