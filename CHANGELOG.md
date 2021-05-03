@@ -12,10 +12,11 @@ _This release includes some breaking changes - see "Updated" below._
 - The container element and scroll element(s) can now be sent to ASScroll as `HTMLElement` / `NodeList` meaning you can pre-select rather than make ASScroll select them again via `document.querySelector()` ([#47](https://github.com/ashthornton/asscroll/issues/47))
 - Exposed `maxScroll`, `containerElement` and `scrollElements`
 - Added `scrollEnd` event which fires when the lerped scroll position reaches its target
+- Added example to show how ASScroll works with PJAX navigation
 
 ### Updated
-- `ASScroll.scrollPos` and `ASScroll.smoothScrollPos` have been renamed to `ASScroll.targetScrollPos` and `ASScroll.currentScrollPos` respectively. This is to better represent what these values mean
-- `ASScroll.targetScrollPos` and `ASScroll.currentScrollPos` now return positive values rather than the negative Y translate value used to transform the scroll element(s). This should make it more intuitive when using these values in your own code
+- `ASScroll.scrollPos` and `ASScroll.smoothScrollPos` have been renamed to `ASScroll.targetPos` and `ASScroll.currentPos` respectively. This is to better represent what these values mean
+- `ASScroll.targetPos` and `ASScroll.currentPos` now return positive values rather than the negative Y translate value used to transform the scroll element(s). This should make it more intuitive when using these values in your own code
 - `ASScroll.onRaf()` and `ASScroll.onResize()` have been renamed to `ASScroll.update()` and `ASScroll.resize()` respectively
 - `ASScroll.enable()` and `ASScroll.disable()` now accept an object as their parameter so you can pass only the options you need to
 - The `element` and `innerElement` options have been renamed to `containerElement` and `scrollElements` respectively
