@@ -29,7 +29,9 @@ _No animation features are included as there are other libraries that can be use
 Demos
 ================
 - [Zero Config Demo](https://codepen.io/ashthornton/pen/pobJRQX?editors=1010)
+- [Options Demo](https://codepen.io/ashthornton/pen/YzWXZqL?editors=1010)
 - [Using GSAP's ScrollTrigger with ASScroll](https://codepen.io/ashthornton/pen/PoZRwPW)
+- [Using PJAX Navigation (Highway) with ASScroll](https://codepen.io/ashthornton/project/editor/AypMLG)
 
 ### Sites using ASScroll
 - [Superlist](https://superlist.com/)
