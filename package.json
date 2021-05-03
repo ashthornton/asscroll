@@ -53,6 +53,6 @@
     "webpack-cli": "^4.6.0"
   },
   "dependencies": {
-    "@unseenco/e": "^1.7.0"
+    "@unseenco/e": "^1.8.2"
   }
 }

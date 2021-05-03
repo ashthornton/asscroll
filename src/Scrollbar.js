@@ -12,6 +12,19 @@ export default class Scrollbar {
 		this.addEvents()
 	}
 
+	transform() {
+		const y = -this.controller.targetScrollPos / -this.controller.maxScroll * (store.windowSize.h - this.handleHeight)
+		this.handle.style.transform = `translate3d(0, ${y}px, 0)`
+	}
+
+	show() {
+		this.el.classList.add('show')
+	}
+
+	hide() {
+		this.el.classList.remove('show')
+	}
+
 	addEvents() {
 		E.on('mousedown', this.handle, this.onMouseDown)
 		E.on('mousemove', window, this.onMouseMove)
@@ -27,19 +40,6 @@ export default class Scrollbar {
 		this.trueSize = store.windowSize.h / this.scale
 		this.handleHeight = Math.max(this.trueSize, 40)
 		this.handle.style.height = `${this.handleHeight}px`
-	}
-
-	transform() {
-		const y = -this.controller.targetScrollPos / -this.controller.maxScroll * (store.windowSize.h - this.handleHeight)
-		this.handle.style.transform = `translate3d(0, ${y}px, 0)`
-	}
-
-	show() {
-		this.el.classList.add('show')
-	}
-
-	hide() {
-		this.el.classList.remove('show')
 	}
 
 	onMouseMove = (e) => {
@@ -87,7 +87,6 @@ export default class Scrollbar {
 		}
 
 		const css = document.createElement('style')
-		css.type = 'text/css'
 
 		if (css.styleSheet) css.styleSheet.cssText = styles
 		else css.appendChild(document.createTextNode(styles))
