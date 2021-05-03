@@ -3255,7 +3255,7 @@ class ASScroll {
    */
 
 
-  get isHorizontalScroll() {
+  get isHorizontal() {
     return this.controller.horizontalScroll;
   }
 

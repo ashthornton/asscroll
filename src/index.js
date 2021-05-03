@@ -251,7 +251,7 @@ class ASScroll {
 	 * Returns whether or not ASScroll is in horizontal scroll mode
 	 * @return {boolean} The status of horizontal scroll
 	 */
-	get isHorizontalScroll() {
+	get isHorizontal() {
 		return this.controller.horizontalScroll
 	}
 }

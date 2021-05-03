@@ -102,7 +102,7 @@ Ash's Smooth Scroll 🍑
     * [.maxScroll](#ASScroll+maxScroll) ⇒ <code>number</code>
     * [.containerElement](#ASScroll+containerElement) ⇒ <code>HTMLElement</code>
     * [.scrollElements](#ASScroll+scrollElements) ⇒ <code>Array</code>
-    * [.isHorizontalScroll](#ASScroll+isHorizontalScroll) ⇒ <code>boolean</code>
+    * [.isHorizontal](#ASScroll+isHorizontal) ⇒ <code>boolean</code>
     * [.enable([parameters])](#ASScroll+enable)
     * [.disable(parameters)](#ASScroll+disable)
     * [.update()](#ASScroll+update)
@@ -174,9 +174,9 @@ Returns the outer element that ASScroll is attached to.
 Returns the the element(s) that ASScroll is scrolling.
 
 **Returns**: <code>Array</code> - An array of elements ASScroll is scrolling  
-<a name="ASScroll+isHorizontalScroll"></a>
+<a name="ASScroll+isHorizontal"></a>
 
-## asscroll.isHorizontalScroll ⇒ <code>boolean</code>
+## asscroll.isHorizontal ⇒ <code>boolean</code>
 Returns whether or not ASScroll is in horizontal scroll mode
 
 **Returns**: <code>boolean</code> - The status of horizontal scroll  

@@ -10,7 +10,7 @@ _This release includes some breaking changes - see "Updated" below._
 
 ### New
 - The container element and scroll element(s) can now be sent to ASScroll as `HTMLElement` / `NodeList` meaning you can pre-select rather than make ASScroll select them again via `document.querySelector()` ([#47](https://github.com/ashthornton/asscroll/issues/47))
-- Exposed `maxScroll`, `containerElement` and `scrollElements`
+- Exposed `maxScroll`, `containerElement`, `scrollElements` and `isHorizontal`
 - Added `scrollEnd` event which fires when the lerped scroll position reaches its target
 - Added example to show how ASScroll works with PJAX navigation
 
