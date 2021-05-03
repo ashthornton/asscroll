@@ -10,7 +10,7 @@ module.exports = {
 	},
 	output: {
 		path: path.resolve(__dirname, 'build'),
-		filename: 'asscroll.js',
+		filename: '[name].js',
 		library: {
 			name: 'ASScroll',
 			type: 'umd',
