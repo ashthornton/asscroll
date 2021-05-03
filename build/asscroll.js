@@ -2221,6 +2221,7 @@ var Scrollbar_Scrollbar = /*#__PURE__*/function () {
       if (!this.mouseDown) return;
       var totalHeight = Store_default.a.windowSize.h + (this.trueSize - this.handleHeight);
       this.smoothScroll.scrollPos = e.clientY / totalHeight * this.smoothScroll.maxScroll;
+      this.smoothScroll.clamp();
       this.smoothScroll.syncScroll = true;
       src_E.emit(Store_default.a.eventNames.COMBOSCROLL, this.smoothScroll.scrollPos);
     }
