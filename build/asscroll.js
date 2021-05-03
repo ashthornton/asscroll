@@ -3249,6 +3249,15 @@ class ASScroll {
   get scrollElements() {
     return this.controller.scrollElements;
   }
+  /**
+   * Returns whether or not ASScroll is in horizontal scroll mode
+   * @return {boolean} The status of horizontal scroll
+   */
+
+
+  get isHorizontalScroll() {
+    return this.controller.horizontalScroll;
+  }
 
 }
 
