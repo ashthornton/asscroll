@@ -18,6 +18,7 @@ _This release includes some breaking changes - see "Updated" below._
 - `ASScroll.targetScrollPos` and `ASScroll.currentScrollPos` now return positive values rather than the negative Y translate value used to transform the scroll element(s). This should make it more intuitive when using these values in your own code
 - `ASScroll.onRaf()` and `ASScroll.onResize()` have been renamed to `ASScroll.update()` and `ASScroll.resize()` respectively
 - `ASScroll.enable()` and `ASScroll.disable()` now accept an object as their parameter so you can pass only the options you need to
+- The `element` and `innerElement` options have been renamed to `containerElement` and `scrollElements` respectively
 - The `disableOnTouch` option has been renamed to `touchScrollType` - see [docs](https://github.com/ashthornton/asscroll#touch-devices) for more info
 
 ### Fixed

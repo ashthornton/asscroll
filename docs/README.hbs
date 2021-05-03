@@ -40,6 +40,18 @@ Demos
 - [Wray and Nephew](https://straightfromyard.co.uk/)
 - [Shape Studio](https://shapestudio.co.uk/)
 
+Table of contents
+=================
+<!--ts-->
+   * [Install](#install)
+   * [Zero Config Setup](#zero-config-setup)
+   * [API](#asscroll)
+   * [Custom Scrollbar](#custom-scrollbar)
+   * [External RAF Usage](#usage-with-external-requestanimationframe)
+   * [External Resize Usage](#usage-with-external-window-resize)
+   * [Touch Devices](#touch-devices)
+<!--te-->
+
 ---
 
 
