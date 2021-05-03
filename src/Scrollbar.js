@@ -46,6 +46,7 @@ export default class Scrollbar {
 		if (!this.mouseDown) return
 		const totalHeight = store.windowSize.h + (this.trueSize - this.handleHeight)
 		this.controller.targetScrollPos = (e.clientY / totalHeight * this.controller.maxScroll)
+		this.controller.clamp()
 		this.controller.syncScroll = true
 		E.emit(Events.EXTERNALSCROLL, this.controller.targetScrollPos)
 	}
