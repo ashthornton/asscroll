@@ -2,7 +2,6 @@ Changelog
 ===
 
 ## 2.0.0 - 03/05/2021
----
 
 - Removed support for IE11 and updated targeted browser compatibility, resulting in a package size reduction of over 30%
 
