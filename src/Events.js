@@ -48,8 +48,8 @@ export default class Events {
 	}
 
 	onResize(windowWidth, windowHeight) {
-		store.windowSize.w = windowWidth || window.innerWidth
-		store.windowSize.h = windowHeight || window.innerHeight
+		store.window.w = windowWidth || window.innerWidth
+		store.window.h = windowHeight || window.innerHeight
 		E.emit(Events.RESIZE)
 	}
 

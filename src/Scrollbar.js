@@ -8,12 +8,21 @@ export default class Scrollbar {
 		this.addHTML()
 		this.el = document.querySelector(this.controller.options.scrollbarEl)
 		this.handle = document.querySelector(this.controller.options.scrollbarHandleEl)
+		this.position = 0
+		this.mousePos = 0
+		this.prevMousePos = 0
 		this.addStyles()
 		this.addEvents()
 	}
 
 	transform() {
-		const y = -this.controller.targetScrollPos / -this.controller.maxScroll * (store.windowSize.h - this.handleHeight)
+		let y
+		if (this.mouseDown) {
+			y = this.position
+		} else {
+			y = -this.controller.targetScrollPos / -this.controller.maxScroll * (store.window.h - this.handleHeight)
+			this.position = y
+		}
 		this.handle.style.transform = `translate3d(0, ${y}px, 0)`
 	}
 
@@ -32,36 +41,42 @@ export default class Scrollbar {
 	}
 
 	onResize() {
-		this.scale = (-this.controller.maxScroll + store.windowSize.h) / store.windowSize.h
+		this.scale = (-this.controller.maxScroll + store.window.h) / store.window.h
 		if (this.scale <= 1) {
 			this.handle.style.height = 0
 			return
 		}
-		this.trueSize = store.windowSize.h / this.scale
+		this.trueSize = store.window.h / this.scale
 		this.handleHeight = Math.max(this.trueSize, 40)
 		this.handle.style.height = `${this.handleHeight}px`
+		this.maxY = store.window.h - this.handleHeight
 	}
 
 	onMouseMove = (e) => {
 		if (!this.mouseDown) return
-		const totalHeight = store.windowSize.h + (this.trueSize - this.handleHeight)
-		this.controller.targetScrollPos = (e.clientY / totalHeight * this.controller.maxScroll)
+
+		this.mousePos = e.clientY
+		this.position -= this.prevMousePos - this.mousePos
+		this.position = Math.min(Math.max(this.position, 0), this.maxY)
+		this.prevMousePos = this.mousePos
+
+		this.controller.targetScrollPos = (this.position / this.maxY * this.controller.maxScroll)
 		this.controller.clamp()
 		this.controller.syncScroll = true
+		this.transform()
 		E.emit(Events.EXTERNALSCROLL, this.controller.targetScrollPos)
 	}
 
-	onMouseDown = () => {
+	onMouseDown = (e) => {
+		this.mousePos = this.prevMousePos = e.clientY
 		this.mouseDown = true
 		store.body.style.userSelect = 'none'
-		store.body.style['-ms-user-select'] = 'none'
 		this.el.classList.add('active')
 	}
 
 	onMouseUp = () => {
 		this.mouseDown = false
 		store.body.style.removeProperty('user-select')
-		store.body.style.removeProperty('-ms-user-select')
 		this.el.classList.remove('active')
 	}
 
@@ -83,7 +98,7 @@ export default class Scrollbar {
 		}
 
 		if (this.controller.options.scrollbarStyles) {
-			styles += `${this.controller.options.scrollbarEl} {position: fixed;top: 0;right: 0;width: 20px;height: 100%;z-index: 900;}.is-touch ${this.controller.options.scrollbarEl} {display: none;}${this.controller.options.scrollbarEl} > div {padding: 6px 0;width: 10px;height: 0;margin: 0 auto;visibility: hidden;}${this.controller.options.scrollbarEl} > div > div {width: 100%;height: 100%;border-radius: 10px;opacity: 0.3;background-color: #000000;}${this.controller.options.scrollbarEl} > div > div:hover {opacity: 0.9;}${this.controller.options.scrollbarEl}:hover > div, ${this.controller.options.scrollbarEl}.show > div, ${this.controller.options.scrollbarEl}.active > div {visibility: visible;}${this.controller.options.scrollbarEl}.active > div > div {opacity: 0.9;}`
+			styles += `${this.controller.options.scrollbarEl} {position:fixed;top:0;right:0;width:20px;height:100%;z-index:900;}.is-touch ${this.controller.options.scrollbarEl} {display:none;}${this.controller.options.scrollbarEl} > div {padding:6px 0;width:10px;height:0;margin:0 auto;visibility:hidden;}${this.controller.options.scrollbarEl} > div > div {width:100%;height:100%;border-radius:10px;opacity:0.3;background-color:#000;}${this.controller.options.scrollbarEl} > div > div:hover {opacity:0.9;}${this.controller.options.scrollbarEl}:hover > div, ${this.controller.options.scrollbarEl}.show > div, ${this.controller.options.scrollbarEl}.active > div {visibility:visible;}${this.controller.options.scrollbarEl}.active > div > div {opacity:0.9;}`
 		}
 
 		const css = document.createElement('style')
@@ -95,7 +110,7 @@ export default class Scrollbar {
 
 	destroy() {
 		E.off('mousedown', this.handle, this.onMouseDown)
-		window.removeEventListener('mousemove', this.onMouseMove)
-		window.removeEventListener('mouseup', this.onMouseUp)
+		E.off('mousemove', window, this.onMouseMove)
+		E.off('mouseup', window, this.onMouseUp)
 	}
 }

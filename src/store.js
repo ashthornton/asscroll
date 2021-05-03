@@ -1,7 +1,7 @@
 const store = {
 	html: document.documentElement,
 	body: document.body,
-	windowSize: {
+	window: {
 		w: window.innerWidth,
 		h: window.innerHeight
 	}

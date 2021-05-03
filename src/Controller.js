@@ -105,6 +105,7 @@ export default class Controller {
 		}
 
 		this.clamp()
+		this.options.customScrollbar && this.scrollbar.transform()
 		E.emit(Events.EXTERNALSCROLL, -this.targetScrollPos)
 	}
 
@@ -136,8 +137,6 @@ export default class Controller {
 		const x = this.horizontalScroll ? this.currentScrollPos : 0
 		const y = this.horizontalScroll ? 0 : this.currentScrollPos
 		this.applyTransform(x, y)
-
-		this.options.customScrollbar && this.scrollbar.transform()
 
 		E.emit(Events.EXTERNALRAF, { targetScrollPos: -this.targetScrollPos, currentScrollPos: -this.currentScrollPos })
 	}
@@ -237,7 +236,7 @@ export default class Controller {
 			this.scrollLength = this.horizontalScroll ? this.scrollElements[0].scrollWidth : this.scrollElements[0].scrollHeight
 		}
 
-		const windowSize = this.horizontalScroll ? store.windowSize.w : store.windowSize.h
+		const windowSize = this.horizontalScroll ? store.window.w : store.window.h
 		this.maxScroll = this.scrollLength > windowSize ? -(this.scrollLength - windowSize) : 0
 		this.clamp()
 		if (!this.firstResize) {
