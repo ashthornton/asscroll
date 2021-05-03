@@ -120,7 +120,7 @@ Creates an ASScroll instance
 | [parameters.blockScrollClass] | <code>string</code> | <code>&quot;.asscroll-block&quot;</code> | The class to add to elements that should block ASScroll when hovered |
 
 **Example**  
-```jsconst asscroll = new ASScroll({containerElement: '.page-container',scrollElements: '.my-page'})```
+```jsconst asscroll = new ASScroll({	containerElement: '.page-container',	scrollElements: '.my-page'})```
 <a name="ASScroll+targetScrollPos"></a>
 
 ## asscroll.targetScrollPos ⇒ <code>number</code>
@@ -320,3 +320,11 @@ window.addEventListener('resize', () => {
 
 asscroll.enable()
 ```
+
+Touch Devices
+===
+
+ASScroll provides three options for handling itself on touch devices:
+- Disabled completely, falling back to native scroll whilst still providing scroll position properties
+- Continue to transform the scroll elements with an ease setting specifically to touch devices
+- Utilise the `scrollTop` value of the container element when used in conjunction with CSS that prevents resizes and browser UI from toggling

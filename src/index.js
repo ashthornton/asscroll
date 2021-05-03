@@ -12,8 +12,8 @@ class ASScroll {
 	* @example
 	* ```js
 	* const asscroll = new ASScroll({
-	* containerElement: '.page-container',
-	* scrollElements: '.my-page'
+	* 	containerElement: '.page-container',
+	* 	scrollElements: '.my-page'
 	* })
 	* ```
 	*
