@@ -121,15 +121,15 @@ export default class Controller {
 
 		if (Math.abs(this.targetPos - this.currentPos) < 0.5) {
 			this.currentPos = this.targetPos
-			if (this.syncScroll) {
-				this.syncScroll = false
-				window.scrollTo(0, -this.targetPos)
-				E.emit(Events.SCROLLEND, -this.targetPos)
-			}
-			if (this.scrolling) {
+			if (this.scrolling && !this.syncScroll) {
 				this.scrolling = false
 				this.options.customScrollbar && this.scrollbar.hide()
 				this.toggleIframes(true)
+				E.emit(Events.SCROLLEND, -this.targetPos)
+			}
+			if (this.syncScroll) {
+				window.scrollTo(0, -this.targetPos)
+				this.syncScroll = false
 			}
 		} else {
 			this.currentPos += (this.targetPos - this.currentPos) * this.ease * this.delta

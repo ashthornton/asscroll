@@ -2,6 +2,7 @@
 
 <p align="center">
     <a href="https://www.npmjs.com/package/@ashthornton/asscroll"><img src="https://img.shields.io/npm/v/@ashthornton/asscroll?color=%23F7894A" alt="NPM Version"></a>
+    <img alt="npm bundle size" src="https://img.shields.io/bundlephobia/minzip/@ashthornton/asscroll?color=%23F7894A">
     <a href="https://www.jsdelivr.com/package/npm/@ashthornton/asscroll"><img alt="jsDelivr hits (npm)" src="https://img.shields.io/jsdelivr/npm/hm/@ashthornton/asscroll?color=%23F7894A"></a>
 </p>
 
