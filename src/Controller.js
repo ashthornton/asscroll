@@ -6,17 +6,6 @@ import Events from './Events'
 export default class Controller {
 	constructor(options = {}) {
 		this.options = options
-
-		this.containerElement = typeof this.options.containerElement === 'string' ? document.querySelector(this.options.containerElement) : this.options.containerElement
-		if (this.containerElement === null) {
-			console.error('ASScroll: could not find container element')
-		}
-
-		this.scrollElements = typeof this.options.scrollElements === 'string' ? document.querySelectorAll(this.options.scrollElements) : this.options.scrollElements
-		if (this.scrollElements.length) this.scrollElements = [...this.scrollElements]
-		this.scrollElements = this.scrollElements.length ? this.scrollElements : [this.containerElement.firstElementChild]
-		this.scrollElementsLength = this.scrollElements.length
-
 		this.targetScrollPos = this.currentScrollPos = this.prevScrollPos = this.maxScroll = 0
 		this.enabled = false
 		this.render = false
@@ -32,12 +21,12 @@ export default class Controller {
 		this.delta = 1
 		this.time = this.startTime = performance.now()
 
+		this.setElements()
+
 		if (store.isTouch) {
 			this.options.customScrollbar = false
 
-			if (this.options.touchScrollType === 'none') {
-				console.log('no touch scroll')
-			} else if (this.options.touchScrollType === 'transform') {
+			if (this.options.touchScrollType === 'transform') {
 				this.setupSmoothScroll()
 			} else if (this.options.touchScrollType === 'scrollTop') {
 				document.documentElement.classList.add('asscroll-touch')
@@ -48,6 +37,18 @@ export default class Controller {
 		}
 
 		this.addEvents()
+	}
+
+	setElements() {
+		this.containerElement = typeof this.options.containerElement === 'string' ? document.querySelector(this.options.containerElement) : this.options.containerElement
+		if (this.containerElement === null) {
+			console.error('ASScroll: could not find container element')
+		}
+
+		this.scrollElements = typeof this.options.scrollElements === 'string' ? document.querySelectorAll(this.options.scrollElements) : this.options.scrollElements
+		if (this.scrollElements.length) this.scrollElements = [...this.scrollElements]
+		this.scrollElements = this.scrollElements.length ? this.scrollElements : [this.containerElement.firstElementChild]
+		this.scrollElementsLength = this.scrollElements.length
 	}
 
 	setupSmoothScroll() {

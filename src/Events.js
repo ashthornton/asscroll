@@ -47,7 +47,7 @@ export default class Events {
 		E.on('scroll', window, e => { E.emit(Events.INTERNALSCROLL, { event: e }) }, { passive: true })
 	}
 
-	onResize({ width, height }) {
+	onResize({ width, height } = {}) {
 		store.window.w = width || window.innerWidth
 		store.window.h = height || window.innerHeight
 		E.emit(Events.RESIZE)
