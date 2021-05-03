@@ -20,7 +20,7 @@ export default class Scrollbar {
 		if (this.mouseDown) {
 			y = this.position
 		} else {
-			y = -this.controller.targetScrollPos / -this.controller.maxScroll * (store.window.h - this.handleHeight)
+			y = -this.controller.targetPos / -this.controller.maxScroll * (store.window.h - this.handleHeight)
 			this.position = y
 		}
 		this.handle.style.transform = `translate3d(0, ${y}px, 0)`
@@ -60,11 +60,11 @@ export default class Scrollbar {
 		this.position = Math.min(Math.max(this.position, 0), this.maxY)
 		this.prevMousePos = this.mousePos
 
-		this.controller.targetScrollPos = (this.position / this.maxY * this.controller.maxScroll)
+		this.controller.targetPos = (this.position / this.maxY * this.controller.maxScroll)
 		this.controller.clamp()
 		this.controller.syncScroll = true
 		this.transform()
-		E.emit(Events.EXTERNALSCROLL, -this.controller.targetScrollPos)
+		E.emit(Events.EXTERNALSCROLL, -this.controller.targetPos)
 	}
 
 	onMouseDown = (e) => {

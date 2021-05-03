@@ -96,8 +96,8 @@ Ash's Smooth Scroll 🍑
 
 * [ASScroll](#ASScroll)
     * [new ASScroll([parameters])](#new_ASScroll_new)
-    * [.targetScrollPos](#ASScroll+targetScrollPos) ⇒ <code>number</code>
-    * [.currentScrollPos](#ASScroll+currentScrollPos) ⇒ <code>number</code>
+    * [.targetPos](#ASScroll+targetPos) ⇒ <code>number</code>
+    * [.currentPos](#ASScroll+currentPos) ⇒ <code>number</code>
     * [.maxScroll](#ASScroll+maxScroll) ⇒ <code>number</code>
     * [.containerElement](#ASScroll+containerElement) ⇒ <code>HTMLElement</code>
     * [.scrollElements](#ASScroll+scrollElements) ⇒ <code>Array</code>
@@ -107,7 +107,7 @@ Ash's Smooth Scroll 🍑
     * [.resize([parameters])](#ASScroll+resize)
     * [.on(eventName, callback)](#ASScroll+on)
     * [.off(eventName, callback)](#ASScroll+off)
-    * [.scrollTo(targetScrollPos, [emitEvent])](#ASScroll+scrollTo)
+    * [.scrollTo(targetPos, [emitEvent])](#ASScroll+scrollTo)
 
 <a name="new_ASScroll_new"></a>
 
@@ -133,15 +133,15 @@ Creates an ASScroll instance
 | [parameters.limitLerpRate] | <code>boolean</code> | <code>true</code> | Match lerp speed on >60Hz displays to that of a 60Hz display |
 | [parameters.blockScrollClass] | <code>string</code> | <code>&quot;.asscroll-block&quot;</code> | The class to add to elements that should block ASScroll when hovered |
 
-<a name="ASScroll+targetScrollPos"></a>
+<a name="ASScroll+targetPos"></a>
 
-## asscroll.targetScrollPos ⇒ <code>number</code>
+## asscroll.targetPos ⇒ <code>number</code>
 Returns the target scroll position.
 
 **Returns**: <code>number</code> - Target scroll position  
-<a name="ASScroll+currentScrollPos"></a>
+<a name="ASScroll+currentPos"></a>
 
-## asscroll.currentScrollPos ⇒ <code>number</code>
+## asscroll.currentPos ⇒ <code>number</code>
 Gets or sets the current scroll position.
 
 **Returns**: <code>number</code> - Current scroll position  
@@ -152,7 +152,7 @@ Gets or sets the current scroll position.
 
 **Example** *(Sets the scroll position to 200, bypassing any lerps)*  
 ```js
-asscroll.currentScrollPos = 200
+asscroll.currentPos = 200
 ```
 <a name="ASScroll+maxScroll"></a>
 
@@ -205,7 +205,7 @@ Disable ASScroll.
 | parameters | <code>object</code> |  |  |
 | [parameters.inputOnly] | <code>boolean</code> | <code>false</code> | Only disable the ability to manually scroll (still allow transforms) |
 
-**Example** *(Disables the ability to manually scroll whilst still allowing position updates to be made via asscroll.currentScrollPos, for example)*  
+**Example** *(Disables the ability to manually scroll whilst still allowing position updates to be made via asscroll.currentPos, for example)*  
 ```js
 asscroll.disable({ inputOnly: true })
 ```
@@ -243,7 +243,7 @@ asscroll.on('scroll', scrollPos => console.log(scrollPos))
 ```
 **Example** *(Returns the target scroll position and current scroll position during the internal update loop)*  
 ```js
-asscroll.on('update', ({ targetScrollPos, currentScrollPos }) => console.log(targetScrollPos, currentScrollPos))
+asscroll.on('update', ({ targetPos, currentPos }) => console.log(targetPos, currentPos))
 ```
 **Example** *(Fires when the lerped scroll position has reached the target position)*  
 ```js
@@ -262,13 +262,13 @@ Remove an event listener.
 
 <a name="ASScroll+scrollTo"></a>
 
-## asscroll.scrollTo(targetScrollPos, [emitEvent])
+## asscroll.scrollTo(targetPos, [emitEvent])
 Scroll to a given position on the page.
 
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| targetScrollPos | <code>number</code> |  | Scroll position |
+| targetPos | <code>number</code> |  | Target scroll position |
 | [emitEvent] | <code>boolean</code> | <code>true</code> | Whether to emit the external scroll events or not |
 
 

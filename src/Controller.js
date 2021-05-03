@@ -6,7 +6,7 @@ import Events from './Events'
 export default class Controller {
 	constructor(options = {}) {
 		this.options = options
-		this.targetScrollPos = this.currentScrollPos = this.prevScrollPos = this.maxScroll = 0
+		this.targetPos = this.currentPos = this.prevScrollPos = this.maxScroll = 0
 		this.enabled = false
 		this.render = false
 		this.scrolling = false
@@ -87,7 +87,7 @@ export default class Controller {
 			event.preventDefault()
 
 			this.syncScroll = true
-			this.targetScrollPos += event.deltaY * -1
+			this.targetPos += event.deltaY * -1
 		} else {
 			if (this.preventResizeScroll) {
 				this.preventResizeScroll = false
@@ -95,19 +95,19 @@ export default class Controller {
 			}
 
 			if (store.isTouch && this.options.touchScrollType === 'scrollTop') {
-				this.targetScrollPos = this.horizontalScroll ? -this.containerElement.scrollLeft : -this.containerElement.scrollTop
+				this.targetPos = this.horizontalScroll ? -this.containerElement.scrollLeft : -this.containerElement.scrollTop
 			} else {
-				this.targetScrollPos = -window.scrollY
+				this.targetPos = -window.scrollY
 			}
 
 			if (store.isTouch && this.options.touchScrollType !== 'transform') {
-				this.currentScrollPos = this.targetScrollPos
+				this.currentPos = this.targetPos
 			}
 		}
 
 		this.clamp()
 		this.options.customScrollbar && this.scrollbar.transform()
-		E.emit(Events.EXTERNALSCROLL, -this.targetScrollPos)
+		E.emit(Events.EXTERNALSCROLL, -this.targetPos)
 	}
 
 	onRAF = () => {
@@ -119,12 +119,12 @@ export default class Controller {
 
 		if (!this.render) return
 
-		if (Math.abs(this.targetScrollPos - this.currentScrollPos) < 0.5) {
-			this.currentScrollPos = this.targetScrollPos
+		if (Math.abs(this.targetPos - this.currentPos) < 0.5) {
+			this.currentPos = this.targetPos
 			if (this.syncScroll) {
 				this.syncScroll = false
-				window.scrollTo(0, -this.targetScrollPos)
-				E.emit(Events.SCROLLEND, -this.targetScrollPos)
+				window.scrollTo(0, -this.targetPos)
+				E.emit(Events.SCROLLEND, -this.targetPos)
 			}
 			if (this.scrolling) {
 				this.scrolling = false
@@ -132,14 +132,14 @@ export default class Controller {
 				this.toggleIframes(true)
 			}
 		} else {
-			this.currentScrollPos += (this.targetScrollPos - this.currentScrollPos) * this.ease * this.delta
+			this.currentPos += (this.targetPos - this.currentPos) * this.ease * this.delta
 		}
 
-		const x = this.horizontalScroll ? this.currentScrollPos : 0
-		const y = this.horizontalScroll ? 0 : this.currentScrollPos
+		const x = this.horizontalScroll ? this.currentPos : 0
+		const y = this.horizontalScroll ? 0 : this.currentPos
 		this.applyTransform(x, y)
 
-		E.emit(Events.EXTERNALRAF, { targetScrollPos: -this.targetScrollPos, currentScrollPos: -this.currentScrollPos })
+		E.emit(Events.EXTERNALRAF, { targetPos: -this.targetPos, currentPos: -this.currentPos })
 	}
 
 	applyTransform(x, y) {
@@ -172,13 +172,13 @@ export default class Controller {
 			store.body.style.removeProperty('height')
 			this.maxScroll = -this.containerElement.scrollHeight
 			if (reset) {
-				this.targetScrollPos = this.currentScrollPos = 0
+				this.targetPos = this.currentPos = 0
 				this.scrollTo(0, false)
 			}
 		} else {
 			this.firstResize = true
 			if (reset) {
-				this.targetScrollPos = this.currentScrollPos = 0
+				this.targetPos = this.currentPos = 0
 				this.applyTransform(0, 0)
 			}
 			this.onResize()
@@ -203,26 +203,26 @@ export default class Controller {
 		E.off(Events.WHEEL, this.onScroll)
 		E.off(Events.SCROLL, this.onScroll)
 
-		this.prevScrollPos = this.targetScrollPos
+		this.prevScrollPos = this.targetPos
 		store.body.style.height = '0px'
 	}
 
 	clamp() {
-		this.targetScrollPos = Math.max(Math.min(this.targetScrollPos, 0), this.maxScroll)
+		this.targetPos = Math.max(Math.min(this.targetPos, 0), this.maxScroll)
 	}
 
 	scrollTo(y, emitEvent = true) {
-		this.targetScrollPos = y
+		this.targetPos = y
 		if (store.isTouch && this.options.touchScrollType !== 'transform') {
 			if (this.horizontalScroll) {
-				this.containerElement.scrollTo(-this.targetScrollPos, 0)
+				this.containerElement.scrollTo(-this.targetPos, 0)
 			} else {
-				this.containerElement.scrollTo(0, -this.targetScrollPos)
+				this.containerElement.scrollTo(0, -this.targetPos)
 			}
 		}
 		this.clamp()
 		this.syncScroll = true
-		if (emitEvent) E.emit(Events.EXTERNALSCROLL, -this.targetScrollPos)
+		if (emitEvent) E.emit(Events.EXTERNALSCROLL, -this.targetPos)
 	}
 
 	onResize = () => {
@@ -232,7 +232,7 @@ export default class Controller {
 			const marginOffset = parseFloat(this.horizontalScroll ? compStyle.marginRight : compStyle.marginBottom)
 			const bcr = lastTarget.getBoundingClientRect()
 			const endPosition = this.horizontalScroll ? bcr.right : bcr.bottom
-			this.scrollLength = endPosition + marginOffset - this.currentScrollPos
+			this.scrollLength = endPosition + marginOffset - this.currentPos
 		} else {
 			this.scrollLength = this.horizontalScroll ? this.scrollElements[0].scrollWidth : this.scrollElements[0].scrollHeight
 		}
@@ -260,7 +260,7 @@ export default class Controller {
 
 	toggleFixedContainer = () => {
 		this.containerElement.style.position = 'static'
-		const scrollPos = this.currentScrollPos
+		const scrollPos = this.currentPos
 		this.applyTransform(0, 0)
 		requestAnimationFrame(() => {
 			this.containerElement.style.position = 'fixed'
@@ -282,12 +282,12 @@ export default class Controller {
 
 		if (!store.isTouch) {
 			E.on('mouseleave', document, () => {
-				window.scrollTo(0, -this.targetScrollPos)
+				window.scrollTo(0, -this.targetPos)
 			})
 
 			E.on('keydown', window, e => {
 				if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'PageUp' || e.key === 'PageDown' || e.key === 'Home' || e.key === 'End' || e.key === 'Tab') {
-					window.scrollTo(0, -this.targetScrollPos)
+					window.scrollTo(0, -this.targetPos)
 				}
 				if (e.key === 'Tab') {
 					this.toggleFixedContainer()

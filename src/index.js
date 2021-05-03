@@ -88,7 +88,7 @@ class ASScroll {
 	/**
 	* Disable ASScroll.
 	*
-	* @example <caption>Disables the ability to manually scroll whilst still allowing position updates to be made via asscroll.currentScrollPos, for example</caption>
+	* @example <caption>Disables the ability to manually scroll whilst still allowing position updates to be made via asscroll.currentPos, for example</caption>
 	* asscroll.disable({ inputOnly: true })
 	*
 	* @param {object} parameters
@@ -127,7 +127,7 @@ class ASScroll {
 	* asscroll.on('scroll', scrollPos => console.log(scrollPos))
 	*
 	* @example <caption>Returns the target scroll position and current scroll position during the internal update loop</caption>
-	* asscroll.on('update', ({ targetScrollPos, currentScrollPos }) => console.log(targetScrollPos, currentScrollPos))
+	* asscroll.on('update', ({ targetPos, currentPos }) => console.log(targetPos, currentPos))
 	*
 	* @example <caption>Fires when the lerped scroll position has reached the target position</caption>
 	* asscroll.on('scrollEnd', scrollPos => console.log(scrollPos))
@@ -190,11 +190,11 @@ class ASScroll {
 
 	/**
 	* Scroll to a given position on the page.
-	* @param {number} targetScrollPos Scroll position
+	* @param {number} targetPos Target scroll position
 	* @param {boolean} [emitEvent=true] Whether to emit the external scroll events or not
 	*/
-	scrollTo(targetScrollPos, emitEvent = true) {
-		this.controller.scrollTo(-targetScrollPos, emitEvent)
+	scrollTo(targetPos, emitEvent = true) {
+		this.controller.scrollTo(-targetPos, emitEvent)
 	}
 
 	/**
@@ -202,25 +202,25 @@ class ASScroll {
 	*
 	* @return {number} Target scroll position
 	*/
-	get targetScrollPos() {
-		return -this.controller.targetScrollPos
+	get targetPos() {
+		return -this.controller.targetPos
 	}
 
 	/**
 	* Gets or sets the current scroll position.
 	*
 	* @example <caption>Sets the scroll position to 200, bypassing any lerps</caption>
-	* asscroll.currentScrollPos = 200
+	* asscroll.currentPos = 200
 	*
 	* @param {number} scrollPos The desired scroll position
 	* @return {number} Current scroll position
 	*/
-	get currentScrollPos() {
-		return -this.controller.currentScrollPos
+	get currentPos() {
+		return -this.controller.currentPos
 	}
 
-	set currentScrollPos(scrollPos) {
-		this.controller.targetScrollPos = this.controller.currentScrollPos = -scrollPos
+	set currentPos(scrollPos) {
+		this.controller.targetPos = this.controller.currentPos = -scrollPos
 	}
 
 	/**
