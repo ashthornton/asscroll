@@ -131,8 +131,6 @@ Creates an ASScroll instance
 | [parameters.limitLerpRate] | <code>boolean</code> | <code>true</code> | Match lerp speed on >60Hz displays to that of a 60Hz display |
 | [parameters.blockScrollClass] | <code>string</code> | <code>&quot;.asscroll-block&quot;</code> | The class to add to elements that should block ASScroll when hovered |
 
-**Example**  
-```jsconst asscroll = new ASScroll({	containerElement: '.page-container',	scrollElements: '.my-page'})```
 <a name="ASScroll+targetScrollPos"></a>
 
 ## asscroll.targetScrollPos ⇒ <code>number</code>

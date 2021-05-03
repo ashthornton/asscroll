@@ -9,14 +9,6 @@ class ASScroll {
 	/**
 	* Creates an ASScroll instance
 	*
-	* @example
-	* ```js
-	* const asscroll = new ASScroll({
-	* 	containerElement: '.page-container',
-	* 	scrollElements: '.my-page'
-	* })
-	* ```
-	*
 	* @typicalname asscroll
 	* @param {object} [parameters]
 	* @param {string|HTMLElement} [parameters.containerElement=.asscroll-container] The selector string for the outer container element, or the element itself
