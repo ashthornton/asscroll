@@ -91,7 +91,7 @@ class ASScroll {
 	* @example <caption>Disables the ability to manually scroll whilst still allowing position updates to be made via asscroll.currentPos, for example</caption>
 	* asscroll.disable({ inputOnly: true })
 	*
-	* @param {object} parameters
+	* @param {object} [parameters]
 	* @param {boolean} [parameters.inputOnly=false] Only disable the ability to manually scroll (still allow transforms)
 	*/
 	disable(parameters) {

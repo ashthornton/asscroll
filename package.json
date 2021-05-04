@@ -2,18 +2,21 @@
   "name": "@ashthornton/asscroll",
   "version": "2.0.0-beta.8",
   "description": "Ash's Smooth Scroll",
-  "main": "src/index.js",
+  "main": "build/asscroll.js",
   "unpkg": "build/asscroll.min.js",
+  "types": "types/index.d.ts",
   "files": [
     "src",
     "css",
+    "types",
     "build"
   ],
   "scripts": {
     "start": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress",
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress",
     "fix": "eslint --fix \"src/**\"",
-    "docs": "jsdoc2md src/index.js > README.md --template docs/README.hbs --heading-depth 1 --partial docs/scope.hbs"
+    "docs": "jsdoc2md src/index.js > README.md --template docs/README.hbs --heading-depth 1 --partial docs/scope.hbs",
+    "types": "typescript src/index.js --allowJs --declaration --emitDeclarationOnly --outDir types --lib es2015"
   },
   "repository": {
     "type": "git",
