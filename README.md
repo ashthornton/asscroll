@@ -103,13 +103,17 @@ Ash's Smooth Scroll 🍑
     * [.containerElement](#ASScroll+containerElement) ⇒ <code>HTMLElement</code>
     * [.scrollElements](#ASScroll+scrollElements) ⇒ <code>Array</code>
     * [.isHorizontal](#ASScroll+isHorizontal) ⇒ <code>boolean</code>
+    * ~~[.scrollPos](#ASScroll+scrollPos)~~
+    * ~~[.smoothScrollPos](#ASScroll+smoothScrollPos)~~
     * [.enable([parameters])](#ASScroll+enable)
-    * [.disable(parameters)](#ASScroll+disable)
+    * [.disable([parameters])](#ASScroll+disable)
     * [.update()](#ASScroll+update)
     * [.resize([parameters])](#ASScroll+resize)
     * [.on(eventName, callback)](#ASScroll+on)
     * [.off(eventName, callback)](#ASScroll+off)
     * [.scrollTo(targetPos, [emitEvent])](#ASScroll+scrollTo)
+    * ~~[.onRaf()](#ASScroll+onRaf)~~
+    * ~~[.onResize()](#ASScroll+onResize)~~
 
 <a name="new_ASScroll_new"></a>
 
@@ -180,6 +184,16 @@ Returns the the element(s) that ASScroll is scrolling.
 Returns whether or not ASScroll is in horizontal scroll mode
 
 **Returns**: <code>boolean</code> - The status of horizontal scroll  
+<a name="ASScroll+scrollPos"></a>
+
+## ~~asscroll.scrollPos~~
+***Deprecated***
+
+<a name="ASScroll+smoothScrollPos"></a>
+
+## ~~asscroll.smoothScrollPos~~
+***Deprecated***
+
 <a name="ASScroll+enable"></a>
 
 ## asscroll.enable([parameters])
@@ -204,13 +218,13 @@ asscroll.enable({ restore: true })
 ```
 <a name="ASScroll+disable"></a>
 
-## asscroll.disable(parameters)
+## asscroll.disable([parameters])
 Disable ASScroll.
 
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| parameters | <code>object</code> |  |  |
+| [parameters] | <code>object</code> |  |  |
 | [parameters.inputOnly] | <code>boolean</code> | <code>false</code> | Only disable the ability to manually scroll (still allow transforms) |
 
 **Example** *(Disables the ability to manually scroll whilst still allowing position updates to be made via asscroll.currentPos, for example)*  
@@ -278,6 +292,16 @@ Scroll to a given position on the page.
 | --- | --- | --- | --- |
 | targetPos | <code>number</code> |  | Target scroll position |
 | [emitEvent] | <code>boolean</code> | <code>true</code> | Whether to emit the external scroll events or not |
+
+<a name="ASScroll+onRaf"></a>
+
+## ~~asscroll.onRaf()~~
+***Deprecated***
+
+<a name="ASScroll+onResize"></a>
+
+## ~~asscroll.onResize()~~
+***Deprecated***
 
 
 ---
