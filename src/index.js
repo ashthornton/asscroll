@@ -257,21 +257,25 @@ class ASScroll {
 
 	/**
 	 * @deprecated since 2.0.0 - use targetPos instead
+	 * @see {@link ASScroll#targetPos}
 	 */
 	get scrollPos() {}
 
 	/**
 	 * @deprecated since 2.0.0 - use currentPos instead
+	 * @see {@link ASScroll#currentPos}
 	 */
 	get smoothScrollPos() {}
 
 	/**
 	 * @deprecated since 2.0.0 - use update() instead
+	 * @see {@link ASScroll#update}
 	 */
 	onRaf() {}
 
 	/**
 	 * @deprecated since 2.0.0 - use resize() instead
+	 * @see {@link ASScroll#resize}
 	 */
 	onResize() {}
 }

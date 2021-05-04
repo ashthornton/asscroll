@@ -189,11 +189,13 @@ Returns whether or not ASScroll is in horizontal scroll mode
 ## ~~asscroll.scrollPos~~
 ***Deprecated***
 
+**See**: [targetPos](#ASScroll+targetPos)  
 <a name="ASScroll+smoothScrollPos"></a>
 
 ## ~~asscroll.smoothScrollPos~~
 ***Deprecated***
 
+**See**: [currentPos](#ASScroll+currentPos)  
 <a name="ASScroll+enable"></a>
 
 ## asscroll.enable([parameters])
@@ -298,11 +300,13 @@ Scroll to a given position on the page.
 ## ~~asscroll.onRaf()~~
 ***Deprecated***
 
+**See**: [update](#ASScroll+update)  
 <a name="ASScroll+onResize"></a>
 
 ## ~~asscroll.onResize()~~
 ***Deprecated***
 
+**See**: [resize](#ASScroll+resize)  
 
 ---
 
