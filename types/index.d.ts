@@ -69,24 +69,24 @@ declare class ASScroll {
      * @param {boolean} newTarget
      * @param {boolean} horizontalScroll
      */
-    enable(restore?: boolean, reset?: boolean, newTarget?: boolean, horizontalScroll?: boolean): void;
+     enable(restore?: boolean, reset?: boolean, newTarget?: boolean, horizontalScroll?: boolean): void;
     /**
     * Disable ASScroll.
     *
     * @example <caption>Disables the ability to manually scroll whilst still allowing position updates to be made via asscroll.currentPos, for example</caption>
     * asscroll.disable({ inputOnly: true })
     *
-    * @param {object} parameters
+    * @param {object} [parameters]
     * @param {boolean} [parameters.inputOnly=false] Only disable the ability to manually scroll (still allow transforms)
     */
-    disable(parameters: {
+    disable(parameters?: {
         inputOnly?: boolean;
     }): void;
     /**
      * @deprecated since 2.0.0
      * @param {boolean} disableOnly
      */
-    disable(disableOnly: boolean): void;
+     disable(disableOnly: boolean): void;
     /**
     * Call the internal animation frame request callback.
     * @function
@@ -168,6 +168,22 @@ declare class ASScroll {
      * @return {boolean} The status of horizontal scroll
      */
     get isHorizontal(): boolean;
+    /**
+     * @deprecated since 2.0.0 - use targetPos instead
+     */
+    get scrollPos(): void;
+    /**
+     * @deprecated since 2.0.0 - use currentPos instead
+     */
+    get smoothScrollPos(): void;
+    /**
+     * @deprecated since 2.0.0 - use update() instead
+     */
+    onRaf(): void;
+    /**
+     * @deprecated since 2.0.0 - use resize() instead
+     */
+    onResize(): void;
 }
 import Events from "./Events";
 import Controller from "./Controller";

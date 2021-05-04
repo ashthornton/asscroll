@@ -254,6 +254,26 @@ class ASScroll {
 	get isHorizontal() {
 		return this.controller.horizontalScroll
 	}
+
+	/**
+	 * @deprecated since 2.0.0 - use targetPos instead
+	 */
+	get scrollPos() {}
+
+	/**
+	 * @deprecated since 2.0.0 - use currentPos instead
+	 */
+	get smoothScrollPos() {}
+
+	/**
+	 * @deprecated since 2.0.0 - use update() instead
+	 */
+	onRaf() {}
+
+	/**
+	 * @deprecated since 2.0.0 - use resize() instead
+	 */
+	onResize() {}
 }
 
 export default ASScroll
