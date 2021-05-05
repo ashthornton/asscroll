@@ -26,22 +26,24 @@ class ASScroll {
 	* @param {boolean} [parameters.limitLerpRate=true] Match lerp speed on >60Hz displays to that of a 60Hz display
 	* @param {string} [parameters.blockScrollClass=.asscroll-block] The class to add to elements that should block ASScroll when hovered
 	*/
-	constructor({
-		containerElement = '.asscroll-container',
-		scrollElements = '[asscroll]',
-		ease = 0.075,
-		touchEase = 1,
-		touchScrollType = 'none',
-		scrollbarEl = '.asscrollbar',
-		scrollbarHandleEl = '.asscrollbar__handle',
-		customScrollbar = true,
-		scrollbarStyles = true,
-		disableNativeScrollbar = true,
-		disableRaf = false,
-		disableResize = false,
-		limitLerpRate = true,
-		blockScrollClass = '.asscroll-block'
-	} = {}) {
+	constructor(parameters) {
+		const {
+			containerElement = '.asscroll-container',
+			scrollElements = '[asscroll]',
+			ease = 0.075,
+			touchEase = 1,
+			touchScrollType = 'none',
+			scrollbarEl = '.asscrollbar',
+			scrollbarHandleEl = '.asscrollbar__handle',
+			customScrollbar = true,
+			scrollbarStyles = true,
+			disableNativeScrollbar = true,
+			disableRaf = false,
+			disableResize = false,
+			limitLerpRate = true,
+			blockScrollClass = '.asscroll-block'
+		} = parameters
+
 		this.events = new Events({
 			disableRaf,
 			disableResize

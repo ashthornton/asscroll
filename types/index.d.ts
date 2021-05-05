@@ -23,7 +23,7 @@ declare class ASScroll {
     * @param {boolean} [parameters.limitLerpRate=true] Match lerp speed on >60Hz displays to that of a 60Hz display
     * @param {string} [parameters.blockScrollClass=.asscroll-block] The class to add to elements that should block ASScroll when hovered
     */
-    constructor({ containerElement, scrollElements, ease, touchEase, touchScrollType, scrollbarEl, scrollbarHandleEl, customScrollbar, scrollbarStyles, disableNativeScrollbar, disableRaf, disableResize, limitLerpRate, blockScrollClass }?: {
+    constructor(parameters?: {
         containerElement?: string | any;
         scrollElements?: string | any | any;
         ease?: number;
@@ -69,7 +69,7 @@ declare class ASScroll {
      * @param {boolean} newTarget
      * @param {boolean} horizontalScroll
      */
-     enable(restore?: boolean, reset?: boolean, newTarget?: boolean, horizontalScroll?: boolean): void;
+    enable(restore?: boolean, reset?: boolean, newTarget?: boolean, horizontalScroll?: boolean): void;
     /**
     * Disable ASScroll.
     *
@@ -86,7 +86,7 @@ declare class ASScroll {
      * @deprecated since 2.0.0
      * @param {boolean} disableOnly
      */
-     disable(disableOnly: boolean): void;
+    disable(disableOnly: boolean): void;
     /**
     * Call the internal animation frame request callback.
     * @function
@@ -170,18 +170,22 @@ declare class ASScroll {
     get isHorizontal(): boolean;
     /**
      * @deprecated since 2.0.0 - use targetPos instead
+     * @see {@link ASScroll#targetPos}
      */
     get scrollPos(): void;
     /**
      * @deprecated since 2.0.0 - use currentPos instead
+     * @see {@link ASScroll#currentPos}
      */
     get smoothScrollPos(): void;
     /**
      * @deprecated since 2.0.0 - use update() instead
+     * @see {@link ASScroll#update}
      */
     onRaf(): void;
     /**
      * @deprecated since 2.0.0 - use resize() instead
+     * @see {@link ASScroll#resize}
      */
     onResize(): void;
 }

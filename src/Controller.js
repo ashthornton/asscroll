@@ -167,6 +167,7 @@ export default class Controller {
 		if (newScrollElements) {
 			this.scrollElements = newScrollElements.length ? [...newScrollElements] : [newScrollElements]
 			this.scrollElementsLength = this.scrollElements.length
+			this.scrollElements.forEach(el => el.setAttribute('asscroll', ''))
 		}
 
 		this.iframes = this.containerElement.querySelectorAll('iframe')
