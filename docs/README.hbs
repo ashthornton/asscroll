@@ -1,4 +1,4 @@
-<p align="center"><img src="https://raw.githubusercontent.com/ashthornton/asscroll/release/2.0.0/docs/banner.png"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/ashthornton/asscroll/release/2.0.0/docs/banner.jpg"></p>
 
 <p align="center">
     <a href="https://www.npmjs.com/package/@ashthornton/asscroll"><img src="https://img.shields.io/npm/v/@ashthornton/asscroll?color=%23F7894A" alt="NPM Version"></a>
