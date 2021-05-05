@@ -65,11 +65,11 @@ Also available via [JSDelivr CDN](https://www.jsdelivr.com/package/npm/@ashthorn
 
 # Zero Config Setup
 
-1. Add a class of `.asscroll-container` to the parent element of the content to be smooth scrolled. By default, the first child found within will be scrolled. These can both be changed in the options.
+1. Add the attribute `asscroll-container` to the parent element of the content to be smooth scrolled. By default, the first child found within will be scrolled. Both of these selectors be changed in the options.
 
 ```html
 <body>
-    <div class="asscroll-container">
+    <div asscroll-container>
         <div><!-- The Y translation will be applied to this element --></div>
     </div>
 </body>
@@ -124,7 +124,7 @@ Creates an ASScroll instance
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | [parameters] | <code>object</code> |  |  |
-| [parameters.containerElement] | <code>string</code> \| <code>HTMLElement</code> | <code>&quot;.asscroll-container&quot;</code> | The selector string for the outer container element, or the element itself |
+| [parameters.containerElement] | <code>string</code> \| <code>HTMLElement</code> | <code>&quot;[asscroll-container]&quot;</code> | The selector string for the outer container element, or the element itself |
 | [parameters.scrollElements] | <code>string</code> \| <code>HTMLElement</code> \| <code>NodeList</code> | <code>&quot;[asscroll]&quot;</code> | The selector string for the elements to scroll, or the elements themselves |
 | [parameters.ease] | <code>number</code> | <code>0.075</code> | The ease amount for the transform lerp |
 | [parameters.touchEase] | <code>number</code> | <code>1</code> | The ease amount for the transform lerp on touch devices |
@@ -335,26 +335,26 @@ You can include the styles necessary to hide the native scrollbar in your CSS by
 ```
 
 ## Usage with external requestAnimationFrame
+Multiple requestAnimationFrame loops causes a significant impact on performance, so ASScroll provides the option to disable its internal rAF loop in order for you to update it yourself externally.
 
 ```Javascript
 const asscroll = new ASScroll({
     disableRaf: true
 })
 
-// Regular RAF setup
+// Regular RAF loop
 requestAnimationFrame(onRaf)
 function onRaf() {
     asscroll.update()
     requestAnimationFrame(onRaf)
 }
 
-// Use with GSAP's internal RAF
+// Or use with GSAP's internal RAF
 gsap.ticker.add(asscroll.update)
-
-asscroll.enable()
 ```
 
 ## Usage with external window resize
+You may already have a window resize listener in your project where you get the window size for other components. Rather than let ASScroll access these window properties during its internal resize event, which causes extra browser calculations, you can pass your own values.
 
 ```Javascript
 const asscroll = new ASScroll({
@@ -363,14 +363,13 @@ const asscroll = new ASScroll({
 
 window.addEventListener('resize', () => {
     // trigger other resize logic
-    asscroll.resize({ width: window.innerWidth, height: window.innerHeight })
+    const width = window.innerWidth
+    const height = window.innerHeight
+    asscroll.resize({ width, height })
 })
-
-asscroll.enable()
 ```
 
-Touch Devices
-===
+## Touch Devices
 
 ASScroll provides three options for handling itself on touch devices via the `touchScrollType` option:
 - `'none'`: Disabled completely, falling back to native scroll whilst still providing scroll position properties

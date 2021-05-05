@@ -2823,12 +2823,12 @@ class Controller {
 
   setElements() {
     this.containerElement = typeof this.options.containerElement === 'string' ? document.querySelector(this.options.containerElement) : this.options.containerElement;
-    this.containerElement.setAttribute('asscroll-container', '');
 
     if (this.containerElement === null) {
       console.error('ASScroll: could not find container element');
     }
 
+    this.containerElement.setAttribute('asscroll-container', '');
     this.scrollElements = typeof this.options.scrollElements === 'string' ? document.querySelectorAll(this.options.scrollElements) : this.options.scrollElements;
     if (this.scrollElements.length) this.scrollElements = [...this.scrollElements];
     this.scrollElements = this.scrollElements.length ? this.scrollElements : [this.containerElement.firstElementChild];
@@ -2881,6 +2881,7 @@ class Controller {
     if (newScrollElements) {
       this.scrollElements = newScrollElements.length ? [...newScrollElements] : [newScrollElements];
       this.scrollElementsLength = this.scrollElements.length;
+      this.scrollElements.forEach(el => el.setAttribute('asscroll', ''));
     }
 
     this.iframes = this.containerElement.querySelectorAll('iframe');
@@ -3010,7 +3011,7 @@ class ASScroll {
   *
   * @typicalname asscroll
   * @param {object} [parameters]
-  * @param {string|HTMLElement} [parameters.containerElement=.asscroll-container] The selector string for the outer container element, or the element itself
+  * @param {string|HTMLElement} [parameters.containerElement=[asscroll-container]] The selector string for the outer container element, or the element itself
   * @param {string|HTMLElement|NodeList} [parameters.scrollElements=[asscroll]] The selector string for the elements to scroll, or the elements themselves
   * @param {number} [parameters.ease=0.075] The ease amount for the transform lerp
   * @param {number} [parameters.touchEase=1] The ease amount for the transform lerp on touch devices
@@ -3025,22 +3026,7 @@ class ASScroll {
   * @param {boolean} [parameters.limitLerpRate=true] Match lerp speed on >60Hz displays to that of a 60Hz display
   * @param {string} [parameters.blockScrollClass=.asscroll-block] The class to add to elements that should block ASScroll when hovered
   */
-  constructor({
-    containerElement = '.asscroll-container',
-    scrollElements = '[asscroll]',
-    ease = 0.075,
-    touchEase = 1,
-    touchScrollType = 'none',
-    scrollbarEl = '.asscrollbar',
-    scrollbarHandleEl = '.asscrollbar__handle',
-    customScrollbar = true,
-    scrollbarStyles = true,
-    disableNativeScrollbar = true,
-    disableRaf = false,
-    disableResize = false,
-    limitLerpRate = true,
-    blockScrollClass = '.asscroll-block'
-  } = {}) {
+  constructor(_parameters) {
     src_defineProperty(this, "update", () => {
       this.events.onRaf();
     });
@@ -3049,6 +3035,22 @@ class ASScroll {
       this.events.onResize(parameters);
     });
 
+    const {
+      containerElement = '[asscroll-container]',
+      scrollElements = '[asscroll]',
+      ease = 0.075,
+      touchEase = 1,
+      touchScrollType = 'none',
+      scrollbarEl = '.asscrollbar',
+      scrollbarHandleEl = '.asscrollbar__handle',
+      customScrollbar = true,
+      scrollbarStyles = true,
+      disableNativeScrollbar = true,
+      disableRaf = false,
+      disableResize = false,
+      limitLerpRate = true,
+      blockScrollClass = '.asscroll-block'
+    } = _parameters;
     this.events = new Events({
       disableRaf,
       disableResize
@@ -3098,7 +3100,7 @@ class ASScroll {
   * @example <caption>Disables the ability to manually scroll whilst still allowing position updates to be made via asscroll.currentPos, for example</caption>
   * asscroll.disable({ inputOnly: true })
   *
-  * @param {object} parameters
+  * @param {object} [parameters]
   * @param {boolean} [parameters.inputOnly=false] Only disable the ability to manually scroll (still allow transforms)
   */
 
@@ -3258,6 +3260,34 @@ class ASScroll {
   get isHorizontal() {
     return this.controller.horizontalScroll;
   }
+  /**
+   * @deprecated since 2.0.0 - use targetPos instead
+   * @see {@link ASScroll#targetPos}
+   */
+
+
+  get scrollPos() {}
+  /**
+   * @deprecated since 2.0.0 - use currentPos instead
+   * @see {@link ASScroll#currentPos}
+   */
+
+
+  get smoothScrollPos() {}
+  /**
+   * @deprecated since 2.0.0 - use update() instead
+   * @see {@link ASScroll#update}
+   */
+
+
+  onRaf() {}
+  /**
+   * @deprecated since 2.0.0 - use resize() instead
+   * @see {@link ASScroll#resize}
+   */
+
+
+  onResize() {}
 
 }
 

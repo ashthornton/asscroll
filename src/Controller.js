@@ -42,10 +42,10 @@ export default class Controller {
 
 	setElements() {
 		this.containerElement = typeof this.options.containerElement === 'string' ? document.querySelector(this.options.containerElement) : this.options.containerElement
-		this.containerElement.setAttribute('asscroll-container', '')
 		if (this.containerElement === null) {
 			console.error('ASScroll: could not find container element')
 		}
+		this.containerElement.setAttribute('asscroll-container', '')
 
 		this.scrollElements = typeof this.options.scrollElements === 'string' ? document.querySelectorAll(this.options.scrollElements) : this.options.scrollElements
 		if (this.scrollElements.length) this.scrollElements = [...this.scrollElements]
