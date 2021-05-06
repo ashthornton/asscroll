@@ -384,4 +384,5 @@ The `scrollTop` option is primarily used for syncing WebGL content to the scroll
 
 `touchScrollType: transform` will also achieve DOM and WebGL content sync but is more expensive.
 
-## [Changelog](https://github.com/ashthornton/asscroll/blob/master/css/scrollTop.css)
+## Changelog
+[View Changelog](https://github.com/ashthornton/asscroll/blob/master/CHANGELOG.md)
