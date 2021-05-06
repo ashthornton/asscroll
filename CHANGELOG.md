@@ -1,7 +1,7 @@
-Changelog
+🍑 Changelog
 ===
 
-## 2.0.0 - 03/05/2021
+## 2.0.0 - 06/05/2021
 _This release includes some breaking changes - see "Updated" below._
 
 - Removed support for IE11 and updated targeted browser compatibility, resulting in a package size reduction of over 30%
@@ -13,6 +13,7 @@ _This release includes some breaking changes - see "Updated" below._
 - Exposed `maxScroll`, `containerElement`, `scrollElements` and `isHorizontal`
 - Added `scrollEnd` event which fires when the lerped scroll position reaches its target
 - Added example to show how ASScroll works with PJAX navigation
+- Added example showing ASScroll + DOM/WebGL syncing
 
 ### Updated
 - `ASScroll.scrollPos` and `ASScroll.smoothScrollPos` have been renamed to `ASScroll.targetPos` and `ASScroll.currentPos` respectively. This is to better represent what these values mean
