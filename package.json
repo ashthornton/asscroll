@@ -19,7 +19,7 @@
     "preversion": "npm run production && git add -A && git commit -m build",
     "fix": "eslint --fix \"src/**\"",
     "docs": "jsdoc2md src/index.js > README.md --template docs/README.hbs --heading-depth 1 --partial docs/scope.hbs",
-    "types": "typescript src/index.js --allowJs --declaration --emitDeclarationOnly --outDir types --lib es2015"
+    "types": "npx typescript src/index.js --allowJs --declaration --emitDeclarationOnly --outDir types --lib es2015"
   },
   "repository": {
     "type": "git",

@@ -8,7 +8,7 @@ declare class ASScroll {
     *
     * @typicalname asscroll
     * @param {object} [parameters]
-    * @param {string|HTMLElement} [parameters.containerElement=.asscroll-container] The selector string for the outer container element, or the element itself
+    * @param {string|HTMLElement} [parameters.containerElement=[asscroll-container]] The selector string for the outer container element, or the element itself
     * @param {string|HTMLElement|NodeList} [parameters.scrollElements=[asscroll]] The selector string for the elements to scroll, or the elements themselves
     * @param {number} [parameters.ease=0.075] The ease amount for the transform lerp
     * @param {number} [parameters.touchEase=1] The ease amount for the transform lerp on touch devices
@@ -69,7 +69,7 @@ declare class ASScroll {
      * @param {boolean} newTarget
      * @param {boolean} horizontalScroll
      */
-    enable(restore?: boolean, reset?: boolean, newTarget?: boolean, horizontalScroll?: boolean): void;
+     enable(restore?: boolean, reset?: boolean, newTarget?: boolean, horizontalScroll?: boolean): void;
     /**
     * Disable ASScroll.
     *
@@ -86,7 +86,7 @@ declare class ASScroll {
      * @deprecated since 2.0.0
      * @param {boolean} disableOnly
      */
-    disable(disableOnly: boolean): void;
+     disable(disableOnly: boolean): void;
     /**
     * Call the internal animation frame request callback.
     * @function
