@@ -205,7 +205,7 @@ export default class Controller {
 		}
 
 		E.off(Events.WHEEL, this.onScroll)
-		E.off(Events.SCROLL, this.onScroll)
+		E.off(Events.INTERNALSCROLL, this.onScroll)
 
 		this.prevScrollPos = this.targetPos
 		store.body.style.height = '0px'
