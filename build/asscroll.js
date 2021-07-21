@@ -2924,7 +2924,7 @@ class Controller {
     }
 
     src_E.off(Events.WHEEL, this.onScroll);
-    src_E.off(Events.SCROLL, this.onScroll);
+    src_E.off(Events.INTERNALSCROLL, this.onScroll);
     this.prevScrollPos = this.targetPos;
     (store_default()).body.style.height = '0px';
   }
