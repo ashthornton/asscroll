@@ -258,6 +258,14 @@ class ASScroll {
 	}
 
 	/**
+	 * Returns whether or not ASScroll is actively transforming the page element(s). For example, would return false if running on a touch device and touchScrollType !== 'transform', or if ASScroll was currently disabled via the .disable() method.
+	 * @return {boolean} The status of actively controlling the page scroll
+	 */
+	get isScrollJacking() {
+		return !this.controller.nativeScroll && this.controller.enabled
+	}
+
+	/**
 	 * @deprecated since 2.0.0 - use targetPos instead
 	 * @see {@link ASScroll#targetPos}
 	 */

@@ -14,6 +14,7 @@ export default class Controller {
 		this.horizontalScroll = false
 		this.firstResize = true
 		this.preventResizeScroll = false
+		this.nativeScroll = true
 		this.ease = store.isTouch ? this.options.touchEase : this.options.ease
 		this.originalScrollbarSetting = this.options.customScrollbar
 
@@ -55,6 +56,8 @@ export default class Controller {
 	}
 
 	setupSmoothScroll() {
+		this.nativeScroll = false
+
 		Object.assign(this.containerElement.style, {
 			position: 'fixed',
 			top: '0px',
