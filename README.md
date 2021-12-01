@@ -107,6 +107,7 @@ Ash's Smooth Scroll 🍑
     * [.containerElement](#ASScroll+containerElement) ⇒ <code>HTMLElement</code>
     * [.scrollElements](#ASScroll+scrollElements) ⇒ <code>Array</code>
     * [.isHorizontal](#ASScroll+isHorizontal) ⇒ <code>boolean</code>
+    * [.isScrollJacking](#ASScroll+isScrollJacking) ⇒ <code>boolean</code>
     * ~~[.scrollPos](#ASScroll+scrollPos)~~
     * ~~[.smoothScrollPos](#ASScroll+smoothScrollPos)~~
     * [.enable([parameters])](#ASScroll+enable)
@@ -188,6 +189,12 @@ Returns the the element(s) that ASScroll is scrolling.
 Returns whether or not ASScroll is in horizontal scroll mode
 
 **Returns**: <code>boolean</code> - The status of horizontal scroll  
+<a name="ASScroll+isScrollJacking"></a>
+
+## asscroll.isScrollJacking ⇒ <code>boolean</code>
+Returns whether or not ASScroll is actively transforming the page element(s). For example, would return false if running on a touch device and touchScrollType !== 'transform', or if ASScroll was currently disabled via the .disable() method.
+
+**Returns**: <code>boolean</code> - The status of actively controlling the page scroll  
 <a name="ASScroll+scrollPos"></a>
 
 ## ~~asscroll.scrollPos~~
