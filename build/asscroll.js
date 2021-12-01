@@ -2791,6 +2791,7 @@ class Controller {
     this.horizontalScroll = false;
     this.firstResize = true;
     this.preventResizeScroll = false;
+    this.nativeScroll = true;
     this.ease = (store_default()).isTouch ? this.options.touchEase : this.options.ease;
     this.originalScrollbarSetting = this.options.customScrollbar;
     this.testFps = true;
@@ -2837,6 +2838,7 @@ class Controller {
   }
 
   setupSmoothScroll() {
+    this.nativeScroll = false;
     Object.assign(this.containerElement.style, {
       position: 'fixed',
       top: '0px',
@@ -3263,6 +3265,15 @@ class ASScroll {
 
   get isHorizontal() {
     return this.controller.horizontalScroll;
+  }
+  /**
+   * Returns whether or not ASScroll is actively transforming the page element(s). For example, would return false if running on a touch device and touchScrollType !== 'transform', or if ASScroll was currently disabled via the .disable() method.
+   * @return {boolean} The status of actively controlling the page scroll
+   */
+
+
+  get isScrollJacking() {
+    return !this.controller.nativeScroll && this.controller.enabled;
   }
   /**
    * @deprecated since 2.0.0 - use targetPos instead
