@@ -218,10 +218,14 @@ export default class Controller {
 	scrollTo(y, emitEvent = true) {
 		this.targetPos = y
 		if (store.isTouch && this.options.touchScrollType !== 'transform') {
-			if (this.horizontalScroll) {
-				this.containerElement.scrollTo(-this.targetPos, 0)
+			if (this.options.touchScrollType === 'scrollTop') {
+				if (this.horizontalScroll) {
+					this.containerElement.scrollTo(-this.targetPos, 0)
+				} else {
+					this.containerElement.scrollTo(0, -this.targetPos)
+				}
 			} else {
-				this.containerElement.scrollTo(0, -this.targetPos)
+				window.scrollTo(0, -this.targetPos)
 			}
 		}
 		this.clamp()
