@@ -24,8 +24,8 @@ declare class ASScroll {
     * @param {string} [parameters.blockScrollClass=.asscroll-block] The class to add to elements that should block ASScroll when hovered
     */
     constructor(parameters?: {
-        containerElement?: string | any;
-        scrollElements?: string | any | any;
+        containerElement?: string | HTMLElement;
+        scrollElements?: string | HTMLElement | NodeList;
         ease?: number;
         touchEase?: number;
         touchScrollType?: string;
@@ -57,7 +57,7 @@ declare class ASScroll {
     * @param {boolean} [parameters.horizontalScroll=false] Toggle horizontal scrolling
     */
     enable(parameters?: {
-        newScrollElements?: boolean | any | any;
+        newScrollElements?: boolean | NodeList | HTMLElement;
         reset?: boolean;
         restore?: boolean;
         horizontalScroll?: boolean;
@@ -157,7 +157,7 @@ declare class ASScroll {
      * Returns the outer element that ASScroll is attached to.
      * @return {HTMLElement} The outer element
      */
-    get containerElement(): any;
+    get containerElement(): HTMLElement;
     /**
      * Returns the the element(s) that ASScroll is scrolling.
      * @return {Array} An array of elements ASScroll is scrolling
@@ -168,6 +168,11 @@ declare class ASScroll {
      * @return {boolean} The status of horizontal scroll
      */
     get isHorizontal(): boolean;
+    /**
+     * Returns whether or not ASScroll is actively transforming the page element(s). For example, would return false if running on a touch device and touchScrollType !== 'transform', or if ASScroll was currently disabled via the .disable() method.
+     * @return {boolean} The status of actively controlling the page scroll
+     */
+    get isScrollJacking(): boolean;
     /**
      * @deprecated since 2.0.0 - use targetPos instead
      * @see {@link ASScroll#targetPos}

@@ -12,6 +12,7 @@ export default class Controller {
     horizontalScroll: boolean;
     firstResize: boolean;
     preventResizeScroll: boolean;
+    nativeScroll: boolean;
     ease: any;
     originalScrollbarSetting: any;
     testFps: boolean;
