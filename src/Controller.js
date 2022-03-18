@@ -10,6 +10,7 @@ export default class Controller {
 		this.enabled = false
 		this.render = false
 		this.scrolling = false
+		this.wheeling = false
 		this.syncScroll = false
 		this.horizontalScroll = false
 		this.firstResize = true
@@ -93,10 +94,15 @@ export default class Controller {
 			event.preventDefault()
 
 			this.syncScroll = true
+			this.wheeling = true
 			this.targetPos += event.deltaY * -1
 		} else {
 			if (this.preventResizeScroll) {
 				this.preventResizeScroll = false
+				return
+			}
+
+			if (this.wheeling) {
 				return
 			}
 
@@ -136,6 +142,7 @@ export default class Controller {
 			if (this.syncScroll) {
 				window.scrollTo(0, -this.targetPos)
 				this.syncScroll = false
+				this.wheeling = false
 			}
 		} else {
 			this.currentPos += (this.targetPos - this.currentPos) * this.ease * this.delta
