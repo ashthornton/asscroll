@@ -1084,10 +1084,11 @@ class Controller {
       event
     }) => {
       if (!this.scrolling) {
-        this.options.customScrollbar && this.scrollbar.show();
         this.toggleIframes();
         this.scrolling = true;
       }
+
+      const prevTargetPos = this.targetPos;
 
       if (!(store_default()).isTouch && event.type === 'wheel') {
         event.preventDefault();
@@ -1116,8 +1117,16 @@ class Controller {
       }
 
       this.clamp();
+
+      if (prevTargetPos !== this.targetPos) {
+        src_e.emit(Events.EXTERNALSCROLL, -this.targetPos);
+
+        if (this.options.customScrollbar) {
+          this.scrollbar.show();
+        }
+      }
+
       this.options.customScrollbar && this.scrollbar.transform();
-      src_e.emit(Events.EXTERNALSCROLL, -this.targetPos);
     });
 
     Controller_defineProperty(this, "onRAF", () => {
