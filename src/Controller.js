@@ -18,6 +18,7 @@ export default class Controller {
 		this.nativeScroll = true
 		this.ease = store.isTouch ? this.options.touchEase : this.options.ease
 		this.originalScrollbarSetting = this.options.customScrollbar
+		this.events = E;
 
 		this.testFps = true
 		this.delta = 1
