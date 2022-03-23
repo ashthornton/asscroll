@@ -85,10 +85,11 @@ export default class Controller {
 
 	onScroll = ({ event }) => {
 		if (!this.scrolling) {
-			this.options.customScrollbar && this.scrollbar.show()
 			this.toggleIframes()
 			this.scrolling = true
 		}
+
+		const prevTargetPos = this.targetPos
 
 		if (!store.isTouch && event.type === 'wheel') {
 			event.preventDefault()
@@ -118,8 +119,16 @@ export default class Controller {
 		}
 
 		this.clamp()
+
+		if (prevTargetPos !== this.targetPos) {
+			E.emit(Events.EXTERNALSCROLL, -this.targetPos)
+
+			if (this.options.customScrollbar) {
+				this.scrollbar.show()
+			}
+		}
+
 		this.options.customScrollbar && this.scrollbar.transform()
-		E.emit(Events.EXTERNALSCROLL, -this.targetPos)
 	}
 
 	onRAF = () => {
