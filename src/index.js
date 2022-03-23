@@ -1,6 +1,6 @@
 import Events from './Events'
 import Controller from './Controller'
-import E from './E'
+import E from '@unseenco/e'
 
 /**
 * Ash's Smooth Scroll 🍑

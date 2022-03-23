@@ -29,16 +29,6 @@ module.exports = {
 							cacheDirectory: true,
 							presets: [
 								['@babel/preset-env', {
-									targets: {
-										browsers: [
-											"last 2 versions",
-											">= 1%",
-											"Firefox ESR",
-											"safari >= 12",
-											"not ie >= 10",
-											"not ie_mob >= 10"
-										]
-									},
 									corejs: 3,
 									useBuiltIns: 'usage'
 								}]

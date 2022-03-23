@@ -1,5 +1,5 @@
 import store from './store'
-import E from './E'
+import E from '@unseenco/e'
 import Scrollbar from './Scrollbar'
 import Events from './Events'
 

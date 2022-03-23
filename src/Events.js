@@ -1,7 +1,7 @@
 import debounce from './utils/debounce'
 
 import store from './store'
-import E from './E'
+import E from '@unseenco/e'
 
 export default class Events {
 	static INTERNALRAF = 'raf:internal'

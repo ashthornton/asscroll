@@ -1,5 +1,5 @@
 import store from './store'
-import E from './E'
+import E from '@unseenco/e'
 import Events from './Events'
 
 export default class Scrollbar {
