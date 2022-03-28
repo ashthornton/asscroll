@@ -393,3 +393,5 @@ The `scrollTop` option is primarily used for syncing WebGL content to the scroll
 
 ## Changelog
 [View Changelog](https://github.com/ashthornton/asscroll/blob/master/CHANGELOG.md)
+
+[![Verified on Openbase](https://badges.openbase.com/js/verified/@ashthornton/asscroll.svg?style=openbase&token=WmQF8PcdmBheXMjTKPy59HRexmMzyckLHugup8l88mU=)](https://openbase.com/js/@ashthornton/asscroll?utm_source=embedded&amp;utm_medium=badge&amp;utm_campaign=rate-badge)
