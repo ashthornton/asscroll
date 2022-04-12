@@ -35,8 +35,6 @@ Demos
 - [Using PJAX Navigation (Highway) with ASScroll](https://codepen.io/ashthornton/project/editor/AypMLG)
 - [Touch-friendly DOM/WebGL Sync](https://codepen.io/ashthornton/pen/YzZzaVK)
 
-_Full showcase site coming soon_
-
 ### Sites using ASScroll
 - [Superlist](https://superlist.com/)
 - [Lewa House](https://lewahouse.com/)
