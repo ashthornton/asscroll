@@ -1311,7 +1311,10 @@ class Controller {
     this.iframes = this.containerElement.querySelectorAll('iframe');
 
     if ((store_default()).isTouch && this.options.touchScrollType !== 'transform') {
-      store_default().body.style.removeProperty('height');
+      if (this.options.touchScrollType === 'scrollTop') {
+        this.containerElement.style.removeProperty('overflow');
+      }
+
       this.maxScroll = -this.containerElement.scrollHeight;
 
       if (reset) {
@@ -1350,7 +1353,12 @@ class Controller {
     src_e.off(Events.WHEEL, this.onScroll);
     src_e.off(Events.INTERNALSCROLL, this.onScroll);
     this.prevScrollPos = this.targetPos;
-    (store_default()).body.style.height = '0px';
+
+    if ((store_default()).isTouch && this.options.touchScrollType === 'scrollTop') {
+      this.containerElement.style.overflow = 'hidden';
+    } else {
+      (store_default()).body.style.height = '0px';
+    }
   }
 
   clamp() {
