@@ -192,7 +192,9 @@ export default class Controller {
 		this.iframes = this.containerElement.querySelectorAll('iframe')
 
 		if (store.isTouch && this.options.touchScrollType !== 'transform') {
-			store.body.style.removeProperty('height')
+			if (this.options.touchScrollType === 'scrollTop') {
+				this.containerElement.style.removeProperty('overflow')
+			}
 			this.maxScroll = -this.containerElement.scrollHeight
 			if (reset) {
 				this.targetPos = this.currentPos = 0
@@ -227,7 +229,12 @@ export default class Controller {
 		E.off(Events.INTERNALSCROLL, this.onScroll)
 
 		this.prevScrollPos = this.targetPos
-		store.body.style.height = '0px'
+
+		if (store.isTouch && this.options.touchScrollType === 'scrollTop') {
+			this.containerElement.style.overflow = 'hidden'
+		} else {
+			store.body.style.height = '0px'
+		}
 	}
 
 	clamp() {
