@@ -1335,7 +1335,7 @@ class Controller {
       this.scrollElementsLength = this.scrollElements.length;
       this.scrollElements.forEach(el => el.setAttribute('asscroll', ''));
 
-      if ((store_default()).isTouch && this.options.lockIOSBrowserUI) {
+      if ((store_default()).isTouch && this.options.touchScrollType === 'transform' && this.options.lockIOSBrowserUI) {
         this.scrollElements.forEach(el => {
           el.style.position = 'fixed';
         });
