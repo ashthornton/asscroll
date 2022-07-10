@@ -59,14 +59,29 @@ export default class Controller {
 	setupSmoothScroll() {
 		this.nativeScroll = false
 
-		Object.assign(this.containerElement.style, {
-			position: 'fixed',
-			top: '0px',
-			left: '0px',
-			width: '100%',
-			height: '100%',
-			contain: 'content'
-		})
+		if (store.isTouch && this.options.lockIOSBrowserUI) {
+			Object.assign(document.body.style, {
+				position: 'fixed',
+				width: '100%',
+				height: '100%',
+				overflowY: 'auto'
+			})
+
+			store.html.style.overflow = 'hidden'
+
+			this.scrollElements.forEach(el => { el.style.position = 'fixed' })
+
+			E.on('scroll', document.body, e => { E.emit(Events.INTERNALSCROLL, { event: e }) })
+		} else {
+			Object.assign(this.containerElement.style, {
+				position: 'fixed',
+				top: '0px',
+				left: '0px',
+				width: '100%',
+				height: '100%',
+				contain: 'content'
+			})
+		}
 
 		if (this.options.customScrollbar) {
 			this.scrollbar = new Scrollbar(this)
@@ -110,7 +125,11 @@ export default class Controller {
 			if (store.isTouch && this.options.touchScrollType === 'scrollTop') {
 				this.targetPos = this.horizontalScroll ? -this.containerElement.scrollLeft : -this.containerElement.scrollTop
 			} else {
-				this.targetPos = -window.scrollY
+				if (store.isTouch && this.options.touchScrollType === 'transform' && this.options.lockIOSBrowserUI) {
+					this.targetPos = this.horizontalScroll ? -document.body.scrollLeft : -document.body.scrollTop
+				} else {
+					this.targetPos = -window.scrollY
+				}
 			}
 
 			if (store.isTouch && this.options.touchScrollType !== 'transform') {
@@ -187,6 +206,10 @@ export default class Controller {
 			this.scrollElements = newScrollElements.length ? [...newScrollElements] : [newScrollElements]
 			this.scrollElementsLength = this.scrollElements.length
 			this.scrollElements.forEach(el => el.setAttribute('asscroll', ''))
+
+			if (store.isTouch && this.options.lockIOSBrowserUI) {
+				this.scrollElements.forEach(el => { el.style.position = 'fixed' })
+			}
 		}
 
 		this.iframes = this.containerElement.querySelectorAll('iframe')
@@ -277,7 +300,11 @@ export default class Controller {
 		if (!this.firstResize) {
 			this.preventResizeScroll = true
 		}
-		store.body.style.height = this.scrollLength + 'px'
+		if (store.isTouch && this.options.lockIOSBrowserUI) {
+			this.containerElement.style.height = this.scrollLength + 'px'
+		} else {
+			store.body.style.height = this.scrollLength + 'px'
+		}
 		this.options.customScrollbar && this.scrollbar.onResize()
 		this.firstResize = false
 	}
