@@ -232,6 +232,10 @@ export default class Controller {
 			this.onResize()
 		}
 
+		if (store.isTouch && this.options.touchScrollType === 'transform' && this.options.lockIOSBrowserUI) {
+			store.body.style.overflowY = 'auto'
+		}
+
 		if (restore) {
 			this.scrollTo(this.prevScrollPos, false)
 		}
@@ -253,8 +257,12 @@ export default class Controller {
 
 		this.prevScrollPos = this.targetPos
 
-		if (store.isTouch && this.options.touchScrollType === 'scrollTop') {
-			this.containerElement.style.overflow = 'hidden'
+		if (store.isTouch) {
+			if (this.options.touchScrollType === 'scrollTop') {
+				this.containerElement.style.overflow = 'hidden'
+			} else if (this.options.touchScrollType === 'transform' && this.options.lockIOSBrowserUI) {
+				store.body.style.overflowY = 'hidden'
+			}
 		} else {
 			store.body.style.height = '0px'
 		}
