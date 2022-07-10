@@ -132,6 +132,7 @@ Creates an ASScroll instance
 | [parameters.ease] | <code>number</code> | <code>0.075</code> | The ease amount for the transform lerp |
 | [parameters.touchEase] | <code>number</code> | <code>1</code> | The ease amount for the transform lerp on touch devices |
 | [parameters.touchScrollType] | <code>string</code> | <code>&quot;none&quot;</code> | Set the scrolling method on touch devices. Other options are 'transform' and 'scrollTop'. See the [Touch Devices](#touch-devices) section for more info |
+| [parameters.lockIOSBrowserUI] | <code>boolean</code> | <code>false</code> | When using an iOS device and touchScrollType is 'transform', this will change the setup to prevent the browser UI from showing/hiding to stop resize events on scroll. |
 | [parameters.scrollbarEl] | <code>string</code> | <code>&quot;.asscrollbar&quot;</code> | The selector string for the custom scrollbar element |
 | [parameters.scrollbarHandleEl] | <code>string</code> | <code>&quot;.asscrollbar__handle&quot;</code> | The selector string for the custom scrollbar handle element |
 | [parameters.customScrollbar] | <code>boolean</code> | <code>true</code> | Toggle the custom scrollbar |
