@@ -1368,6 +1368,10 @@ class Controller {
 
     if ((store_default()).isTouch && this.options.touchScrollType === 'transform' && this.options.lockIOSBrowserUI) {
       (store_default()).body.style.overflowY = 'auto';
+
+      if (reset) {
+        document.body.scrollTo(0, 0);
+      }
     }
 
     if (restore) {
