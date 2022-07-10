@@ -1366,6 +1366,10 @@ class Controller {
       this.onResize();
     }
 
+    if ((store_default()).isTouch && this.options.touchScrollType === 'transform' && this.options.lockIOSBrowserUI) {
+      (store_default()).body.style.overflowY = 'auto';
+    }
+
     if (restore) {
       this.scrollTo(this.prevScrollPos, false);
     }
@@ -1388,8 +1392,12 @@ class Controller {
     src_e.off(Events.INTERNALSCROLL, this.onScroll);
     this.prevScrollPos = this.targetPos;
 
-    if ((store_default()).isTouch && this.options.touchScrollType === 'scrollTop') {
-      this.containerElement.style.overflow = 'hidden';
+    if ((store_default()).isTouch) {
+      if (this.options.touchScrollType === 'scrollTop') {
+        this.containerElement.style.overflow = 'hidden';
+      } else if (this.options.touchScrollType === 'transform' && this.options.lockIOSBrowserUI) {
+        (store_default()).body.style.overflowY = 'hidden';
+      }
     } else {
       (store_default()).body.style.height = '0px';
     }
