@@ -8,6 +8,7 @@ export default class Controller {
     enabled: boolean;
     render: boolean;
     scrolling: boolean;
+    wheeling: boolean;
     syncScroll: boolean;
     horizontalScroll: boolean;
     firstResize: boolean;
