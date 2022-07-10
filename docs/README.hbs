@@ -36,12 +36,11 @@ Demos
 - [Touch-friendly DOM/WebGL Sync](https://codepen.io/ashthornton/pen/YzZzaVK)
 
 ### Sites using ASScroll
-- [Superlist](https://superlist.com/)
+- [CLOU Architects](https://www.clouarchitects.com/)
 - [Lewa House](https://lewahouse.com/)
 - [Eder Anaya](https://ederanaya.me/)
 - [FanFan](https://fanfan.fan/)
 - [Havoc](https://www.havoc.co/)
-- [Wray and Nephew](https://straightfromyard.co.uk/)
 - [Shape Studio](https://shapestudio.co.uk/)
 
 Table of contents
