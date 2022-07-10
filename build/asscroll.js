@@ -1108,7 +1108,11 @@ class Controller {
         if ((store_default()).isTouch && this.options.touchScrollType === 'scrollTop') {
           this.targetPos = this.horizontalScroll ? -this.containerElement.scrollLeft : -this.containerElement.scrollTop;
         } else {
-          this.targetPos = -window.scrollY;
+          if ((store_default()).isTouch && this.options.touchScrollType === 'transform' && this.options.lockIOSBrowserUI) {
+            this.targetPos = this.horizontalScroll ? -document.body.scrollLeft : -document.body.scrollTop;
+          } else {
+            this.targetPos = -window.scrollY;
+          }
         }
 
         if ((store_default()).isTouch && this.options.touchScrollType !== 'transform') {
@@ -1186,7 +1190,12 @@ class Controller {
         this.preventResizeScroll = true;
       }
 
-      (store_default()).body.style.height = this.scrollLength + 'px';
+      if ((store_default()).isTouch && this.options.lockIOSBrowserUI) {
+        this.containerElement.style.height = this.scrollLength + 'px';
+      } else {
+        (store_default()).body.style.height = this.scrollLength + 'px';
+      }
+
       this.options.customScrollbar && this.scrollbar.onResize();
       this.firstResize = false;
     });
@@ -1261,14 +1270,33 @@ class Controller {
 
   setupSmoothScroll() {
     this.nativeScroll = false;
-    Object.assign(this.containerElement.style, {
-      position: 'fixed',
-      top: '0px',
-      left: '0px',
-      width: '100%',
-      height: '100%',
-      contain: 'content'
-    });
+
+    if ((store_default()).isTouch && this.options.lockIOSBrowserUI) {
+      Object.assign(document.body.style, {
+        position: 'fixed',
+        width: '100%',
+        height: '100%',
+        overflowY: 'auto'
+      });
+      (store_default()).html.style.overflow = 'hidden';
+      this.scrollElements.forEach(el => {
+        el.style.position = 'fixed';
+      });
+      src_e.on('scroll', document.body, e => {
+        src_e.emit(Events.INTERNALSCROLL, {
+          event: e
+        });
+      });
+    } else {
+      Object.assign(this.containerElement.style, {
+        position: 'fixed',
+        top: '0px',
+        left: '0px',
+        width: '100%',
+        height: '100%',
+        contain: 'content'
+      });
+    }
 
     if (this.options.customScrollbar) {
       this.scrollbar = new Scrollbar(this);
@@ -1306,6 +1334,12 @@ class Controller {
       this.scrollElements = newScrollElements.length ? [...newScrollElements] : [newScrollElements];
       this.scrollElementsLength = this.scrollElements.length;
       this.scrollElements.forEach(el => el.setAttribute('asscroll', ''));
+
+      if ((store_default()).isTouch && this.options.lockIOSBrowserUI) {
+        this.scrollElements.forEach(el => {
+          el.style.position = 'fixed';
+        });
+      }
     }
 
     this.iframes = this.containerElement.querySelectorAll('iframe');
@@ -1452,6 +1486,7 @@ class ASScroll {
   * @param {number} [parameters.ease=0.075] The ease amount for the transform lerp
   * @param {number} [parameters.touchEase=1] The ease amount for the transform lerp on touch devices
   * @param {string} [parameters.touchScrollType=none] Set the scrolling method on touch devices. Other options are 'transform' and 'scrollTop'. See the [Touch Devices](#touch-devices) section for more info
+  * @param {boolean} [parameters.lockIOSBrowserUI=false] When using an iOS device and touchScrollType is 'transform', this will change the setup to prevent the browser UI from showing/hiding to stop resize events on scroll.
   * @param {string} [parameters.scrollbarEl=.asscrollbar] The selector string for the custom scrollbar element
   * @param {string} [parameters.scrollbarHandleEl=.asscrollbar__handle] The selector string for the custom scrollbar handle element
   * @param {boolean} [parameters.customScrollbar=true] Toggle the custom scrollbar
@@ -1477,6 +1512,7 @@ class ASScroll {
       ease = 0.075,
       touchEase = 1,
       touchScrollType = 'none',
+      lockIOSBrowserUI = false,
       scrollbarEl = '.asscrollbar',
       scrollbarHandleEl = '.asscrollbar__handle',
       customScrollbar = true,
@@ -1497,6 +1533,7 @@ class ASScroll {
       ease,
       touchEase,
       customScrollbar,
+      lockIOSBrowserUI,
       scrollbarEl,
       scrollbarHandleEl,
       scrollbarStyles,
