@@ -4,6 +4,8 @@
     <a href="https://www.npmjs.com/package/@ashthornton/asscroll"><img src="https://img.shields.io/npm/v/@ashthornton/asscroll?color=%23F7894A" alt="NPM Version"></a>
     <img alt="npm bundle size" src="https://img.shields.io/bundlephobia/minzip/@ashthornton/asscroll?color=%23F7894A">
     <a href="https://www.jsdelivr.com/package/npm/@ashthornton/asscroll"><img alt="jsDelivr hits (npm)" src="https://img.shields.io/jsdelivr/npm/hm/@ashthornton/asscroll?color=%23F7894A"></a>
+    <img alt="kandi X-Ray" src="https://kandi.openweaver.com/badges/xray.svg">
+    <a href="https://kandi.openweaver.com/javascript/ashthornton/asscroll">
 </p>
 
 <h3 align="center"><strong>ASScroll is a Javascript hybrid smooth scroll setup that combines the<br>performance gains of virtual scroll with the reliability of native scroll.</strong></h3>
